@@ -1,0 +1,33 @@
+input {
+    border : none;
+    background-color : #dddddd;
+}
+
+input:focus {
+    background-color : #c4c4c4;
+}
+
+form {
+    display: block;
+}
+
+label {
+    height: 30px;
+    line-height: 30px;
+    display: inline-block;
+    width: 300px;
+}
+
+label.farge {
+    height: 30px;
+    line-height: 30px;
+}
+
+input {
+    position: relative;
+    left: 125px;
+}
+
+input.felter {
+    left: -180px;
+}

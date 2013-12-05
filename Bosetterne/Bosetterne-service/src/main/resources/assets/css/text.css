@@ -1,0 +1,132 @@
+/* 
+    Document   : text
+    Created on : 29.sep.2013, 21:29:28
+    Author     : espen-pc
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+root { 
+    display: block;
+    
+}
+
+h1 {
+    font-size: 175%;
+    font-weight: bold;
+    text-align: left;
+}
+
+.meny {
+    border-color: yellow;
+    background-color: #A0E91E;
+    height: 23px;
+    line-height: 23px;
+    vertical-align: middle;
+    text-align: left;
+    border-radius: 12px;
+}
+
+
+p.meny {
+    margin-left: -12px;
+    padding-left: 12px;
+    border-radius: 12px;
+    font-weight: bold;
+    
+    
+}
+
+ul.menyliste {
+    border-style: none;
+    list-style-type: none;
+}
+
+li.meny {
+    margin-left: -50px;
+    border-style: solid;
+    border-left-width: 10px;
+    border-right-width: 1px;
+    border-top-width: 1px;
+    border-bottom-width: 1px;
+    
+    
+    text-align: left;
+    padding-left: 15px;
+}
+
+
+
+p.sans-serif {
+    border-style : solid;
+    border-width : 2px;
+    border-color : #000000;
+    padding:2px;
+    
+    font-family : arial, verdana, sans-serif;
+    font-size: 14px;
+    font-weight: bolder;
+    width: 100px;
+    height: 75px;
+    background-color: white;
+    
+    position: relative;
+    left: 40px;
+    top: 50px;
+}
+p.serif {
+    border-style : solid;
+    border-width : 2px;
+    border-color : #000000;
+    padding:2px;
+    
+    font-family : times, "times new roman", serif;
+    width: 300px;
+    height: 75px;
+    background-color: white;
+    
+    position: relative;
+    left: 80px;
+    top: 0px;
+}
+p.monospace {
+    border-style : solid;
+    border-width : 2px;
+    border-color : #000000;
+    padding:2px;
+    
+    font-family : courier, "courier new", monospace;
+    width: 200px;
+    height: 75px;
+    background-color: white;
+    
+    position: absolute;
+    left: 360px;
+    top: 450px;
+}
+
+.spaca {
+    letter-spacing: 5px;
+}
+
+a {
+    font-family : arial, verdana, sans-serif;
+    font-size : 12px;
+    font-weight : bold;
+}
+a:link {
+    color : #0000ff;
+    text-decoration : none;
+}
+a:visited {
+    color : #333399;
+    text-decoration : none;
+}
+a:link:hover {
+    background-color : #e9e9e9;
+    text-decoration : underline;
+}
+a:active {
+    color : #0033ff;
+    text-decoration : underline;
+}

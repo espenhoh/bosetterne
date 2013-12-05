@@ -1,0 +1,24 @@
+/* 
+    Document   : tables
+    Created on : 25.sep.2013, 22:25:18
+    Author     : espen-pc
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+ table {
+   background-color : white;
+   border-style : solid;
+   border-width : 1px;
+   border-color : #999999;
+ }
+
+th {
+    background-color : #cccccc;
+    font-weight : bold;
+    padding : 5px;
+}
+
+td {
+    padding : 5px;  
+}

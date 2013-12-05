@@ -1,0 +1,51 @@
+html {
+    text-align: center;
+    font-family: sans-serif;
+}
+
+body {
+    width: 1248px;
+    height: 500px;
+    margin: 0 auto 0 auto;
+    text-align: left;
+    padding: 5px;
+    background-color: green;
+}
+
+header {
+    border-radius: 12px;
+    text-align: center;
+    width: 100%;
+    height: 10%; 
+    display: table;
+    background-color: #A0E91E;
+}
+
+nav { 
+    width: 100px; 
+    height: 90%; 
+    float: left; 
+    display: table;
+    background-color: yellow;
+    
+    position: relative;
+    left: 12px;
+}
+
+article {
+    width: 90%;
+    height: 90%;
+    display: table;
+    background-color: wheat;
+    position: relative;
+}
+
+footer {
+    text-align: center;
+    width: 100%;
+    display: table;
+    background-color: orange;
+}
+
+
+
