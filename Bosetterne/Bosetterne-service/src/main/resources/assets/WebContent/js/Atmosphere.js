@@ -1,7 +1,8 @@
 /**
  * 
  */
-
+	
+			
     $(function () {
     "use strict";
 
@@ -13,13 +14,12 @@
     var author = null;
     var logged = false;
     var socket = $.atmosphere;
-    var subSocket;
+    var subSocket = undefined;
     var transport = 'websocket';
 
     // We are now ready to cut the request
     var request = { url: document.location.toString() + 'chat',
         contentType : "application/json",
-        trackMessageLength : true,
         shared : true,
         transport : transport ,
         trackMessageLength : true,

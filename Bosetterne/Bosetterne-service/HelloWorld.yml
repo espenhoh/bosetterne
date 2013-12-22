@@ -3,3 +3,4 @@ defaultName: Stranger
 
 http:
   rootPath: /service/*  # Default is /*
+  shutdownGracePeriod: 0s
