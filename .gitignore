@@ -8,6 +8,8 @@
 /bin/
 target/
 .idea/
+Bosetterne/Bosetterne-service/logs/
+
 
 # Package Files #
 *.jar

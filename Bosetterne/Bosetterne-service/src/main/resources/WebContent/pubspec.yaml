@@ -1,0 +1,4 @@
+name: WebContent
+description: Bosetterne, Settlers!
+dependencies:
+  browser: any

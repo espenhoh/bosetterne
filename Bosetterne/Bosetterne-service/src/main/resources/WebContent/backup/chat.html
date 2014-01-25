@@ -1,0 +1,130 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Console</title>
+    <link rel="stylesheet" href="css/sections.css">
+    <link rel="stylesheet" href="css/tables.css">
+    <link rel="stylesheet" href="css/text.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body>
+<header>
+    <hgroup>
+        <h1>Spill</h1>
+    </hgroup>
+</header>
+<nav>
+    <p class="meny"><span>Meny</span>
+
+    <p>
+    <ul class="menyliste">
+        <li class="meny"><a class="meny" href="index.html">Home</a></li>
+        <li class="meny"><a class="meny" href="register.html">Register</a></li>
+        <li class="meny"><a class="meny" href="login.html">login </a></li>
+        <li class="meny"><a class="meny" href="Bosetterne.html">Bosetterne </a></li>
+        <li class="meny"><a class="meny" href="chat.html">Chat</a></li>
+    </ul>
+</nav>
+<article>
+    <h3 id="header"></h3>
+
+    <p id="content"></p>
+    <input type="text" id="input" disabled="disabled"></input>
+
+    <p id="status"></p>
+</article>
+<footer>
+    All rights reserved © Espen
+</footer>
+<script type="text/javascript" src="js/libs/jQuery/jquery-2.0.3.js"></script>
+<script type="text/javascript" src="js/libs/jQuery/jquery.atmosphere.js"></script>
+<script type="text/javascript">
+    $(function () {
+        "use strict";
+
+        var input = $('#input');
+        var content = $('#content');
+        var status = $('#status');
+        var myName = false;
+        var author = null;
+        var logged = false;
+
+        var socket = $.atmosphere;
+        var request = { url: 'http://' + window.location.host + '/service/atmos/chat',
+            contentType: "application/json",
+            logLevel: 'debug',
+            transport: 'websocket',
+            fallbackTransport: 'long-polling'};
+
+
+        request.onOpen = function (response) {
+            content.html($('<p>', { text: 'Atmosphere connected using ' + response.transport }));
+            input.removeAttr('disabled').focus();
+            status.text('Choose name:');
+        };
+
+        request.onMessage = function (response) {
+            var message = response.responseBody;
+            try {
+                var json = JSON.parse(message);
+            } catch (e) {
+                console.log('This does not look like a valid JSON: ', message.data);
+                return;
+            }
+
+            if (!logged) {
+                logged = true;
+                status.text(myName + ': ').css('color', 'blue');
+                input.removeAttr('disabled').focus();
+            } else {
+                input.removeAttr('disabled');
+
+                var me = json.author == author;
+                var date = typeof(json.time) == 'string' ? parseInt(json.time) : json.time;
+                addMessage(json.author, json.text, me ? 'blue' : 'black', new Date());
+            }
+        };
+
+        request.onError = function (response) {
+            content.html($('<p>', { text: 'Sorry, but there is some problem with your '
+                    + 'socket or the server is down' }));
+        };
+
+        var subSocket = socket.subscribe(request);
+
+        input.keydown(function (e) {
+            if (e.keyCode === 13) {
+                var msg = $(this).val();
+
+                // First message is always the author's name
+                if (author == null) {
+                    author = msg;
+                }
+
+                subSocket.push(JSON.stringify({ author: author, message: msg }));
+                $(this).val('');
+
+                input.attr('disabled', 'disabled');
+                if (myName === false) {
+                    myName = msg;
+                }
+            }
+        });
+
+        function addMessage(author, message, color, datetime) {
+            content.append('<p><span style="color:' + color + '">' + author + '</span> @ ' + +(datetime.getHours() < 10 ? '0' + datetime.getHours() : datetime.getHours()) + ':'
+                    + (datetime.getMinutes() < 10 ? '0' + datetime.getMinutes() : datetime.getMinutes())
+                    + ': ' + message + '</p>');
+        }
+    });
+
+</script>
+</body>
+</html>
+
+<!-- " &#034; &quot; -->
+<!--  ????; &nbsp; -->
+<!-- & &#038; &amp;-->
+<!-- < &#060; &lt; -->
+<!-- > &#062; &gt; -->
