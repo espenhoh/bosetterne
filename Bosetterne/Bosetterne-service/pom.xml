@@ -36,6 +36,10 @@
 			<artifactId>dropwizard-testing</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.yammer.dropwizard</groupId>
+			<artifactId>dropwizard-auth</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-servlets</artifactId>
 		</dependency>
@@ -96,7 +100,7 @@
 									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>com.holtebu.bosetterne.service.helloworld.HelloWorldService</mainClass>
+									<mainClass>com.holtebu.bosetterne.service.bosetterne.BosetterneService</mainClass>
 								</transformer>
 							</transformers>
 						</configuration>

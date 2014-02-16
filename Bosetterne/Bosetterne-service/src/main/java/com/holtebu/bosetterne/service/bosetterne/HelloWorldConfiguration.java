@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.helloworld;
+package com.holtebu.bosetterne.service.bosetterne;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

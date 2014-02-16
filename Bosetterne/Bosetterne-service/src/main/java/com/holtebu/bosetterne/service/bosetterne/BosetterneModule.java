@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.helloworld;
+package com.holtebu.bosetterne.service.bosetterne;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;

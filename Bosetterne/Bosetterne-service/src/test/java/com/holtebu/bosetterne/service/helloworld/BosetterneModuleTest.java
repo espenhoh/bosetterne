@@ -6,6 +6,7 @@ package com.holtebu.bosetterne.service.helloworld;
 //import static org.junit.Assert.*;
 import static org.hamcrest.MatcherAssert.*;
 import static org.hamcrest.CoreMatchers.*;
+
 import org.hamcrest.core.*;
 import org.junit.After;
 import org.junit.AfterClass;
@@ -18,6 +19,8 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.holtebu.bosetterne.service.bosetterne.BosetterneModule;
+import com.holtebu.bosetterne.service.bosetterne.HelloWorldConfiguration;
 import com.holtebu.bosetterne.service.helloworld.resources.MyResource;
 
 /**

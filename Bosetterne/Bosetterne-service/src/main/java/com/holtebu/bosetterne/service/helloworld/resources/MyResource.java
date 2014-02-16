@@ -15,6 +15,8 @@ import javax.ws.rs.core.Response;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.Bosetterne;
+import com.holtebu.bosetterne.service.bosetterne.core.Player;
+import com.yammer.dropwizard.auth.Auth;
  
 /**
  * Root resource (exposed at "myresource" path)
@@ -42,6 +44,13 @@ public class MyResource {
     @Produces(MediaType.TEXT_PLAIN)
     public String getIt() {
         return getit;
+    }
+    
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/secretPlan")
+    public String getSecretPlan(@Auth Player user) {
+        return "Secret plan revealed!";
     }
     
 

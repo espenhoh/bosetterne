@@ -4,7 +4,7 @@ import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.helloworld.Saying;
-import com.holtebu.bosetterne.service.helloworld.HelloWorldConfiguration;
+import com.holtebu.bosetterne.service.bosetterne.HelloWorldConfiguration;
 import com.yammer.metrics.annotation.Timed;
 
 import java.util.concurrent.atomic.AtomicLong;

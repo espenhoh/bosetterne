@@ -1,7 +1,7 @@
 package com.holtebu.bosetterne.service.helloworld.health;
 
 import com.google.inject.Inject;
-import com.holtebu.bosetterne.service.helloworld.HelloWorldConfiguration;
+import com.holtebu.bosetterne.service.bosetterne.HelloWorldConfiguration;
 import com.yammer.metrics.core.HealthCheck;
 
 public class TemplateHealthCheck extends HealthCheck {

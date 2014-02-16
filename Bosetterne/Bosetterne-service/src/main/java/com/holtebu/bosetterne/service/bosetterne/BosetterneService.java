@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.helloworld;
+package com.holtebu.bosetterne.service.bosetterne;
 
 import org.atmosphere.cpr.AtmosphereServlet;
 
@@ -6,45 +6,49 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
+import com.holtebu.bosetterne.service.bosetterne.core.Player;
+import com.holtebu.bosetterne.service.bosetterne.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.helloworld.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.helloworld.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.helloworld.resources.MyResource;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
+import com.yammer.dropwizard.auth.basic.BasicAuthProvider;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.db.DatabaseConfiguration;
 import com.yammer.dropwizard.hibernate.HibernateBundle;
+
 //import com.yammer.dropwizard.config.FilterBuilder;
 
 //import com.yammer.dropwizard.views.ViewBundle;
 
 //import org.eclipse.jetty.servlets.CrossOriginFilter;
 
-public class HelloWorldService extends Service<HelloWorldConfiguration> {
+public class BosetterneService extends Service<HelloWorldConfiguration> {
 
-	private HelloWorldService () {
+	private BosetterneService () {
 		
 	}
 	
 	public static void main(String[] args) throws Exception {
 		
-        new HelloWorldService().run(args);
+        new BosetterneService().run(args);
     }
 	
-	private final HibernateBundle<HelloWorldConfiguration> hibernate = new HibernateBundle<HelloWorldConfiguration>(Person.class) {
-	    @Override
-	    public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
-	        return configuration.getDatabaseConfiguration();
-	    }
-	};
+//	private final HibernateBundle<HelloWorldConfiguration> hibernate = new HibernateBundle<HelloWorldConfiguration>(Person.class) {
+//	    @Override
+//	    public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
+//	        return configuration.getDatabaseConfiguration();
+//	    }
+//	};
 
     @Override
     public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
         bootstrap.setName("hello-world");
         bootstrap.addBundle(new AssetsBundle("/WebContent/backup", "/"));
-        bootstrap.addBundle(hibernate);
-        mvn install:install-file -Dfile=<path-to-file> -DgroupId=<group-id> -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging>
+//        bootstrap.addBundle(hibernate);
+        //mvn install:install-file -Dfile=<path-to-file> -DgroupId=<group-id> -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging>
         //Noe customgreier
         //bootstrap.addCommand(new RenderCommand());
 
@@ -75,6 +79,8 @@ public class HelloWorldService extends Service<HelloWorldConfiguration> {
         environment.addResource(helloWorldInjector.getInstance(HelloWorldResource.class));
         environment.addHealthCheck(helloWorldInjector.getInstance(TemplateHealthCheck.class));
         environment.addResource(bosetterneInjector.getInstance(MyResource.class));
+        
+        environment.addProvider(new BasicAuthProvider<Player>(new BosetterneAuthenticator(),"SUPER SECRET STUFF"));
         //TODO: Atmosphere resources
         //initializeAtmosphere(configuration, environment);
     }
