@@ -1,0 +1,10 @@
+INFO  [2014-01-26 23:21:29,338] com.yammer.dropwizard.cli.ServerCommand: Starting hello-world
+INFO  [2014-01-26 23:21:29,346] org.eclipse.jetty.server.Server: jetty-8.y.z-SNAPSHOT
+INFO  [2014-01-26 23:21:29,566] com.sun.jersey.server.impl.application.WebApplicationImpl: Initiating Jersey application, version 'Jersey: 1.17.1 02/28/2013 12:47 PM'
+INFO  [2014-01-26 23:21:29,571] com.sun.jersey.server.impl.application.WebApplicationImpl: Adding the following classes declared in META-INF/services/jersey-server-components to the resource configuration:
+  class org.atmosphere.jersey.AtmosphereResourceConfigurator
+INFO  [2014-01-26 23:21:30,321] org.eclipse.jetty.server.AbstractConnector: Started InstrumentedSelectChannelConnector@0.0.0.0:8080
+INFO  [2014-01-26 23:21:30,324] org.eclipse.jetty.server.AbstractConnector: Started SocketConnector@0.0.0.0:8081
+INFO  [2014-01-26 23:22:21,913] org.eclipse.jetty.server.handler.ContextHandler: stopped o.e.j.s.ServletContextHandler{/,null}
+INFO  [2014-01-26 23:22:21,914] org.eclipse.jetty.server.handler.ContextHandler: stopped o.e.j.s.ServletContextHandler{/,null}
+WARN  [2014-01-26 23:22:22,020] org.eclipse.jetty.util.thread.QueuedThreadPool: 3 threads could not be stopped

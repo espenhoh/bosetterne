@@ -49,10 +49,15 @@ public class BosetterneTest {
 	@After
 	public void tearDown() throws Exception {
 	}
+	
+	@Test
+	public void testSingleton(){
+		
+	}
 
 	@Test
 	public void testOpprettSpill() {
-		Bosetterne bosetterne = new Bosetterne();
+		Bosetterne bosetterne = null;
 		
 		
 	}

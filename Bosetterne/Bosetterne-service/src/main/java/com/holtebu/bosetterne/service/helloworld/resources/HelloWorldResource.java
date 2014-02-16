@@ -1,7 +1,10 @@
 package com.holtebu.bosetterne.service.helloworld.resources;
 
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.helloworld.Saying;
+import com.holtebu.bosetterne.service.helloworld.HelloWorldConfiguration;
 import com.yammer.metrics.annotation.Timed;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -19,10 +22,11 @@ public class HelloWorldResource {
     private final String defaultName;
     private final AtomicLong counter;
 
-    public HelloWorldResource(String template, String defaultName) {
-        this.template = template;
-        this.defaultName = defaultName;
-        this.counter = new AtomicLong();
+    @Inject
+    public HelloWorldResource(HelloWorldConfiguration configuration, AtomicLong counter) {
+        this.template = configuration.getTemplate();
+        this.defaultName = configuration.getDefaultName();
+        this.counter = counter;
     }
 
     @GET

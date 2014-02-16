@@ -1,13 +1,16 @@
 package com.holtebu.bosetterne.service.helloworld.health;
 
+import com.google.inject.Inject;
+import com.holtebu.bosetterne.service.helloworld.HelloWorldConfiguration;
 import com.yammer.metrics.core.HealthCheck;
 
 public class TemplateHealthCheck extends HealthCheck {
     private final String template;
 
-    public TemplateHealthCheck(String template) {
+    @Inject
+    public TemplateHealthCheck(HelloWorldConfiguration configuration) {
         super("template");
-        this.template = template;
+        this.template = configuration.getTemplate();
     }
 
     @Override

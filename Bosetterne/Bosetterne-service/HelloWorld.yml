@@ -31,7 +31,7 @@ http:
 
   # The number of threads dedicated to accepting connections. If omitted, this defaults to the
   # number of logical CPUs on the current machine.
-  acceptorThreads: 3
+  acceptorThreads: 1
 
   # The offset of the acceptor threads' priorities. Can be [-5...5], with -5 dropping the acceptor
   # threads to the lowest possible priority and with 5 raising them to the highest priority.
@@ -124,6 +124,21 @@ http:
 
       # The syslog facility to which statements will be sent.
       facility: local0
+      
+# Database settings.
+database:
+
+  # the name of your JDBC driver (mvn install:install-file -Dfile=/usr/share/java/mysql.jar -DgroupId=mysql -DartifactId=jdbcdriver -Dversion=1.0 -Dpackaging=jar)
+  driverClass: com.mysql.jdbc.Driver
+
+  # the username (hibernate'@'localhost)
+  user: hibernate
+
+  # the password
+  password: G6$4¤fgH5ZX
+
+  # the JDBC URL
+  url: jdbc:mysql://localhost:3306/bosetterne
 
 # Logging settings.
 logging:
@@ -134,10 +149,10 @@ logging:
   # Logger-specific levels.
   loggers:
 
-    # Sets the level for 'com.example.app' to DEBUG.
-    com.example.helloWorld: DEBUG
-
-    org.hibernate.SQL: ALL
+  # Sets the level for 'com.example.app' to DEBUG.
+  com.example.helloWorld: DEBUG
+  
+  org.hibernate.SQL: ALL
 
   # Settings for logging to stdout.
   console:

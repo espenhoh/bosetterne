@@ -2,6 +2,10 @@ package com.holtebu.bosetterne.service.helloworld;
 
 import org.atmosphere.cpr.AtmosphereServlet;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.google.inject.name.Names;
 import com.holtebu.bosetterne.service.helloworld.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.helloworld.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.helloworld.resources.MyResource;
@@ -9,6 +13,8 @@ import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
+import com.yammer.dropwizard.db.DatabaseConfiguration;
+import com.yammer.dropwizard.hibernate.HibernateBundle;
 //import com.yammer.dropwizard.config.FilterBuilder;
 
 //import com.yammer.dropwizard.views.ViewBundle;
@@ -25,12 +31,20 @@ public class HelloWorldService extends Service<HelloWorldConfiguration> {
 		
         new HelloWorldService().run(args);
     }
+	
+	private final HibernateBundle<HelloWorldConfiguration> hibernate = new HibernateBundle<HelloWorldConfiguration>(Person.class) {
+	    @Override
+	    public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
+	        return configuration.getDatabaseConfiguration();
+	    }
+	};
 
     @Override
     public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
         bootstrap.setName("hello-world");
         bootstrap.addBundle(new AssetsBundle("/WebContent/backup", "/"));
-        
+        bootstrap.addBundle(hibernate);
+        mvn install:install-file -Dfile=<path-to-file> -DgroupId=<group-id> -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging>
         //Noe customgreier
         //bootstrap.addCommand(new RenderCommand());
 
@@ -52,16 +66,28 @@ public class HelloWorldService extends Service<HelloWorldConfiguration> {
     @Override
     public void run(HelloWorldConfiguration configuration,
                     Environment environment) {
-        final String template = configuration.getTemplate();
-        final String defaultName = configuration.getDefaultName();
-        environment.addResource(new HelloWorldResource(template, defaultName));
-        environment.addResource(new MyResource());
-        environment.addHealthCheck(new TemplateHealthCheck(template));
+        //final String template = configuration.getTemplate();
+        //final String defaultName = configuration.getDefaultName();
+        Injector helloWorldInjector = createInjector(configuration);
+        BosetterneModule bosetterneModule = helloWorldInjector.getInstance(BosetterneModule.class);
+        Injector bosetterneInjector = Guice.createInjector(bosetterneModule);
         
-        //Atmosphere resources
-        initializeAtmosphere(configuration, environment);
+        environment.addResource(helloWorldInjector.getInstance(HelloWorldResource.class));
+        environment.addHealthCheck(helloWorldInjector.getInstance(TemplateHealthCheck.class));
+        environment.addResource(bosetterneInjector.getInstance(MyResource.class));
+        //TODO: Atmosphere resources
+        //initializeAtmosphere(configuration, environment);
     }
-
+    
+    private Injector createInjector(final HelloWorldConfiguration conf) {
+        return Guice.createInjector(new AbstractModule() {
+            @Override
+            protected void configure() {
+            	bind(HelloWorldConfiguration.class).toInstance(conf);
+                bind(String.class).annotatedWith(Names.named("getit")).toInstance("ingenting");
+            }
+        });
+    }
 }
 /*
 

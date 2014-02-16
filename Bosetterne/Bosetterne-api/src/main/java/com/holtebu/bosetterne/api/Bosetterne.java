@@ -4,14 +4,19 @@ import java.util.Random;
 import java.util.concurrent.atomic.*;
 import java.util.concurrent.*;
 
-public class Bosetterne extends ConcurrentHashMap<String, Spill> {
-	private static final int INITIELT_ANNTALL_SPILL = 20;
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
+public class Bosetterne extends ConcurrentHashMap<String, Spill>  {
+
+	private static final long serialVersionUID = 6227758345313528992L;
 	
-	private Random random;
+	private final Random random;
 	
-	private Bosetterne() {
-		super(INITIELT_ANNTALL_SPILL);
-		random = new Random();
+	@Inject
+	private Bosetterne(@Named("antallSpill") int initAntallSpill, Random random) {
+		super(initAntallSpill);
+		this.random = random;
 	}
 	
 	public String opprettSpill() {
