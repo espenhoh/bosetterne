@@ -1,6 +1,7 @@
 # Filendelser
 *.[oa]
 *~
+*.lock
 
 
 # Directories #

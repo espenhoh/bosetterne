@@ -1,5 +1,4 @@
 package com.holtebu.bosetterne.service.helloworld.resources;
-//package com.example;
 
 import java.net.URI;
 import java.net.URISyntaxException;

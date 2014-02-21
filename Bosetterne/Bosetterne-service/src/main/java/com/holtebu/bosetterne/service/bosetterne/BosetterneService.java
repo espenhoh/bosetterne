@@ -1,15 +1,18 @@
 package com.holtebu.bosetterne.service.bosetterne;
 
 import org.atmosphere.cpr.AtmosphereServlet;
+import org.hibernate.SessionFactory;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
 import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.service.bosetterne.core.dao.SpillerDAO;
 import com.holtebu.bosetterne.service.bosetterne.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.helloworld.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.helloworld.resources.HelloWorldResource;
+import com.holtebu.bosetterne.service.helloworld.resources.LobbyResource;
 import com.holtebu.bosetterne.service.helloworld.resources.MyResource;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
@@ -70,15 +73,20 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
     @Override
     public void run(BosetterneConfiguration configuration,
                     Environment environment) {
-        //final String template = configuration.getTemplate();
-        //final String defaultName = configuration.getDefaultName();
+    	
+    	//Dependency injectors
         Injector helloWorldInjector = createInjector(configuration);
         BosetterneModule bosetterneModule = helloWorldInjector.getInstance(BosetterneModule.class);
         Injector bosetterneInjector = Guice.createInjector(bosetterneModule);
         
+        //Resources
         environment.addResource(helloWorldInjector.getInstance(HelloWorldResource.class));
-        environment.addHealthCheck(helloWorldInjector.getInstance(TemplateHealthCheck.class));
+        environment.addResource(helloWorldInjector.getInstance(LobbyResource.class));
+        
         environment.addResource(bosetterneInjector.getInstance(MyResource.class));
+        
+        //Health checks
+        environment.addHealthCheck(helloWorldInjector.getInstance(TemplateHealthCheck.class));
         
         environment.addProvider(new BasicAuthProvider<Spiller>(new BosetterneAuthenticator(),"SUPER SECRET STUFF"));
         //TODO: Atmosphere resources
@@ -90,6 +98,7 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
             @Override
             protected void configure() {
             	bind(BosetterneConfiguration.class).toInstance(conf);
+            	bind(SessionFactory.class).toInstance(hibernate.getSessionFactory());
                 bind(String.class).annotatedWith(Names.named("getit")).toInstance("ingenting");
             }
         });
