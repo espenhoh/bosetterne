@@ -20,7 +20,7 @@ import org.mockito.MockitoAnnotations;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.holtebu.bosetterne.service.bosetterne.BosetterneModule;
-import com.holtebu.bosetterne.service.bosetterne.HelloWorldConfiguration;
+import com.holtebu.bosetterne.service.bosetterne.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.helloworld.resources.MyResource;
 
 /**
@@ -30,7 +30,7 @@ import com.holtebu.bosetterne.service.helloworld.resources.MyResource;
 public class BosetterneModuleTest {
 
 	@Mock
-	private HelloWorldConfiguration conf;
+	private BosetterneConfiguration conf;
 
 	private Injector bosetterneInjector;
 	

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test</title>
+    <link rel="stylesheet" href="../test.css">
+</head>
+<body>
+<h1>Test</h1>
+
+<p>Hello world from Dart!</p>
+
+<div id="sample_container_id">
+    <input id="task" type="text" placeholder=
+            "What do you want to do?"/>
+    <ul id="list"/>
+</div>
+
+<script type="application/dart" src="todo.dart"></script>
+<script src="../packages/browser/dart.js"></script>
+<script type="text/javascript">
+    // In JavaScript code:
+    //        if (navigator.userAgent.indexOf('(Dart)') == -1) {
+    //            // No native Dart support...
+    //            window.addEventListener("DOMContentLoaded", function (e) {
+    //                alert("No dart support");
+    //            }, false);
+    //        } else {
+    //            alert("Dart supported");
+    //        }
+</script>
+</body>
+</html>

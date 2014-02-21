@@ -1,9 +1,9 @@
 package com.holtebu.bosetterne.service.bosetterne.core;
 
-public class Player {
+public class Spiller {
     private final String name;
 
-    public Player(String name) {
+    public Spiller(String name) {
         this.name = name;
     }
 

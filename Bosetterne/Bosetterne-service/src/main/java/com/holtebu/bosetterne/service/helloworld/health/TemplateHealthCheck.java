@@ -1,14 +1,14 @@
 package com.holtebu.bosetterne.service.helloworld.health;
 
 import com.google.inject.Inject;
-import com.holtebu.bosetterne.service.bosetterne.HelloWorldConfiguration;
+import com.holtebu.bosetterne.service.bosetterne.BosetterneConfiguration;
 import com.yammer.metrics.core.HealthCheck;
 
 public class TemplateHealthCheck extends HealthCheck {
     private final String template;
 
     @Inject
-    public TemplateHealthCheck(HelloWorldConfiguration configuration) {
+    public TemplateHealthCheck(BosetterneConfiguration configuration) {
         super("template");
         this.template = configuration.getTemplate();
     }

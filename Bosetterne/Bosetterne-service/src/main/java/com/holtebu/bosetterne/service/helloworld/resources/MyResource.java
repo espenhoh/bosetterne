@@ -15,7 +15,7 @@ import javax.ws.rs.core.Response;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.Bosetterne;
-import com.holtebu.bosetterne.service.bosetterne.core.Player;
+import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
 import com.yammer.dropwizard.auth.Auth;
  
 /**
@@ -49,7 +49,7 @@ public class MyResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/secretPlan")
-    public String getSecretPlan(@Auth Player user) {
+    public String getSecretPlan(@Auth Spiller user) {
         return "Secret plan revealed!";
     }
     

@@ -6,7 +6,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
-import com.holtebu.bosetterne.service.bosetterne.core.Player;
+import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.helloworld.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.helloworld.resources.HelloWorldResource;
@@ -25,7 +25,7 @@ import com.yammer.dropwizard.hibernate.HibernateBundle;
 
 //import org.eclipse.jetty.servlets.CrossOriginFilter;
 
-public class BosetterneService extends Service<HelloWorldConfiguration> {
+public class BosetterneService extends Service<BosetterneConfiguration> {
 
 	private BosetterneService () {
 		
@@ -36,18 +36,18 @@ public class BosetterneService extends Service<HelloWorldConfiguration> {
         new BosetterneService().run(args);
     }
 	
-//	private final HibernateBundle<HelloWorldConfiguration> hibernate = new HibernateBundle<HelloWorldConfiguration>(Person.class) {
-//	    @Override
-//	    public DatabaseConfiguration getDatabaseConfiguration(HelloWorldConfiguration configuration) {
-//	        return configuration.getDatabaseConfiguration();
-//	    }
-//	};
+	private final HibernateBundle<BosetterneConfiguration> hibernate = new HibernateBundle<BosetterneConfiguration>(Spiller.class) {
+	    @Override
+	    public DatabaseConfiguration getDatabaseConfiguration(BosetterneConfiguration configuration) {
+	        return configuration.getDatabaseConfiguration();
+	    }
+	};
 
     @Override
-    public void initialize(Bootstrap<HelloWorldConfiguration> bootstrap) {
-        bootstrap.setName("hello-world");
-        bootstrap.addBundle(new AssetsBundle("/WebContent/backup", "/"));
-//        bootstrap.addBundle(hibernate);
+    public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
+        bootstrap.setName("Bosetterne - yay");
+        bootstrap.addBundle(new AssetsBundle("/WebContent/", "/"));
+        bootstrap.addBundle(hibernate);
         //mvn install:install-file -Dfile=<path-to-file> -DgroupId=<group-id> -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging>
         //Noe customgreier
         //bootstrap.addCommand(new RenderCommand());
@@ -56,7 +56,7 @@ public class BosetterneService extends Service<HelloWorldConfiguration> {
         //bootstrap.addBundle(new ViewBundle());
     }
     
-    void initializeAtmosphere(HelloWorldConfiguration configuration, Environment environment) {
+    void initializeAtmosphere(BosetterneConfiguration configuration, Environment environment) {
         //FilterBuilder fconfig = environment.addFilter(CrossOriginFilter.class, "/chat");
         //fconfig.setInitParam(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
 
@@ -68,7 +68,7 @@ public class BosetterneService extends Service<HelloWorldConfiguration> {
     }
 
     @Override
-    public void run(HelloWorldConfiguration configuration,
+    public void run(BosetterneConfiguration configuration,
                     Environment environment) {
         //final String template = configuration.getTemplate();
         //final String defaultName = configuration.getDefaultName();
@@ -80,16 +80,16 @@ public class BosetterneService extends Service<HelloWorldConfiguration> {
         environment.addHealthCheck(helloWorldInjector.getInstance(TemplateHealthCheck.class));
         environment.addResource(bosetterneInjector.getInstance(MyResource.class));
         
-        environment.addProvider(new BasicAuthProvider<Player>(new BosetterneAuthenticator(),"SUPER SECRET STUFF"));
+        environment.addProvider(new BasicAuthProvider<Spiller>(new BosetterneAuthenticator(),"SUPER SECRET STUFF"));
         //TODO: Atmosphere resources
         //initializeAtmosphere(configuration, environment);
     }
     
-    private Injector createInjector(final HelloWorldConfiguration conf) {
+    private Injector createInjector(final BosetterneConfiguration conf) {
         return Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
-            	bind(HelloWorldConfiguration.class).toInstance(conf);
+            	bind(BosetterneConfiguration.class).toInstance(conf);
                 bind(String.class).annotatedWith(Names.named("getit")).toInstance("ingenting");
             }
         });
