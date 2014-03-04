@@ -2,12 +2,14 @@ package com.holtebu.bosetterne.service.bosetterne;
 
 import org.atmosphere.cpr.AtmosphereServlet;
 import org.hibernate.SessionFactory;
+import org.skife.jdbi.v2.DBI;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
 import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.SpillerDAO;
 import com.holtebu.bosetterne.service.bosetterne.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.helloworld.health.TemplateHealthCheck;
@@ -21,6 +23,7 @@ import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.db.DatabaseConfiguration;
 import com.yammer.dropwizard.hibernate.HibernateBundle;
+import com.yammer.dropwizard.jdbi.DBIFactory;
 
 //import com.yammer.dropwizard.config.FilterBuilder;
 
@@ -50,13 +53,11 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
         bootstrap.setName("Bosetterne - yay");
         bootstrap.addBundle(new AssetsBundle("/WebContent/", "/"));
-        bootstrap.addBundle(hibernate);
-        //mvn install:install-file -Dfile=<path-to-file> -DgroupId=<group-id> -DartifactId=<artifact-id> -Dversion=<version> -Dpackaging=<packaging>
-        //Noe customgreier
-        //bootstrap.addCommand(new RenderCommand());
-
-        //For html views
-        //bootstrap.addBundle(new ViewBundle());
+        
+        // TODO HIBERNATE Maybe
+        //bootstrap.addBundle(hibernate);
+        
+       
     }
     
     void initializeAtmosphere(BosetterneConfiguration configuration, Environment environment) {
@@ -75,30 +76,36 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
                     Environment environment) {
     	
     	//Dependency injectors
-        Injector helloWorldInjector = createInjector(configuration);
+        Injector helloWorldInjector = createInjector(configuration, environment);
         BosetterneModule bosetterneModule = helloWorldInjector.getInstance(BosetterneModule.class);
         Injector bosetterneInjector = Guice.createInjector(bosetterneModule);
         
         //Resources
         environment.addResource(helloWorldInjector.getInstance(HelloWorldResource.class));
-        environment.addResource(helloWorldInjector.getInstance(LobbyResource.class));
+        
         
         environment.addResource(bosetterneInjector.getInstance(MyResource.class));
         
         //Health checks
         environment.addHealthCheck(helloWorldInjector.getInstance(TemplateHealthCheck.class));
         
-        environment.addProvider(new BasicAuthProvider<Spiller>(new BosetterneAuthenticator(),"SUPER SECRET STUFF"));
+        //Authentication
+        environment.addProvider(new BasicAuthProvider<Spiller>(new BosetterneAuthenticator(bosetterneInjector.getInstance(LobbyDAO.class)),"SUPER SECRET STUFF"));
+        
+        //JDBI
+        environment.addResource(bosetterneInjector.getInstance(LobbyResource.class));
+        
         //TODO: Atmosphere resources
         //initializeAtmosphere(configuration, environment);
     }
     
-    private Injector createInjector(final BosetterneConfiguration conf) {
+    private Injector createInjector(final BosetterneConfiguration conf, final Environment environment) {
         return Guice.createInjector(new AbstractModule() {
             @Override
             protected void configure() {
             	bind(BosetterneConfiguration.class).toInstance(conf);
-            	bind(SessionFactory.class).toInstance(hibernate.getSessionFactory());
+            	bind(Environment.class).toInstance(environment);
+            	//bind(SessionFactory.class).toInstance(hibernate.getSessionFactory());
                 bind(String.class).annotatedWith(Names.named("getit")).toInstance("ingenting");
             }
         });

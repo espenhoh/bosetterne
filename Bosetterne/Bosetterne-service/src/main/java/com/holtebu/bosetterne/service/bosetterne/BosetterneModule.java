@@ -1,19 +1,32 @@
 package com.holtebu.bosetterne.service.bosetterne;
 
+import org.skife.jdbi.v2.DBI;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
+import com.google.inject.Provides;
 import com.google.inject.name.Names;
+import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
+import com.holtebu.bosetterne.service.bosetterne.core.dao.SpillerDAO;
+import com.yammer.dropwizard.config.Environment;
+import com.yammer.dropwizard.jdbi.DBIFactory;
 
 public class BosetterneModule extends AbstractModule {
 	private final BosetterneConfiguration configuration;
+	private final Environment environment;
 	
 	private final Integer INIT_ANTALL_SPILL = 20;
+	
+	private final DBI jdbi;
     
 	@Inject
-	public BosetterneModule(final BosetterneConfiguration configuration) {
+	public BosetterneModule(final BosetterneConfiguration configuration, Environment environment) throws ClassNotFoundException {
 		this.configuration = configuration;
+		this.environment = environment;
+		final DBIFactory factory = new DBIFactory();
+		jdbi = factory.build(environment, configuration.getDatabaseConfiguration(), "mySQL");
 	}
 	
 	@Override
@@ -24,4 +37,9 @@ public class BosetterneModule extends AbstractModule {
         
         bind(Integer.class).annotatedWith(Names.named("antallSpill")).toInstance(INIT_ANTALL_SPILL);
     }
+	
+	@Provides
+	LobbyDAO provideSpillerDAO () {
+        return jdbi.onDemand(LobbyDAO.class);
+	}
 }

@@ -44,13 +44,7 @@ public class MyResource {
     public String getIt() {
         return getit;
     }
-    
-    @GET
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/secretPlan")
-    public String getSecretPlan(@Auth Spiller user) {
-        return "Secret plan revealed!";
-    }
+
     
 
     @PUT

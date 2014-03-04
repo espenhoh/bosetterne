@@ -42,7 +42,7 @@ public class BosetterneModuleTest {
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		bosetterneModule = new BosetterneModule(conf);
+		bosetterneModule = new BosetterneModule(conf, null);
 		bosetterneInjector = Guice.createInjector(bosetterneModule);
 	}
 
