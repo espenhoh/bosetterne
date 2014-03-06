@@ -10,7 +10,6 @@ public class SpillerMapper implements ResultSetMapper<Spiller> {
 	@Override
 	public Spiller map(int index, ResultSet r, StatementContext ctx)
 			throws SQLException {
-		return new Spiller(r.getInt("spiller_id"), r.getString("navn"),
-				r.getString("passord"));
+		return new Spiller(r.getString("navn"),	r.getString("passord"), r.getString("epost"));
 	}
 }

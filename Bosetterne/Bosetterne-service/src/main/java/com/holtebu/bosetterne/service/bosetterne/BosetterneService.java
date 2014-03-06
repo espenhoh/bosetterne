@@ -10,7 +10,6 @@ import com.google.inject.Injector;
 import com.google.inject.name.Names;
 import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
-import com.holtebu.bosetterne.service.bosetterne.core.dao.SpillerDAO;
 import com.holtebu.bosetterne.service.bosetterne.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.helloworld.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.helloworld.resources.HelloWorldResource;

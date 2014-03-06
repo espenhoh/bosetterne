@@ -9,7 +9,6 @@ import com.google.inject.Injector;
 import com.google.inject.Provides;
 import com.google.inject.name.Names;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
-import com.holtebu.bosetterne.service.bosetterne.core.dao.SpillerDAO;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.jdbi.DBIFactory;
 

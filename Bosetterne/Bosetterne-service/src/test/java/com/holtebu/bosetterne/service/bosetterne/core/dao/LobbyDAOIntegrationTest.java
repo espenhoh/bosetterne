@@ -56,10 +56,11 @@ public class LobbyDAOIntegrationTest{
 	public void settInnReturnerOgSlettSpiller() {
 		String testNavn = "Petter";
 		String testPassord = "Edderkopp";
+		String testEpost = "test@epost.com";
 		
-		Spiller testSpiller = new Spiller(1, testNavn, testPassord);
+		Spiller testSpiller = new Spiller(testNavn, testPassord, testEpost);
 		
-		fjernTestSpiller(testNavn);
+		fjernTestSpillerHvsiEksisterer(testNavn);
 		
 		dao.registrerSpiller(testSpiller);
 		Spiller spillerFunnet = dao.finnSpillerVedNavn(testNavn);
@@ -70,7 +71,7 @@ public class LobbyDAOIntegrationTest{
 		assertThat(testNavn + " skal ikke eksistere i databasen.", spillerFunnet, is(nullValue()));
 	}
 
-	private void fjernTestSpiller(String testNavn){
+	private void fjernTestSpillerHvsiEksisterer(String testNavn){
 		Spiller spillerFunnet = dao.finnSpillerVedNavn(testNavn);
 		if(spillerFunnet != null) {
 			dao.slettSpiller(testNavn);

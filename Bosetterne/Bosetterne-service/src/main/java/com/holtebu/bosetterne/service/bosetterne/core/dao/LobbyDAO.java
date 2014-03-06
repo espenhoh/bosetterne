@@ -11,11 +11,11 @@ import com.holtebu.bosetterne.service.bosetterne.core.SpillerMapper;
 
 @RegisterMapper(SpillerMapper.class)
 public interface LobbyDAO {
-	@SqlUpdate("INSERT INTO bosetterne.SPILLER (navn, passord) VALUES (:navn, :passord)")
+	@SqlUpdate("INSERT INTO bosetterne.SPILLER (navn, passord, epost) VALUES (:navn, :passord, :epost)")
 	void registrerSpiller(@BindBean Spiller s);
 	
-	@SqlQuery("SELECT spiller_id, navn, passord FROM bosetterne.SPILLER WHERE navn = :navn")
-	Spiller finnSpillerVedNavn(@BindBean("navn") String navn);
+	@SqlQuery("SELECT navn, passord, epost FROM bosetterne.SPILLER WHERE navn = :navn")
+	Spiller finnSpillerVedNavn(@Bind("navn") String navn);
 	
 	@SqlUpdate("DELETE FROM bosetterne.SPILLER WHERE navn = :navn")
 	void slettSpiller(@Bind("navn") String navn);

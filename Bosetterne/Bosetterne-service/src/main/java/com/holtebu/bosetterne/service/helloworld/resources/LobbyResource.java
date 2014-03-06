@@ -16,7 +16,6 @@ import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.Bosetterne;
 import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
-import com.holtebu.bosetterne.service.bosetterne.core.dao.SpillerDAO;
 import com.yammer.dropwizard.auth.Auth;
  
 /**

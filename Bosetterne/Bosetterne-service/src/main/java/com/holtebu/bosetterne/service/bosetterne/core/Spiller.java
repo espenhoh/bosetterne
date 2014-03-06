@@ -5,25 +5,28 @@ package com.holtebu.bosetterne.service.bosetterne.core;
 
 public class Spiller {
 	
+	
+
+
 	public Spiller(){}
 	
     public Spiller(String navn) {
         this.navn = navn;
     }
     
-    public Spiller(Integer spiller_id, String navn, String passord) {
-    	this.spiller_id = spiller_id;
+    public Spiller(String navn, String passord, String epost) {
     	this.navn = navn;
         this.passord = passord;
+        this.epost = epost;
     }
 	
-	private Integer spiller_id;
+    private String epost;
     private String navn;
     private String passord;
     
 
-	public Integer getId() {
-	   return spiller_id;
+	public String getEpost() {
+	   return epost;
 	}
 	
     public String getNavn() {

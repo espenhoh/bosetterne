@@ -2,6 +2,7 @@
 *.[oa]
 *~
 *.lock
+*.sql
 
 
 # Directories #
