@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.helloworld.health;
+package com.holtebu.bosetterne.service.bosetterne.health;
 
 import com.google.inject.Inject;
 import com.holtebu.bosetterne.service.bosetterne.BosetterneConfiguration;

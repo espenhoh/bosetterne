@@ -28,25 +28,42 @@
 			<artifactId>dropwizard-jdbi</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.yammer.dropwizard</groupId>
-			<artifactId>dropwizard-hibernate</artifactId>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hamcrest</groupId>
+			<artifactId>hamcrest-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.yammer.dropwizard</groupId>
 			<artifactId>dropwizard-testing</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>com.yammer.dropwizard</groupId>
 			<artifactId>dropwizard-auth</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-servlets</artifactId>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
-			<artifactId>jetty-server</artifactId>
+			<artifactId>jetty-servlets</artifactId>
 		</dependency>
+		<!-- <dependency> -->
+		<!-- <groupId>org.eclipse.jetty</groupId> -->
+		<!-- <artifactId>jetty-server</artifactId> -->
+		<!-- </dependency> -->
 		<dependency>
 			<groupId>org.eclipse.jetty</groupId>
 			<artifactId>jetty-websocket</artifactId>
@@ -58,6 +75,11 @@
 		<dependency>
 			<groupId>org.atmosphere.client</groupId>
 			<artifactId>jquery</artifactId>
+			<type>war</type>
+		</dependency>
+		<dependency>
+			<groupId>org.atmosphere.client</groupId>
+			<artifactId>javascript</artifactId>
 			<type>war</type>
 		</dependency>
 		<dependency>
@@ -104,6 +126,74 @@
 								</transformer>
 							</transformers>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.ning.maven.plugins</groupId>
+				<artifactId>maven-duplicate-finder-plugin</artifactId>
+				<version>1.0.0</version>
+				<configuration>
+					<ignoredResources>
+						<ignoredResource>META-INF.*</ignoredResource>
+						<ignoredResource>about\.html</ignoredResource>
+					</ignoredResources>
+					<failBuildInCaseOfConflict>true</failBuildInCaseOfConflict>
+					<exceptions>
+						<exception>
+							<conflictingDependencies>
+								<dependency>
+									<groupId>org.atmosphere</groupId>
+									<artifactId>atmosphere-annotations</artifactId>
+									<version>2.1.0</version>
+								</dependency>
+								<dependency>
+									<groupId>org.atmosphere</groupId>
+									<artifactId>atmosphere-runtime</artifactId>
+									<version>2.1.0</version>
+								</dependency>
+							</conflictingDependencies>
+							<packages>
+								<package>org.atmosphere.annotation</package>
+							</packages>
+						</exception>
+						<exception>
+							<conflictingDependencies>
+								<dependency>
+									<groupId>javax.servlet</groupId>
+									<artifactId>javax.servlet-api</artifactId>
+									<version>3.0.1</version>
+								</dependency>
+								<dependency>
+									<groupId>org.eclipse.jetty.orbit</groupId>
+									<artifactId>javax.servlet</artifactId>
+									<version>3.0.0</version>
+								</dependency>
+							</conflictingDependencies>
+							<packages>
+								<package>javax.servlet</package>
+								<package>javax.servlet.http</package>
+								<package>javax.servlet.annotation</package>
+								<package>javax.servlet.descriptor</package>
+							</packages>
+							<resources>
+								<resource>javax/servlet/LocalStrings.properties</resource>
+								<resource>javax/servlet/LocalStrings_fr.properties</resource>
+								<resource>javax/servlet/LocalStrings_ja.properties</resource>
+								<resource>javax/servlet/http/LocalStrings.properties</resource>
+								<resource>javax/servlet/http/LocalStrings_es.properties</resource>
+								<resource>javax/servlet/http/LocalStrings_fr.properties</resource>
+								<resource>javax/servlet/http/LocalStrings_ja.properties</resource>
+							</resources>
+						</exception>
+					</exceptions>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>

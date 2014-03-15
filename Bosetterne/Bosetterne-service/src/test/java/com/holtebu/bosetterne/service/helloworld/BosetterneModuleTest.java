@@ -21,7 +21,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.holtebu.bosetterne.service.bosetterne.BosetterneModule;
 import com.holtebu.bosetterne.service.bosetterne.BosetterneConfiguration;
-import com.holtebu.bosetterne.service.helloworld.resources.MyResource;
+import com.holtebu.bosetterne.service.bosetterne.resources.MyResource;
 
 /**
  * @author espen

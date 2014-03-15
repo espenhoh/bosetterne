@@ -1,7 +1,6 @@
 package com.holtebu.bosetterne.api;
 
 import java.util.Random;
-import java.util.concurrent.atomic.*;
 import java.util.concurrent.*;
 
 import com.google.inject.Inject;

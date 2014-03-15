@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.helloworld.resources.atmosphere;
+package com.holtebu.bosetterne.service.bosetterne.resources.atmosphere;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;

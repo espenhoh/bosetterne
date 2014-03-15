@@ -1,33 +1,22 @@
 package com.holtebu.bosetterne.service.bosetterne.auth;
 
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
-import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
-import com.yammer.dropwizard.auth.Authenticator;
 import com.google.common.base.Optional;
+import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
 import com.yammer.dropwizard.auth.AuthenticationException;
+import com.yammer.dropwizard.auth.Authenticator;
 import com.yammer.dropwizard.auth.basic.BasicCredentials;
 
-public class BosetterneAuthenticator implements Authenticator<BasicCredentials, Spiller> {
-	private final LobbyDAO dao;
-	
-	public BosetterneAuthenticator(LobbyDAO dao) {
-		this.dao = dao;
-	}
-	
+public class BosetterneAuthenticator implements Authenticator<String, Spiller> {
+
 	@Override
-	public Optional<Spiller> authenticate(BasicCredentials credentials)
+	public Optional<Spiller> authenticate(String credentials)
 			throws AuthenticationException {
-		if(riktigPassord(credentials)) {
-			Spiller spiller = new Spiller(credentials.getUsername());
+		if(credentials.equals("taDetRolig")) {
+			Spiller spiller = new Spiller("spiller", "passord", "EPOST");
 			return Optional.of(spiller);
 		} else {
 			return Optional.absent();
 		}
+	}
 
-	}
-	
-	private boolean riktigPassord(BasicCredentials credentials) {
-		Spiller spiller = dao.finnSpillerVedNavn(credentials.getUsername());
-		return credentials.getPassword().equals(spiller.getPassord());
-	}
 }

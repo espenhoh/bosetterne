@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.helloworld.resources;
+package com.holtebu.bosetterne.service.bosetterne.resources;
 
 import org.junit.After;
 import org.junit.AfterClass;
