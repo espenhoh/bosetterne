@@ -110,11 +110,11 @@
 				<artifactId>jetty-servlets</artifactId>
 				<version>8.1.10.v20130312</version>
 			</dependency>
-			<!-- <dependency> -->
-			<!-- <groupId>org.eclipse.jetty</groupId> -->
-			<!-- <artifactId>jetty-server</artifactId> -->
-			<!-- <version>8.1.10.v20130312</version> -->
-			<!-- </dependency> -->
+			<dependency>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-server</artifactId>
+				<version>8.1.10.v20130312</version>
+			</dependency>
 			<dependency>
 				<groupId>org.atmosphere</groupId>
 				<artifactId>atmosphere-jersey</artifactId>

@@ -62,7 +62,7 @@ public class LobbyAuthenticatorTest {
 	
 	@Test
 	public void testShouldBeAuthenticated() {
-		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(new Spiller("test"));
+		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(new Spiller("test", "test", "test"));
 		BasicCredentials credentials = new BasicCredentials("test", "test");
 		Optional<Spiller> spiller;
 		

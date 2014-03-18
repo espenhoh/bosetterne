@@ -56,7 +56,8 @@ public class LobbyResourceTest extends ResourceTest{
 
 	@Override
 	protected void setUpResources() throws Exception {
-		// TODO Auto-generated method stub
+		//when(store.fetchPerson(anyString())).thenReturn(person);
+        addResource(new LobbyResource(daoMock));
 		
 	}
 

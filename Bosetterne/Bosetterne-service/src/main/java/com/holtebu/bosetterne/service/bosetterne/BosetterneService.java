@@ -1,6 +1,6 @@
 package com.holtebu.bosetterne.service.bosetterne;
 
-import org.atmosphere.cpr.AtmosphereServlet;
+
 import org.skife.jdbi.v2.DBI;
 
 import com.google.inject.AbstractModule;
@@ -13,15 +13,12 @@ import com.holtebu.bosetterne.service.bosetterne.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.bosetterne.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.bosetterne.resources.LobbyResource;
 import com.holtebu.bosetterne.service.bosetterne.resources.MyResource;
-import com.holtebu.bosetterne.service.bosetterne.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.bosetterne.auth.LobbyAuthenticator;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.auth.basic.BasicAuthProvider;
-import com.yammer.dropwizard.auth.oauth.OAuthProvider;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
-import com.yammer.dropwizard.db.DatabaseConfiguration;
 import com.yammer.dropwizard.jdbi.DBIFactory;
 
 //import com.yammer.dropwizard.config.FilterBuilder;
@@ -63,11 +60,11 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
         //FilterBuilder fconfig = environment.addFilter(CrossOriginFilter.class, "/chat");
         //fconfig.setInitParam(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
 
-        AtmosphereServlet atmosphereServlet = new AtmosphereServlet();
-        atmosphereServlet.framework().addInitParameter("com.sun.jersey.config.property.packages", "com.holtebu.bosetterne.service.helloworld.resources.atmosphere");
-        atmosphereServlet.framework().addInitParameter("org.atmosphere.websocket.messageContentType", "application/json");
+        //AtmosphereServlet atmosphereServlet = new AtmosphereServlet();
+        //atmosphereServlet.framework().addInitParameter("com.sun.jersey.config.property.packages", "com.holtebu.bosetterne.service.helloworld.resources.atmosphere");
+        //atmosphereServlet.framework().addInitParameter("org.atmosphere.websocket.messageContentType", "application/json");
         //atmosphereServlet.framework().addInitParameter("org.atmosphere.cpr.broadcastFilterClasses", "com.example.helloworld.filters.BadWordFilter");
-        environment.addServlet(atmosphereServlet, "/service/atmos/*");
+        //environment.addServlet(atmosphereServlet, "/service/atmos/*");
     }
 
     @Override
@@ -105,8 +102,20 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
             protected void configure() {
             	bind(BosetterneConfiguration.class).toInstance(conf);
             	bind(Environment.class).toInstance(environment);
-            	//bind(SessionFactory.class).toInstance(hibernate.getSessionFactory());
                 bind(String.class).annotatedWith(Names.named("getit")).toInstance("ingenting");
+                bind(DBI.class).toInstance(getJDBI(conf, environment));
+            }
+            
+            DBI getJDBI(final BosetterneConfiguration conf, final Environment environment){
+            	final DBIFactory factory = new DBIFactory();
+            	DBI jdbi = null;
+                try {
+                	jdbi = factory.build(environment, conf.getDatabaseConfiguration(), "mySQL");
+				} catch (ClassNotFoundException e) {
+					e.printStackTrace();
+					System.exit(1);
+				}
+                return jdbi;
             }
         });
     }

@@ -21,11 +21,10 @@ public class BosetterneModule extends AbstractModule {
 	private final DBI jdbi;
     
 	@Inject
-	public BosetterneModule(final BosetterneConfiguration configuration, Environment environment) throws ClassNotFoundException {
+	public BosetterneModule(final BosetterneConfiguration configuration, Environment environment, DBI jdbi) throws ClassNotFoundException {
 		this.configuration = configuration;
 		this.environment = environment;
-		final DBIFactory factory = new DBIFactory();
-		jdbi = factory.build(environment, configuration.getDatabaseConfiguration(), "mySQL");
+		this.jdbi = jdbi;
 	}
 	
 	@Override
