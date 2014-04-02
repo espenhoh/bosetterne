@@ -3,20 +3,30 @@ package com.holtebu.bosetterne.service.bosetterne;
 
 import org.skife.jdbi.v2.DBI;
 
+import sun.nio.ch.PollSelectorProvider;
+
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
+import com.holtebu.bosetterne.service.bosetterne.core.AccessToken;
 import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.bosetterne.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.bosetterne.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.bosetterne.resources.LobbyResource;
 import com.holtebu.bosetterne.service.bosetterne.resources.MyResource;
-import com.holtebu.bosetterne.service.bosetterne.auth.LobbyAuthenticator;
+import com.holtebu.bosetterne.service.bosetterne.resources.OAuthAccessTokenResource;
+import com.holtebu.bosetterne.service.bosetterne.resources.OAuthAuthorizeResource;
+import com.holtebu.bosetterne.service.bosetterne.auth.BosetterneAuthenticator;
+import com.holtebu.bosetterne.service.bosetterne.auth.JDBILobbyService;
+import com.holtebu.bosetterne.service.bosetterne.auth.Sikkerhetsfilter;
+import com.holtebu.bosetterne.service.bosetterne.auth.sesjon.Polettlager;
+import com.holtebu.bosetterne.service.bosetterne.auth.sesjon.PolettlagerIMinne;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
 import com.yammer.dropwizard.auth.basic.BasicAuthProvider;
+import com.yammer.dropwizard.auth.oauth.OAuthProvider;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.jdbi.DBIFactory;
@@ -37,23 +47,12 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
 		
         new BosetterneService().run(args);
     }
-	
-//	private final HibernateBundle<BosetterneConfiguration> hibernate = new HibernateBundle<BosetterneConfiguration>(Spiller.class) {
-//	    @Override
-//	    public DatabaseConfiguration getDatabaseConfiguration(BosetterneConfiguration configuration) {
-//	        return configuration.getDatabaseConfiguration();
-//	    }
-//	};
+
 
     @Override
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
         bootstrap.setName("Bosetterne - yay");
         bootstrap.addBundle(new AssetsBundle("/WebContent/", "/"));
-        
-        // TODO HIBERNATE Maybe
-        //bootstrap.addBundle(hibernate);
-        
-       
     }
     
     void initializeAtmosphere(BosetterneConfiguration configuration, Environment environment) {
@@ -86,11 +85,19 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
         environment.addHealthCheck(helloWorldInjector.getInstance(TemplateHealthCheck.class));
         
         //Authentication
-        environment.addProvider(new BasicAuthProvider<Spiller>(new LobbyAuthenticator(bosetterneInjector.getInstance(LobbyDAO.class)),"SUPER SECRET STUFF"));
+        Polettlager<AccessToken, Spiller, String> tokenStore = new PolettlagerIMinne();
+        
+        JDBILobbyService principalService = bosetterneInjector.getInstance(JDBILobbyService.class);
+        environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources"));
+        environment.addResource(new OAuthAccessTokenResource(tokenStore));
+        environment.addResource(new OAuthAuthorizeResource(tokenStore, principalService));
         //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));
         
         //JDBI
         environment.addResource(bosetterneInjector.getInstance(LobbyResource.class));
+        
+        //Filter
+        environment.addFilter(bosetterneInjector.getInstance(Sikkerhetsfilter.class), "/myapp/*");
         
         //TODO: Atmosphere resources
         //initializeAtmosphere(configuration, environment);

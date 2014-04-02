@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Login</title>
+</head>
+<body>
+<header>
+    <hgroup>
+        <h1>Spill</h1>
+    </hgroup>
+</header>
+
+<article>
+    <h1 id="loginForAASpille"></h1>
+    <h1>
+        Hallo
+        <span id="HelloWorld"></span>
+        . Du har kalt
+        <span id="antallKall"></span>
+        ganger!
+    </h1>
+
+    <form id="frmLogin"
+          enctype="application/x-www-form-urlencoded"
+          accept-charset="utf-8"
+          action="http://localhost:8080/hello-world"
+          method="get">
+        <label for="txtKalleNavn">Kallenavn:</label>
+        <input type="text" id="txtKalleNavn" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$"  name="name" class="felter" value="" size="15" maxlength="15">
+        <!-- <br/>
+        <label for="pass">Passord: </label>
+        <input type="password" id="pass" name="pass" class="felter" value="" size="15" maxlength="15">-->
+        <br/>
+        <input type="submit" value="Logg inn">
+
+    </form>
+
+    <input type="button" id="SayHello" name="SayHello" value="Hello"></input>
+
+</article>
+
+<script type="text/javascript" src="backup/js/libs/jQuery/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="backup/js/hello.js"></script>
+</body>
+</html>
+
+<!-- " &#034; &quot; -->
+<!--  ????; &nbsp; -->
+<!-- & &#038; &amp;-->
+<!-- < &#060; &lt; -->
+<!-- > &#062; &gt; -->

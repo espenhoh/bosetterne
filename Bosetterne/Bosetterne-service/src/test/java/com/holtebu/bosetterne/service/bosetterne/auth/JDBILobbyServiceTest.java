@@ -24,11 +24,11 @@ import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.basic.BasicCredentials;
 
-public class LobbyAuthenticatorTest {
+public class JDBILobbyServiceTest {
 	
 	private static LobbyDAO daoMock;
 	
-	private LobbyAuthenticator auth;
+	private JDBILobbyService auth;
 
 	@BeforeClass
 	public static void setUpBeforeClass(){
@@ -38,7 +38,7 @@ public class LobbyAuthenticatorTest {
 
 	@Before
 	public void setUp(){
-		auth = new LobbyAuthenticator(daoMock);
+		auth = new JDBILobbyService(daoMock);
 		
 	}
 

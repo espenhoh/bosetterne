@@ -1,5 +1,7 @@
 package com.holtebu.bosetterne.service.bosetterne.resources;
 
+import javax.ws.rs.core.Application;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -24,11 +26,13 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import com.google.common.base.Optional;
 import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
+import com.sun.jersey.test.framework.AppDescriptor;
+import com.sun.jersey.test.framework.JerseyTest;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.basic.BasicCredentials;
 import com.yammer.dropwizard.testing.ResourceTest;
 
-public class LobbyResourceTest extends ResourceTest{
+public class LobbyResourceTest { // extends JerseyTest {
 	
 	private static LobbyDAO daoMock;
 
@@ -53,12 +57,11 @@ public class LobbyResourceTest extends ResourceTest{
 	public void registrerSpiller(){
 		
 	}
+	
+	protected AppDescriptor configure() {
+        return null;
+    }
 
-	@Override
-	protected void setUpResources() throws Exception {
-		//when(store.fetchPerson(anyString())).thenReturn(person);
-        addResource(new LobbyResource(daoMock));
-		
-	}
+
 
 }

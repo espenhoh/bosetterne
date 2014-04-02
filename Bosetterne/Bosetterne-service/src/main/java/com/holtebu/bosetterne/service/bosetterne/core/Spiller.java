@@ -23,7 +23,9 @@ public class Spiller {
     private String epost;
     private String navn;
     private String passord;
+    private String code;
     
+
 
 	public String getEpost() {
 	   return epost;
@@ -36,6 +38,15 @@ public class Spiller {
     public String getPassord() {
         return passord;
     }
+    
+
+	public String getCode() {
+		return code;
+	}
+
+	public void setCode(String code) {
+		this.code = code;
+	}
 }
 
 
