@@ -124,6 +124,12 @@ http:
 
       # The syslog facility to which statements will be sent.
       facility: local0
+     
+#logging:
+#  appenders:
+#    - type: console
+#      threshold: WARN
+#      target: stderr
       
 # Database settings.
 database:

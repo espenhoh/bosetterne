@@ -38,12 +38,11 @@ public class OAuthAuthorizeResource {
 	}
 
 	/*
-	 * response_type Required. Must be set to token . client_id Required. The
-	 * client identifier as assigned by the authorization server, when the
-	 * client was registered. redirect_uri Optional. The redirect URI registered
-	 * by the client. scope Optional. The possible scope of the request. state
-	 * Optional (recommended). Any client state that needs to be passed on to
-	 * the client request URI.
+	 * response_type Required. Must be set to token.
+	 * client_id Required. The client identifier as assigned by the authorization server, when the client was registered.
+	 * redirect_uri Optional. The redirect URI registered by the client.
+	 * scope Optional. The possible scope of the request.
+	 * state Optional (recommended). Any client state that needs to be passed on to the client request URI.
 	 */
 	@POST
 	public Response login(@FormParam("username") String username,
@@ -72,7 +71,7 @@ public class OAuthAuthorizeResource {
 		 */
 		if (spiller != null && authorizationCode != null) {
 			String uri = String.format(redirectUri.concat("?")
-					.concat("code=%s").concat("&state=%s"), authorizationCode,
+					.concat("code=%s").concat("&state=%s"), "", // authorizationCode,
 					state);
 			try {
 				return Response.seeOther(new URI(uri)).build();
