@@ -137,7 +137,7 @@ database:
   # the name of your JDBC driver (mvn install:install-file -Dfile=/usr/share/java/mysql.jar -DgroupId=mysql -DartifactId=jdbcdriver -Dversion=1.0 -Dpackaging=jar)
   driverClass: com.mysql.jdbc.Driver
 
-  # the username (hibernate'@'localhost)
+  # the username (test'@'localhost)
   user: test
 
   # the password

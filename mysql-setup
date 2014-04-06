@@ -1,7 +1,13 @@
 Mysql 5.5.31
 - Std ubuntu install 
 $ mysql -u root -p
-mysql>CREATE USER 'test'@'localhost' IDENTIFIED BY 'test';
+mysql>
+CREATE SCHEMA IF NOT EXISTS bosetterne;
+CREATE USER 'test'@'localhost' IDENTIFIED BY 'test';
+GRANT ALTER,DELETE,INDEX,INSERT,UPDATE ON bosetterne.* TO 'test'@'localhost';
+CREATE USER 'admin'@'localhost' IDENTIFIED BY '*********';
+GRANT ALL PRIVILEGES ON bosetterne.* TO 'admin'@'localhost' WITH GRANT OPTION;
 
 
-Workbench 6.0.7
+
+Workbench 6.1.4

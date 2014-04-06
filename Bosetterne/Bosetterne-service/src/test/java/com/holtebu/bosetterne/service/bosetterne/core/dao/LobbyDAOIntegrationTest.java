@@ -22,7 +22,7 @@ public class LobbyDAOIntegrationTest{
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		DBI dbi = new DBI("jdbc:mysql://localhost:3306/bosetterne","hibernate","G6$4¤fgH5ZX");
+		DBI dbi = new DBI("jdbc:mysql://localhost:3306/bosetterne","test","test");
 		dao = dbi.open(LobbyDAO.class);
 	}
 
@@ -33,7 +33,7 @@ public class LobbyDAOIntegrationTest{
 
 	@Test
 	public void testSkalFinneSpiller() throws Exception {
-		Spiller spillerFunnet = dao.finnSpillerVedNavn("test_navn");
+		Spiller spillerFunnet = dao.finnSpillerVedNavn("testbruker");
 		
 		assertThat("test_navn skal ha passord test_passord", spillerFunnet.getPassord(), is(equalTo("test_passord")));
 	}

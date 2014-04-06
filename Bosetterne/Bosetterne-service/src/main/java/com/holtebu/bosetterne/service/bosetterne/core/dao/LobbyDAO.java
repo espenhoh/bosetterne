@@ -14,8 +14,8 @@ public interface LobbyDAO {
 	@SqlUpdate("INSERT INTO bosetterne.SPILLER (navn, passord, epost) VALUES (:navn, :passord, :epost)")
 	void registrerSpiller(@BindBean Spiller s);
 	
-	@SqlQuery("SELECT navn, passord, epost FROM bosetterne.SPILLER WHERE navn = :navn")
-	Spiller finnSpillerVedNavn(@Bind("navn") String navn);
+	@SqlQuery("SELECT brukernavn, passord, epost FROM bosetterne.SPILLER WHERE brukernavn = :brukernavn")
+	Spiller finnSpillerVedNavn(@Bind("brukernavn") String brukernavn);
 	
 	@SqlUpdate("DELETE FROM bosetterne.SPILLER WHERE navn = :navn")
 	void slettSpiller(@Bind("navn") String navn);
