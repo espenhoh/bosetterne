@@ -171,10 +171,10 @@
 								</dependency>
 							</conflictingDependencies>
 							<packages>
-<!-- 								<package>javax.servlet</package> -->
-<!-- 								<package>javax.servlet.http</package> -->
-<!-- 								<package>javax.servlet.annotation</package> -->
-<!-- 								<package>javax.servlet.descriptor</package> -->
+								<package>javax.servlet</package>
+								<package>javax.servlet.http</package>
+								<package>javax.servlet.annotation</package>
+								<package>javax.servlet.descriptor</package>
 							</packages>
 							<resources>
 								<resource>javax/servlet/LocalStrings.properties</resource>

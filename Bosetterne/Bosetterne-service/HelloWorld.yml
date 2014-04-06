@@ -138,10 +138,10 @@ database:
   driverClass: com.mysql.jdbc.Driver
 
   # the username (hibernate'@'localhost)
-  user: hibernate
+  user: test
 
   # the password
-  password: G6$4¤fgH5ZX
+  password: test
 
   # the JDBC URL
   url: jdbc:mysql://localhost:3306/bosetterne

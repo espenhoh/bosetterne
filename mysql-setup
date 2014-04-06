@@ -1,0 +1,7 @@
+Mysql 5.5.31
+- Std ubuntu install 
+$ mysql -u root -p
+mysql>CREATE USER 'test'@'localhost' IDENTIFIED BY 'test';
+
+
+Workbench 6.0.7
