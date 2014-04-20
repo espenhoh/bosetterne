@@ -13,7 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
 
 public class LobbyDAOIntegrationTest{
@@ -47,7 +47,7 @@ public class LobbyDAOIntegrationTest{
 	
 	@Test //TODO
 	public void testHenteSpiller() throws Exception {
-		Spiller spillerFunnet = dao.finnSpillerVedNavn("test_navn");
+		Spiller spillerFunnet = dao.finnSpillerVedNavn("testbruker");
 		
 		assertThat("test_navn skal ha passord test_passord", spillerFunnet.getPassord(), is(equalTo("test_passord")));
 	}
@@ -58,9 +58,9 @@ public class LobbyDAOIntegrationTest{
 		String testPassord = "Edderkopp";
 		String testEpost = "test@epost.com";
 		
-		Spiller testSpiller = new Spiller(testNavn, testPassord, testEpost);
+		Spiller testSpiller = new Spiller(testNavn, testNavn, testPassord, testEpost);
 		
-		fjernTestSpillerHvsiEksisterer(testNavn);
+		fjernTestSpillerHvisEksisterer(testNavn);
 		
 		dao.registrerSpiller(testSpiller);
 		Spiller spillerFunnet = dao.finnSpillerVedNavn(testNavn);
@@ -71,7 +71,7 @@ public class LobbyDAOIntegrationTest{
 		assertThat(testNavn + " skal ikke eksistere i databasen.", spillerFunnet, is(nullValue()));
 	}
 
-	private void fjernTestSpillerHvsiEksisterer(String testNavn){
+	private void fjernTestSpillerHvisEksisterer(String testNavn){
 		Spiller spillerFunnet = dao.finnSpillerVedNavn(testNavn);
 		if(spillerFunnet != null) {
 			dao.slettSpiller(testNavn);

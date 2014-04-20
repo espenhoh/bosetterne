@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.Bosetterne;
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.api.Spiller;
 import com.yammer.dropwizard.auth.Auth;
  
 /**

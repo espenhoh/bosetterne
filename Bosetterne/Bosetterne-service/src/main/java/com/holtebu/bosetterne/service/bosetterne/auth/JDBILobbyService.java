@@ -2,7 +2,8 @@ package com.holtebu.bosetterne.service.bosetterne.auth;
 
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.service.bosetterne.core.Legitimasjon;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
 import com.yammer.dropwizard.auth.Authenticator;
 import com.google.common.base.Optional;
@@ -21,7 +22,7 @@ public class JDBILobbyService implements LobbyService<Spiller, Legitimasjon> {
 	public Optional<Spiller> authenticate(BasicCredentials credentials)
 			throws AuthenticationException {
 		if(riktigPassord(credentials)) {
-			Spiller spiller = new Spiller(credentials.getUsername(), credentials.getPassword(), "EPOST");
+			Spiller spiller = new Spiller(credentials.getUsername(), "kallenavn", credentials.getPassword(), "EPOST");
 			return Optional.of(spiller);
 		} else {
 			return Optional.absent();

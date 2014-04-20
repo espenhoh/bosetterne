@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.bosetterne.auth;
+package com.holtebu.bosetterne.service.bosetterne.core;
 
 public class Legitimasjon {
 

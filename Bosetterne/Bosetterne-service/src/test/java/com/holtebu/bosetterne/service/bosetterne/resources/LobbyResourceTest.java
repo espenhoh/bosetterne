@@ -24,7 +24,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
 import com.sun.jersey.test.framework.AppDescriptor;
 import com.sun.jersey.test.framework.JerseyTest;

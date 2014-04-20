@@ -7,8 +7,8 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.name.Names;
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.AccessToken;
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.bosetterne.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.bosetterne.resources.LobbyResource;
@@ -25,6 +25,7 @@ import com.yammer.dropwizard.auth.oauth.OAuthProvider;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
 import com.yammer.dropwizard.jdbi.DBIFactory;
+import com.yammer.dropwizard.jdbi.bundles.DBIExceptionsBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +55,7 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
         bootstrap.setName("Bosetterne - yay");
         bootstrap.addBundle(new AssetsBundle("/WebContent/", "/"));
+        bootstrap.addBundle(new DBIExceptionsBundle());
     }
     
     void initializeAtmosphere(BosetterneConfiguration configuration, Environment environment) {

@@ -1,6 +1,6 @@
 package com.holtebu.bosetterne.service.bosetterne.auth;
 
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
 
 public class LobbyDAOStub implements LobbyDAO{

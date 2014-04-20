@@ -24,9 +24,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.AccessToken;
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
-
 import com.google.common.base.Optional;
 
 /**

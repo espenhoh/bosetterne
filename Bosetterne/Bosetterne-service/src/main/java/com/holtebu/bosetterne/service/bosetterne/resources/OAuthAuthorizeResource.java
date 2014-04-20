@@ -12,11 +12,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.auth.sesjon.Polettlager;
-import com.holtebu.bosetterne.service.bosetterne.auth.Legitimasjon;
 import com.holtebu.bosetterne.service.bosetterne.auth.LobbyService;
 import com.holtebu.bosetterne.service.bosetterne.core.AccessToken;
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.service.bosetterne.core.Legitimasjon;
 
 /**
  * Entry point for oauth authorize calls

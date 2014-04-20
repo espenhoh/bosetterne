@@ -19,7 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.basic.BasicCredentials;
@@ -62,7 +62,7 @@ public class JDBILobbyServiceTest {
 	
 	@Test
 	public void testShouldBeAuthenticated() {
-		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(new Spiller("test", "test", "test"));
+		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(new Spiller("test", "test", "test", "test"));
 		BasicCredentials credentials = new BasicCredentials("test", "test");
 		Optional<Spiller> spiller;
 		
@@ -76,7 +76,7 @@ public class JDBILobbyServiceTest {
 		}
 		
 		assertThat("Skal bli autentisert", spiller.isPresent(), is(equalTo(true)));
-		assertThat("Skal bli autentisert", spiller.get().getNavn(), is(equalTo("test")));
+		assertThat("Skal bli autentisert", spiller.get().getBrukernavn(), is(equalTo("test")));
 	}
 
 }

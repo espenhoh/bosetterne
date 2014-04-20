@@ -16,7 +16,7 @@ import javax.ws.rs.core.UriBuilder;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.Bosetterne;
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
 import com.yammer.dropwizard.auth.Auth;
  
@@ -45,7 +45,7 @@ public class LobbyResource {
     @Path("{brukernavn}/secretPlan")
     public String getSecretPlan(@PathParam("brukernavn") String brukernavn, @Auth Spiller spiller) {
     	
-    	if(brukernavn.equals(spiller.getNavn())){
+    	if(brukernavn.equals(spiller.getBrukernavn())){
     		return "Secret plan revealed!";
     	} else {
     		return "no luck";

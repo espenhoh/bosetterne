@@ -11,9 +11,9 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.bosetterne.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.bosetterne.core.AccessToken;
-import com.holtebu.bosetterne.service.bosetterne.core.Spiller;
 import com.google.common.base.Optional;
 import com.sun.jersey.core.util.Base64;
 //import com.yammer.dropwizard.logging.Log;
