@@ -1,35 +1,37 @@
 package com.holtebu.bosetterne.api;
 
+import java.util.Date;
+import java.util.Set;
+
 
 
 
 public class Spiller {
 
 	public Spiller(){}
-	
-    public Spiller(String brukernavn) {
-        this.brukernavn = brukernavn;
-    }
     
-    public Spiller(String brukernavn, String kallenavn, String passord, String epost) {
-    	this.brukernavn = brukernavn;
-    	this.kallenavn = kallenavn;
-        this.passord = passord;
-        this.epost = epost;
-    }
+    public Spiller(String brukernavn, String kallenavn, boolean innlogget,
+			Set<Game> iGame, Date sistInnlogget) {
+		super();
+		this.brukernavn = brukernavn;
+		this.kallenavn = kallenavn;
+		this.innlogget = innlogget;
+		this.iGame = iGame;
+		this.sistInnlogget = sistInnlogget;
+	}
 	
     private String brukernavn;
     private String kallenavn;
-    private String passord;
-    private String epost;
-    private String code;
+    private boolean innlogget;
+    private Set<Game> iGame;
+    private Date sistInnlogget;
     
-	public String getCode() {
-		return code;
+	public boolean isInnlogget() {
+		return innlogget;
 	}
 
-	public void setCode(String code) {
-		this.code = code;
+	public void setInnlogget(boolean innlogget) {
+		this.innlogget = innlogget;
 	}
 
 	public String getBrukernavn() {
@@ -40,13 +42,14 @@ public class Spiller {
 		return kallenavn;
 	}
 
-	public String getPassord() {
-		return passord;
+	public Set<Game> getiGame() {
+		return iGame;
 	}
 
-	public String getEpost() {
-		return epost;
+	public Date getSistInnlogget() {
+		return sistInnlogget;
 	}
+
     
 }
 

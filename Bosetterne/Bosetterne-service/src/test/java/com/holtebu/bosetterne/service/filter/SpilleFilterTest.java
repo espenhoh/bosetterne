@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service;
+package com.holtebu.bosetterne.service.filter;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -23,6 +23,18 @@ import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.yammer.dropwizard.auth.AuthenticationException;
 import com.yammer.dropwizard.auth.basic.BasicCredentials;
 
-public class Imports {
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+
+public class SpilleFilterTest {
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
 
 }

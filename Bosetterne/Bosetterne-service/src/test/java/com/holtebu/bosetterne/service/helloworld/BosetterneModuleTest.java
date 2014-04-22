@@ -21,10 +21,10 @@ import org.skife.jdbi.v2.DBI;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.holtebu.bosetterne.service.bosetterne.BosetterneModule;
-import com.holtebu.bosetterne.service.bosetterne.BosetterneConfiguration;
-import com.holtebu.bosetterne.service.bosetterne.core.dao.LobbyDAO;
-import com.holtebu.bosetterne.service.bosetterne.resources.MyResource;
+import com.holtebu.bosetterne.service.BosetterneConfiguration;
+import com.holtebu.bosetterne.service.BosetterneModule;
+import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+import com.holtebu.bosetterne.service.resources.MyResource;
 import com.yammer.dropwizard.config.Environment;
 
 /**
