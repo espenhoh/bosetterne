@@ -1,14 +1,13 @@
 package com.holtebu.bosetterne.service.auth;
 
-public interface LobbyService<S, LEG> {
+public interface LobbyService<S, L> {
 	/**
-	* Get the Principal information based on the identifier/ password in the
-	* credentials
+	* Hent spilleren som identifiseres med brukernavn og passord funnet i L.
 	*
 	* @param leg
 	* the credentials (e.g. username and password or some other type of
 	* authentication)
 	* @return the Spiller
 	*/
-	S getSpiller(LEG leg);
+	S getSpiller(L leg);
 }

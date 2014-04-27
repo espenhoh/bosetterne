@@ -19,6 +19,7 @@ public class SpillerMapper implements ResultSetMapper<Spiller> {
 			throws SQLException {
 		return new Spiller(
 				r.getString("brukernavn"),
+				r.getString("passord"),
 				r.getString("kallenavn"),
 				r.getBoolean("innlogget"),
 				new HashSet<Game>(),

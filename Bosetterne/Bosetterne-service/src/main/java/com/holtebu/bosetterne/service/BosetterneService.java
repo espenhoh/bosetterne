@@ -10,9 +10,11 @@ import com.google.inject.name.Names;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.auth.JDBILobbyService;
+import com.holtebu.bosetterne.service.auth.LobbyService;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
+import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.LobbyResource;
@@ -83,12 +85,12 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
         
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
-        Polettlager<AccessToken, Spiller, String> tokenStore = new PolettlagerIMinne();
+        Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = bosetterneInjector.getInstance(PolettlagerIMinne.class);
         
-        JDBILobbyService principalService = bosetterneInjector.getInstance(JDBILobbyService.class);
+        LobbyService lobbyService = bosetterneInjector.getInstance(JDBILobbyService.class);
         environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources"));
         environment.addResource(new OAuthAccessTokenResource(tokenStore));
-        environment.addResource(new OAuthAuthorizeResource(tokenStore, principalService));
+        environment.addResource(new OAuthAuthorizeResource(tokenStore, lobbyService));
         //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));
         
         //Resources

@@ -14,13 +14,13 @@ import com.google.common.base.Optional;
  *            the type of the OAuth2.0 authorization code to use
  * 
  */
-public interface Polettlager<T, I, C> {
+public interface Polettlager<T, I, L, C> {
 
 	T storeAccessToken(I spiller) throws AutorisasjonsUnntak;
 
 	Optional<I> getSpillerByAccessToken(String accessToken);
 
-	C storeAuthorizationCode(I spiller) throws AutorisasjonsUnntak;
+	C storeAuthorizationCode(L spiller) throws AutorisasjonsUnntak;
 
 	Optional<I> getSpillerByAuthorizationCode(C code);
 

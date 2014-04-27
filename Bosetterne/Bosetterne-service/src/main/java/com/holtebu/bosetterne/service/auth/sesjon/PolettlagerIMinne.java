@@ -26,16 +26,25 @@ import java.util.UUID;
 
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.AccessToken;
+import com.holtebu.bosetterne.service.core.Legitimasjon;
+import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
 
 /**
 * Token store
 *
 */
-public class PolettlagerIMinne implements Polettlager<AccessToken, Spiller, String> {
+public class PolettlagerIMinne implements Polettlager<AccessToken, Spiller, Legitimasjon, String> {
 
   private final Map<String, Spiller> accessTokens = new HashMap<String, Spiller>();
   private final Map<String, Spiller> codes = new HashMap<String, Spiller>();
+  private final LobbyDAO dao;
+  
+  @Inject
+  public PolettlagerIMinne(LobbyDAO dao) {
+	  this.dao = dao;
+  }
 
   @Override
   public AccessToken storeAccessToken(Spiller clientDetails) {
@@ -53,11 +62,11 @@ public class PolettlagerIMinne implements Polettlager<AccessToken, Spiller, Stri
   }
 
   @Override
-  public String storeAuthorizationCode(Spiller spiller) {
+  public String storeAuthorizationCode(Legitimasjon leg) {
     //verifyClientId(spiller);
     String code = UUID.randomUUID().toString();
     //spiller.setCode(code);
-    codes.put(code, spiller);
+    //codes.put(code, spiller);
     return code;
   }
 

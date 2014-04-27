@@ -17,6 +17,7 @@ import com.holtebu.bosetterne.service.auth.LobbyService;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
+import com.yammer.dropwizard.auth.basic.BasicCredentials;
 
 /**
  * Entry point for oauth authorize calls
@@ -26,15 +27,14 @@ import com.holtebu.bosetterne.service.core.Legitimasjon;
 @Produces(MediaType.TEXT_HTML)
 public class OAuthAuthorizeResource {
 
-	private Polettlager<AccessToken, Spiller, String> tokenStore;
-	private LobbyService<Spiller, Legitimasjon> principalService;
+	private Polettlager<AccessToken, Spiller ,Legitimasjon, String> tokenStore;
+	private LobbyService<Spiller, BasicCredentials> lobbyService;
 
 	public OAuthAuthorizeResource(
-			Polettlager<AccessToken, Spiller, String> tokenStore,
-			LobbyService<Spiller, Legitimasjon> principalService) {
-		super();
+			Polettlager<AccessToken, Spiller ,Legitimasjon, String> tokenStore,
+			LobbyService<Spiller, BasicCredentials> lobbyService) {
 		this.tokenStore = tokenStore;
-		this.principalService = principalService;
+		this.lobbyService = lobbyService;
 	}
 
 	/*
@@ -60,13 +60,11 @@ public class OAuthAuthorizeResource {
 		 * HTTP/1.1 302 Found Location:
 		 * https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA &state=xyz
 		 */
-		Legitimasjon legitimasjon = new Legitimasjon(brukernavn, passord, "", "");
-		Spiller spiller = new Spiller(); // principalService.getPrincipal(new
-											// UsernamePasswordCredentials(username,
-											// password));
-		String authorizationCode = tokenStore
-				.storeAuthorizationCode(new Spiller() // .setResponseType("code").setClientId(clientId).setRedirectUri(redirectUri).setScope("read").setState(state)
-				);
+		Legitimasjon legitimasjon = new Legitimasjon();
+		BasicCredentials credentials = new BasicCredentials(brukernavn, passord);
+		Spiller spiller = lobbyService.getSpiller(credentials);
+		//String authorizationCode = tokenStore.storeAuthorizationCode(spiller); // .setResponseType("code").setClientId(clientId).setRedirectUri(redirectUri).setScope("read").setState(state)
+		String authorizationCode = "temp";
 		/*
 		 * Hook for implementation of Implicit Grant flow
 		 */

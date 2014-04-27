@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
+import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.google.common.base.Optional;
 import com.sun.jersey.core.util.Base64;
 //import com.yammer.dropwizard.logging.Log;
@@ -27,11 +28,11 @@ import com.sun.jersey.core.util.Base64;
 @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 public class OAuthAccessTokenResource {
 
-  private final Polettlager<AccessToken, Spiller, String> tokenStore;
+  private final Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;
 
   //private static final Log LOG = Log.forClass(OAuthAccessTokenResource.class);
 
-  public OAuthAccessTokenResource(Polettlager<AccessToken, Spiller, String> tokenStore) {
+  public OAuthAccessTokenResource(Polettlager<AccessToken, Spiller, Legitimasjon, String>  tokenStore) {
     super();
     this.tokenStore = tokenStore;
   }

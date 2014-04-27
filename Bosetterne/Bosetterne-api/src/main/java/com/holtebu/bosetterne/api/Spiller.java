@@ -10,10 +10,11 @@ public class Spiller {
 
 	public Spiller(){}
     
-    public Spiller(String brukernavn, String kallenavn, boolean innlogget,
+    public Spiller(String brukernavn, String passord, String kallenavn, boolean innlogget,
 			Set<Game> iGame, Date sistInnlogget) {
 		super();
 		this.brukernavn = brukernavn;
+		this.passord = passord;
 		this.kallenavn = kallenavn;
 		this.innlogget = innlogget;
 		this.iGame = iGame;
@@ -21,10 +22,15 @@ public class Spiller {
 	}
 	
     private String brukernavn;
-    private String kallenavn;
+    private String passord;
+	private String kallenavn;
     private boolean innlogget;
     private Set<Game> iGame;
     private Date sistInnlogget;
+    
+    public String getPassord() {
+		return passord;
+	}
     
 	public boolean isInnlogget() {
 		return innlogget;
@@ -49,6 +55,8 @@ public class Spiller {
 	public Date getSistInnlogget() {
 		return sistInnlogget;
 	}
+	
+	
 
     
 }
