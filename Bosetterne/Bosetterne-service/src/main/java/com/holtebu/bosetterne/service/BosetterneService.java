@@ -3,6 +3,7 @@ package com.holtebu.bosetterne.service;
 
 import org.skife.jdbi.v2.DBI;
 
+import com.google.common.base.Optional;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
@@ -23,6 +24,7 @@ import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.OAuthAuthorizeResource;
 import com.yammer.dropwizard.Service;
 import com.yammer.dropwizard.assets.AssetsBundle;
+import com.yammer.dropwizard.auth.basic.BasicCredentials;
 import com.yammer.dropwizard.auth.oauth.OAuthProvider;
 import com.yammer.dropwizard.config.Bootstrap;
 import com.yammer.dropwizard.config.Environment;
@@ -87,7 +89,7 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
         Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = bosetterneInjector.getInstance(PolettlagerIMinne.class);
         
-        LobbyService lobbyService = bosetterneInjector.getInstance(JDBILobbyService.class);
+        LobbyService<Optional<Spiller>, BasicCredentials> lobbyService = bosetterneInjector.getInstance(JDBILobbyService.class);
         environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources"));
         environment.addResource(new OAuthAccessTokenResource(tokenStore));
         environment.addResource(new OAuthAuthorizeResource(tokenStore, lobbyService));

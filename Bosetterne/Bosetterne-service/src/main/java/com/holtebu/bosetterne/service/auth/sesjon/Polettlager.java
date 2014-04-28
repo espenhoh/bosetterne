@@ -16,7 +16,7 @@ import com.google.common.base.Optional;
  */
 public interface Polettlager<T, I, L, C> {
 
-	T storeAccessToken(I spiller) throws AutorisasjonsUnntak;
+	T storeAccessToken(L leg) throws AutorisasjonsUnntak;
 
 	Optional<I> getSpillerByAccessToken(String accessToken);
 

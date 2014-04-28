@@ -2,7 +2,6 @@ package com.holtebu.bosetterne.service.auth;
 
 //import static org.junit.Assert.*;
 
-import java.util.Map;
 
 import org.hamcrest.core.IsNull;
 import org.junit.After;
@@ -63,6 +62,7 @@ public class JDBILobbyServiceTest {
 		assertThat("Spillere skal være like", spiller.get(), is(spillerFraDB));
 	}
 	
+	@Test
 	public void getSpillerPassordFeil() {
 		String username = "test";
 		String password = "testPassord";

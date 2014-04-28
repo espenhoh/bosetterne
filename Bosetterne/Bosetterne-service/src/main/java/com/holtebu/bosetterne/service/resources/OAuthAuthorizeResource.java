@@ -12,6 +12,8 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.google.common.base.Optional;
+import com.google.inject.Inject;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.auth.LobbyService;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
@@ -28,11 +30,12 @@ import com.yammer.dropwizard.auth.basic.BasicCredentials;
 public class OAuthAuthorizeResource {
 
 	private Polettlager<AccessToken, Spiller ,Legitimasjon, String> tokenStore;
-	private LobbyService<Spiller, BasicCredentials> lobbyService;
+	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
 
+	@Inject
 	public OAuthAuthorizeResource(
-			Polettlager<AccessToken, Spiller ,Legitimasjon, String> tokenStore,
-			LobbyService<Spiller, BasicCredentials> lobbyService) {
+			Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore,
+			LobbyService<Optional<Spiller>, BasicCredentials> lobbyService) {
 		this.tokenStore = tokenStore;
 		this.lobbyService = lobbyService;
 	}
@@ -45,7 +48,8 @@ public class OAuthAuthorizeResource {
 	 * state Optional (recommended). Any client state that needs to be passed on to the client request URI.
 	 */
 	@POST
-	public Response login(@FormParam("username") String brukernavn,
+	public Response login(
+			@FormParam("username") String brukernavn,
 			@FormParam("password") String passord,
 			@FormParam("redirect_uri") String redirectUri,
 			@FormParam("client_id") String clientId,
@@ -62,12 +66,13 @@ public class OAuthAuthorizeResource {
 		 */
 		Legitimasjon legitimasjon = new Legitimasjon();
 		BasicCredentials credentials = new BasicCredentials(brukernavn, passord);
-		Spiller spiller = lobbyService.getSpiller(credentials);
+		Optional<Spiller> spiller = lobbyService.getSpiller(credentials);
 		//String authorizationCode = tokenStore.storeAuthorizationCode(spiller); // .setResponseType("code").setClientId(clientId).setRedirectUri(redirectUri).setScope("read").setState(state)
 		String authorizationCode = "temp";
 		/*
 		 * Hook for implementation of Implicit Grant flow
 		 */
+		/*
 		if (spiller != null && authorizationCode != null) {
 			String uri = String.format(redirectUri.concat("?")
 					.concat("code=%s").concat("&state=%s"), "", // authorizationCode,
@@ -80,6 +85,7 @@ public class OAuthAuthorizeResource {
 			}
 		} else {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
-		}
+		}*/
+		return null;
 	}
 }

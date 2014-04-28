@@ -62,7 +62,7 @@ public class OAuthAccessTokenResource {
     if (opt.isPresent()) {
     	Spiller clientDetails = opt.get();
     	//LOG.debug("Handing out access token for client {} with secret {}", clientId, secret);
-      	return tokenStore.storeAccessToken(clientDetails);
+      	return tokenStore.storeAccessToken(new Legitimasjon());
     }
     throw new WebApplicationException(Response.status(Response.Status.UNAUTHORIZED).entity("Invalid authorization")
         .type(MediaType.TEXT_PLAIN_TYPE).build());

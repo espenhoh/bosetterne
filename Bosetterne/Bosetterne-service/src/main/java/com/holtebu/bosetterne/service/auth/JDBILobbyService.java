@@ -1,19 +1,11 @@
 package com.holtebu.bosetterne.service.auth;
 
 
-import java.util.concurrent.Callable;
-
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import com.holtebu.bosetterne.api.Spiller;
-import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
-import com.yammer.dropwizard.auth.Authenticator;
 import com.google.common.base.Optional;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
-import com.google.common.cache.LoadingCache;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.yammer.dropwizard.auth.AuthenticationException;
