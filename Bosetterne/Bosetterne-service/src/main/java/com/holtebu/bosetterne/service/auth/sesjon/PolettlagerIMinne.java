@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
@@ -40,13 +41,14 @@ public class PolettlagerIMinne implements
 		Polettlager<AccessToken, Spiller, Legitimasjon, String> {
 
 	private final Map<String, Spiller> accessTokens;
-	private final Map<String, Spiller> codes;
-	private final Legitimasjon oAuth2Verdier;
+	private final Map<String, Legitimasjon> codes;
+	private final OAuth2Cred oAuth2Verdier;
 
 	@Inject
-	public PolettlagerIMinne(Map<String, Spiller> accessTokens,
-			Map<String, Spiller> codes,
-			@Named("OAuth2Verdier") Legitimasjon oAuth2Verdier) {
+	public PolettlagerIMinne(
+			Map<String, Spiller> accessTokens,
+			Map<String, Legitimasjon> codes,
+			OAuth2Cred oAuth2Verdier) {
 		this.accessTokens = accessTokens;
 		this.codes = codes;
 		this.oAuth2Verdier = oAuth2Verdier;
@@ -79,25 +81,41 @@ public class PolettlagerIMinne implements
 
 	@Override
 	public String storeAuthorizationCode(Legitimasjon leg) {
-		// verifyClientId(spiller);
-		String code = UUID.randomUUID().toString();
-		// spiller.setCode(code);
-		// codes.put(code, spiller);
-		return code;
+		if(verifyClientId(leg)) {
+			String code = UUID.randomUUID().toString();
+			leg.setCode(code);
+			codes.put(code, leg);
+			return code;
+		}
+
+		return null;
 	}
 
 	@Override
 	public Optional<Spiller> getSpillerByAuthorizationCode(String code) {
-		Spiller spiller = codes.get(code);
+		Spiller spiller = null;
+		
+		Legitimasjon leg = codes.get(code);
+		if (leg != null) {
+			spiller = codes.get(code).getSpiller();
+		}
 		return Optional.fromNullable(spiller);
 	}
 
 	boolean verifyClientSecret(Legitimasjon leg) {
-		return oAuth2Verdier.getSecret().equals(leg.getSecret());
+		if (leg == null) {
+			return false;
+		} else {
+			return oAuth2Verdier.getClientSecret().equals(leg.getSecret());
+		}
 	}
 
 	boolean verifyClientId(Legitimasjon leg) {
-		return oAuth2Verdier.getClientId().equals(leg.getClientId());
+		if (leg == null) {
+			return false;
+		} else {
+			return oAuth2Verdier.getClientId().equals(leg.getClientId());
+		}
 	}
 
 }

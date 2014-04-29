@@ -45,25 +45,8 @@ public class BosetterneModule extends AbstractModule {
     	bind(BosetterneConfiguration.class).toInstance(configuration);
         bind(String.class).annotatedWith(Names.named("getit")).toInstance("ingenting");
         bind(Integer.class).annotatedWith(Names.named("antallSpill")).toInstance(INIT_ANTALL_SPILL);
-        bind(Legitimasjon.class).annotatedWith(Names.named("OAuth2Verdier")).toInstance(oAuth2Verdier());
+        bind(OAuth2Cred.class).toInstance(configuration.getOauth2());
     }
-	
-	Legitimasjon oAuth2Verdier() {
-		//read json file data to String
-		Legitimasjon oAuth2Verdier = null;
-		try {
-			byte[] jsonData = Files.readAllBytes(Paths.get(OAUTH_FILE));
-			oAuth2Verdier = new ObjectMapper().readValue(jsonData, Legitimasjon.class);
-			if(oAuth2Verdier== null || oAuth2Verdier.getClientId() == null || oAuth2Verdier.getSecret() == null){
-				throw new IOException();
-			}
-		} catch (IOException e) {
-			// Hvis ikke filen kan leses funker ikke programmet så bra :(
-			e.printStackTrace();
-			System.exit(1);
-		}
-		return oAuth2Verdier;
-	}
 	
 	@Provides
 	LobbyDAO provideSpillerDAO () {

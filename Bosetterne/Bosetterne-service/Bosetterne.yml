@@ -1,6 +1,9 @@
 template: Hello, %s!
 defaultName: Stranger
 
+oauth2:
+  clientId: Bosetterne
+  clientSecret: secret
 
 # HTTP-specific options.
 http:
