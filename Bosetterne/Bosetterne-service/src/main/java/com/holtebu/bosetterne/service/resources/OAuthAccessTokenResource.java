@@ -16,6 +16,7 @@ import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.google.common.base.Optional;
+import com.google.inject.Inject;
 import com.sun.jersey.core.util.Base64;
 //import com.yammer.dropwizard.logging.Log;
 
@@ -32,6 +33,7 @@ public class OAuthAccessTokenResource {
 
   //private static final Log LOG = Log.forClass(OAuthAccessTokenResource.class);
 
+  @Inject
   public OAuthAccessTokenResource(Polettlager<AccessToken, Spiller, Legitimasjon, String>  tokenStore) {
     super();
     this.tokenStore = tokenStore;

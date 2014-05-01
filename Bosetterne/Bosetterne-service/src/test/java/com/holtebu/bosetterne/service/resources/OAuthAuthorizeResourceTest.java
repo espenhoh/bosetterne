@@ -1,6 +1,7 @@
 package com.holtebu.bosetterne.service.resources;
 
 import java.util.HashMap;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.After;
 import org.junit.Before;
@@ -21,6 +22,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 
 import com.google.common.base.Optional;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.auth.JDBILobbyService;
@@ -48,7 +51,18 @@ public class OAuthAuthorizeResourceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		
-		lobbyService = new JDBILobbyService(daoMock);
+		CacheLoader<String, Optional<Spiller>> loader = new CacheLoader<String, Optional<Spiller>> () {
+			  public Optional<Spiller> load(String key) throws Exception {
+				  return Optional.fromNullable(daoMock.finnSpillerVedNavn(key));
+			  }
+		};
+
+		lobbyService = new JDBILobbyService(
+			CacheBuilder.newBuilder()
+				.maximumSize(1000)
+				.expireAfterWrite(10, TimeUnit.MINUTES)
+				.build(loader)
+			);
 		tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(),new HashMap<String, Legitimasjon>(),new OAuth2Cred("id","secret"));
 		authResource = new OAuthAuthorizeResource(tokenStore, lobbyService);
 	}

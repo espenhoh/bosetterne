@@ -33,7 +33,6 @@ import com.yammer.dropwizard.config.Environment;
  */
 public class BosetterneModuleTest {
 
-	@Mock
 	private BosetterneConfiguration conf;
 	
 	@Mock
@@ -60,7 +59,8 @@ public class BosetterneModuleTest {
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
-		bosetterneModule = new BosetterneModule(conf, env, null);
+		conf = com.holtebu.bosetterne.service.ConfigurationStub.getConf();
+		bosetterneModule = new BosetterneModule(conf, env);
 		bosetterneInjector = Guice.createInjector(bosetterneModule);
 	}
 

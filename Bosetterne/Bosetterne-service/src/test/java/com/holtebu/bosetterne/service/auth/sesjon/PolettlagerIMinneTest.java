@@ -38,21 +38,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.TreeTraversingParser;
-import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.api.Spiller;
-import com.holtebu.bosetterne.service.auth.JDBILobbyService;
-import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
-import com.yammer.dropwizard.auth.AuthenticationException;
-import com.yammer.dropwizard.auth.basic.BasicCredentials;
-import com.yammer.dropwizard.config.Bootstrap;
-import com.yammer.dropwizard.json.ObjectMapperFactory;
 
 public class PolettlagerIMinneTest {
 	

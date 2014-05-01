@@ -86,6 +86,10 @@
 			<groupId>com.google.inject</groupId>
 			<artifactId>guice</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>jdbcdriver</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>

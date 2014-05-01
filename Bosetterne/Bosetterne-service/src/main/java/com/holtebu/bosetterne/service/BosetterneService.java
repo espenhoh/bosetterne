@@ -7,9 +7,11 @@ import com.google.common.base.Optional;
 import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.google.inject.Key;
 import com.google.inject.name.Names;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
+import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
 import com.holtebu.bosetterne.service.auth.JDBILobbyService;
 import com.holtebu.bosetterne.service.auth.LobbyService;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
@@ -78,32 +80,35 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
                     Environment environment) {
     	
     	//Dependency injectors
-    	logger.info("1/5 Setter opp Guice injectors");
-        Injector helloWorldInjector = createInjector(configuration, environment);
-        BosetterneModule bosetterneModule = helloWorldInjector.getInstance(BosetterneModule.class);
-        Injector bosetterneInjector = Guice.createInjector(bosetterneModule);
+    	logger.info("1/5 Setter opp Guice injector");
+        Injector bosetterneInjector = Guice.createInjector(new BosetterneModule(configuration, environment));
         
 
         
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
-        Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = bosetterneInjector.getInstance(PolettlagerIMinne.class);
-        
-        LobbyService<Optional<Spiller>, BasicCredentials> lobbyService = bosetterneInjector.getInstance(JDBILobbyService.class);
-        environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources"));
-        environment.addResource(new OAuthAccessTokenResource(tokenStore));
-        environment.addResource(new OAuthAuthorizeResource(tokenStore, lobbyService));
+        environment.addProvider(bosetterneInjector.getInstance(InjectableOAuthProvider.class));
+        environment.addResource(bosetterneInjector.getInstance(OAuthAccessTokenResource.class));
+        environment.addResource(bosetterneInjector.getInstance(OAuthAuthorizeResource.class));
         //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));
+        
+        //Uten injector
+        //Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = bosetterneInjector.getInstance(PolettlagerIMinne.class);
+        //LobbyService<Optional<Spiller>, BasicCredentials> lobbyService = bosetterneInjector.getInstance(JDBILobbyService.class);
+        //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources"));
+        //environment.addResource(new OAuthAccessTokenResource(tokenStore));
+        //environment.addResource(new OAuthAuthorizeResource(tokenStore, lobbyService));
+        
         
         //Resources
         logger.info("3/5 Legger til standard resources");
         environment.addResource(bosetterneInjector.getInstance(LobbyResource.class));
-        environment.addResource(helloWorldInjector.getInstance(HelloWorldResource.class));
+        environment.addResource(bosetterneInjector.getInstance(HelloWorldResource.class));
         environment.addResource(bosetterneInjector.getInstance(MyResource.class));
         
         //Health checks
         logger.info("4/5 Legger til HealthChecks");
-        environment.addHealthCheck(helloWorldInjector.getInstance(TemplateHealthCheck.class));
+        environment.addHealthCheck(bosetterneInjector.getInstance(TemplateHealthCheck.class));
         
         //Filter
         //environment.addFilter(bosetterneInjector.getInstance(Sikkerhetsfilter.class), "/myapp/*");
@@ -111,30 +116,6 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
         //TODO: Atmosphere resources
         logger.info("5/5 TODO: Atmosphere resources");
         //initializeAtmosphere(configuration, environment);
-    }
-    
-    private Injector createInjector(final BosetterneConfiguration conf, final Environment environment) {
-        return Guice.createInjector(new AbstractModule() {
-            @Override
-            protected void configure() {
-            	bind(BosetterneConfiguration.class).toInstance(conf);
-            	bind(Environment.class).toInstance(environment);
-                bind(String.class).annotatedWith(Names.named("getit")).toInstance("ingenting");
-                bind(DBI.class).toInstance(getJDBI(conf, environment));
-            }
-            
-            DBI getJDBI(final BosetterneConfiguration conf, final Environment environment){
-            	final DBIFactory factory = new DBIFactory();
-            	DBI jdbi = null;
-                try {
-                	jdbi = factory.build(environment, conf.getDatabaseConfiguration(), "mySQL");
-				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
-					System.exit(1);
-				}
-                return jdbi;
-            }
-        });
     }
 }
 /*
