@@ -12,6 +12,9 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.holtebu.bosetterne.api.Spiller;
@@ -28,6 +31,8 @@ import com.yammer.dropwizard.auth.basic.BasicCredentials;
 @Path("/authorize")
 @Produces(MediaType.TEXT_HTML)
 public class OAuthAuthorizeResource {
+	
+	private final static Logger logger = LoggerFactory.getLogger("OAuthAuthorizeResource.class");
 
 	private Polettlager<AccessToken, Spiller ,Legitimasjon, String> tokenStore;
 	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
@@ -64,28 +69,45 @@ public class OAuthAuthorizeResource {
 		 * HTTP/1.1 302 Found Location:
 		 * https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA &state=xyz
 		 */
-		Legitimasjon legitimasjon = new Legitimasjon();
+		
 		BasicCredentials credentials = new BasicCredentials(brukernavn, passord);
 		Optional<Spiller> spiller = lobbyService.getSpiller(credentials);
-		//String authorizationCode = tokenStore.storeAuthorizationCode(spiller); // .setResponseType("code").setClientId(clientId).setRedirectUri(redirectUri).setScope("read").setState(state)
-		String authorizationCode = "temp";
+		
+		Legitimasjon legitimasjon = new Legitimasjon().
+				setClientId(clientId).
+				setResponseType("code").
+				setRedirectUri(redirectUri).
+				setScope("read").
+				setState(state);
+		
+		String authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
+
 		/*
 		 * Hook for implementation of Implicit Grant flow
 		 */
-		/*
-		if (spiller != null && authorizationCode != null) {
-			String uri = String.format(redirectUri.concat("?")
-					.concat("code=%s").concat("&state=%s"), "", // authorizationCode,
-					state);
-			try {
-				return Response.seeOther(new URI(uri)).build();
-			} catch (URISyntaxException e) {
-				throw new RuntimeException(String.format(
-						"Redirect URI '%s' is not valid", uri));
-			}
+		boolean autorisert = autorisert(spiller, authorizationCode);
+		
+		if (autorisert) {
+			return tryRedirect(redirectUri, state, authorizationCode);
 		} else {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
-		}*/
-		return null;
+		}
+	}
+
+	private Response tryRedirect(String redirectUri, String state, String authorizationCode) {
+		String format = redirectUri.concat("?").concat("code=%s").concat("&state=%s");
+		String uri = String.format(format, authorizationCode, state);
+		try {
+			return Response.seeOther(new URI(uri)).build();
+		} catch (URISyntaxException e) {
+			Exception ex = new RuntimeException(String.format("Redirect URI '%s' is not valid", uri));
+			logger.warn("Noen har ikke brukt riktig URI", ex);
+			return null;
+		}
+	}
+
+	private boolean autorisert(Optional<Spiller> spiller,
+			String authorizationCode) {
+		return spiller.isPresent() && authorizationCode != null;
 	}
 }
