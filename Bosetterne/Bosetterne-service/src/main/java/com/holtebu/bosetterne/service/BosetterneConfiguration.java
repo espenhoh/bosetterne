@@ -6,8 +6,9 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.yammer.dropwizard.config.Configuration;
-import com.yammer.dropwizard.db.DatabaseConfiguration;
+
+import io.dropwizard.Configuration;
+import io.dropwizard.db.DataSourceFactory;
 
 public class BosetterneConfiguration extends Configuration {
     @NotEmpty
@@ -23,18 +24,18 @@ public class BosetterneConfiguration extends Configuration {
     @JsonProperty
     private OAuth2Cred oauth2 = new OAuth2Cred();
 
-	@Valid
+    @Valid
     @NotNull
     @JsonProperty
-    private DatabaseConfiguration database = new DatabaseConfiguration();
+    private DataSourceFactory database = new DataSourceFactory();
+
+    public DataSourceFactory getDataSourceFactory() {
+        return database;
+    }
 	
     public OAuth2Cred getOauth2() {
 		return oauth2;
 	}
-
-    public DatabaseConfiguration getDatabaseConfiguration() {
-        return database;
-    }
 
     public String getTemplate() {
         return template;

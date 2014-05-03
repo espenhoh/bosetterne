@@ -22,7 +22,7 @@ import com.holtebu.bosetterne.service.auth.LobbyService;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
-import com.yammer.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.basic.BasicCredentials;
 
 /**
  * Entry point for oauth authorize calls

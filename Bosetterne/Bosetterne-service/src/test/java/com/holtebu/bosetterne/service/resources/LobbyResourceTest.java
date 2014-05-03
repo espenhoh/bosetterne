@@ -28,9 +28,7 @@ import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.sun.jersey.test.framework.AppDescriptor;
 import com.sun.jersey.test.framework.JerseyTest;
-import com.yammer.dropwizard.auth.AuthenticationException;
-import com.yammer.dropwizard.auth.basic.BasicCredentials;
-import com.yammer.dropwizard.testing.ResourceTest;
+import io.dropwizard.auth.basic.BasicCredentials;
 
 public class LobbyResourceTest { // extends JerseyTest {
 	

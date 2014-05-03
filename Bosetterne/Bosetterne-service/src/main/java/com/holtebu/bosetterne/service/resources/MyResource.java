@@ -15,7 +15,6 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.Bosetterne;
 import com.holtebu.bosetterne.api.Spiller;
-import com.yammer.dropwizard.auth.Auth;
  
 /**
  * Root resource (exposed at "myresource" path)

@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.helloworld.Saying;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
-import com.yammer.metrics.annotation.Timed;
+import com.codahale.metrics.annotation.Timed;
 
 import java.util.concurrent.atomic.AtomicLong;
 

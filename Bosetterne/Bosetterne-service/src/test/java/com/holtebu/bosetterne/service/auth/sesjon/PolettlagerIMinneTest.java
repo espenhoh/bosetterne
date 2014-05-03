@@ -18,7 +18,7 @@ import com.holtebu.bosetterne.service.ConfigurationStub;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
-import com.yammer.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.basic.BasicCredentials;
 
 import org.hamcrest.core.IsNull;
 import org.junit.AfterClass;

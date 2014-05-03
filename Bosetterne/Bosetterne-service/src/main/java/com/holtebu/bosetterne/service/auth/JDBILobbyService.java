@@ -18,8 +18,7 @@ import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalListeners;
 import com.google.inject.Inject;
 import com.google.inject.name.Named;
-import com.yammer.dropwizard.auth.AuthenticationException;
-import com.yammer.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.basic.BasicCredentials;
 
 public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCredentials> {
 	

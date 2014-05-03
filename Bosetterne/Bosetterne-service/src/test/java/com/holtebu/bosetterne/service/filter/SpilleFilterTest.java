@@ -20,8 +20,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import com.google.common.base.Optional;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
-import com.yammer.dropwizard.auth.AuthenticationException;
-import com.yammer.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.basic.BasicCredentials;
 
 import org.junit.AfterClass;
 import org.junit.Before;

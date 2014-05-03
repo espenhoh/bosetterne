@@ -28,10 +28,10 @@ import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.inject.names.Realm;
-import com.yammer.dropwizard.auth.Authenticator;
-import com.yammer.dropwizard.auth.basic.BasicCredentials;
-import com.yammer.dropwizard.config.Environment;
-import com.yammer.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.auth.Authenticator;
+import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.setup.Environment;
+import io.dropwizard.jdbi.DBIFactory;
 
 public class BosetterneModule extends AbstractModule {
 	private final BosetterneConfiguration configuration;
@@ -75,7 +75,7 @@ public class BosetterneModule extends AbstractModule {
     	final DBIFactory factory = new DBIFactory();
     	DBI jdbi = null;
         try {
-        	jdbi = factory.build(environment, configuration.getDatabaseConfiguration(), "mySQL");
+        	jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mySQL");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 			System.exit(1);

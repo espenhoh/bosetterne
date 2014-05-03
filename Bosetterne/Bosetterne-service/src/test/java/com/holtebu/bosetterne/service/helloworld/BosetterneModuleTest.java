@@ -25,7 +25,7 @@ import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.BosetterneModule;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.resources.MyResource;
-import com.yammer.dropwizard.config.Environment;
+import io.dropwizard.setup.Environment;
 
 /**
  * @author espen

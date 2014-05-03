@@ -1,37 +1,21 @@
 package com.holtebu.bosetterne.service;
 
 
-import org.skife.jdbi.v2.DBI;
+import io.dropwizard.Application;
 
-import com.google.common.base.Optional;
-import com.google.inject.AbstractModule;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.google.inject.Key;
-import com.google.inject.name.Names;
-import com.holtebu.bosetterne.api.Spiller;
-import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
-import com.holtebu.bosetterne.service.auth.JDBILobbyService;
-import com.holtebu.bosetterne.service.auth.LobbyService;
-import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
-import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
-import com.holtebu.bosetterne.service.core.AccessToken;
-import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.LobbyResource;
 import com.holtebu.bosetterne.service.resources.MyResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.OAuthAuthorizeResource;
-import com.yammer.dropwizard.Service;
-import com.yammer.dropwizard.assets.AssetsBundle;
-import com.yammer.dropwizard.auth.basic.BasicCredentials;
-import com.yammer.dropwizard.auth.oauth.OAuthProvider;
-import com.yammer.dropwizard.config.Bootstrap;
-import com.yammer.dropwizard.config.Environment;
-import com.yammer.dropwizard.jdbi.DBIFactory;
-import com.yammer.dropwizard.jdbi.bundles.DBIExceptionsBundle;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +27,7 @@ import org.slf4j.LoggerFactory;
 
 //import org.eclipse.jetty.servlets.CrossOriginFilter;
 
-public class BosetterneService extends Service<BosetterneConfiguration> {
+public class BosetterneService extends Application<BosetterneConfiguration> {
 	
     private final static Logger logger = LoggerFactory.getLogger("BosetterneService.class");
 
@@ -59,12 +43,16 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
 
     @Override
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
-        bootstrap.setName("Bosetterne - yay");
         bootstrap.addBundle(new AssetsBundle("/WebContent/", "/"));
         bootstrap.addBundle(new DBIExceptionsBundle());
     }
     
-    void initializeAtmosphere(BosetterneConfiguration configuration, Environment environment) {
+    @Override
+    public String getName() {
+        return "Bosetterne - yay";
+    }
+    
+    //void initializeAtmosphere(BosetterneConfiguration configuration, Environment environment) {
         //FilterBuilder fconfig = environment.addFilter(CrossOriginFilter.class, "/chat");
         //fconfig.setInitParam(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
 
@@ -73,11 +61,10 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
         //atmosphereServlet.framework().addInitParameter("org.atmosphere.websocket.messageContentType", "application/json");
         //atmosphereServlet.framework().addInitParameter("org.atmosphere.cpr.broadcastFilterClasses", "com.example.helloworld.filters.BadWordFilter");
         //environment.addServlet(atmosphereServlet, "/service/atmos/*");
-    }
+    //}
 
     @Override
-    public void run(BosetterneConfiguration configuration,
-                    Environment environment) {
+    public void run(BosetterneConfiguration configuration, Environment environment) {
     	
     	//Dependency injectors
     	logger.info("1/5 Setter opp Guice injector");
@@ -87,28 +74,20 @@ public class BosetterneService extends Service<BosetterneConfiguration> {
         
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
-        environment.addProvider(bosetterneInjector.getInstance(InjectableOAuthProvider.class));
-        environment.addResource(bosetterneInjector.getInstance(OAuthAccessTokenResource.class));
-        environment.addResource(bosetterneInjector.getInstance(OAuthAuthorizeResource.class));
-        //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));
-        
-        //Uten injector
-        //Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = bosetterneInjector.getInstance(PolettlagerIMinne.class);
-        //LobbyService<Optional<Spiller>, BasicCredentials> lobbyService = bosetterneInjector.getInstance(JDBILobbyService.class);
-        //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources"));
-        //environment.addResource(new OAuthAccessTokenResource(tokenStore));
-        //environment.addResource(new OAuthAuthorizeResource(tokenStore, lobbyService));
-        
+        environment.jersey().register(bosetterneInjector.getInstance(InjectableOAuthProvider.class));
+        environment.jersey().register(bosetterneInjector.getInstance(OAuthAccessTokenResource.class));
+        environment.jersey().register(bosetterneInjector.getInstance(OAuthAuthorizeResource.class));
+        //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));        
         
         //Resources
         logger.info("3/5 Legger til standard resources");
-        environment.addResource(bosetterneInjector.getInstance(LobbyResource.class));
-        environment.addResource(bosetterneInjector.getInstance(HelloWorldResource.class));
-        environment.addResource(bosetterneInjector.getInstance(MyResource.class));
+        environment.jersey().register(bosetterneInjector.getInstance(LobbyResource.class));
+        environment.jersey().register(bosetterneInjector.getInstance(HelloWorldResource.class));
+        environment.jersey().register(bosetterneInjector.getInstance(MyResource.class));
         
         //Health checks
         logger.info("4/5 Legger til HealthChecks");
-        environment.addHealthCheck(bosetterneInjector.getInstance(TemplateHealthCheck.class));
+        environment.healthChecks().register("template", bosetterneInjector.getInstance(TemplateHealthCheck.class));
         
         //Filter
         //environment.addFilter(bosetterneInjector.getInstance(Sikkerhetsfilter.class), "/myapp/*");
