@@ -86,6 +86,11 @@
 				<artifactId>dropwizard-auth</artifactId>
 				<version>0.6.2</version>
 			</dependency>
+<!-- 			<dependency> -->
+<!-- 				<groupId>com.yammer.dropwizard</groupId> -->
+<!-- 				<artifactId>dropwizard-views-mustache</artifactId> -->
+<!-- 				<version>0.6.2</version> -->
+<!-- 			</dependency> -->
 			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-web</artifactId>

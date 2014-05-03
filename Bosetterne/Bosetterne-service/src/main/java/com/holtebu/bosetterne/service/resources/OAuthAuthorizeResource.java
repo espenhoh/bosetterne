@@ -93,6 +93,57 @@ public class OAuthAuthorizeResource {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
 	}
+	
+	/**
+	 * response_type 	Required. Must be set to token.
+	 * client_id 	Required. The client identifier as assigned by the authorization server, when the client was registered.
+	 * redirect_uri 	Optional. The redirect URI registered by the client.
+	 * scope 	Optional. The possible scope of the request.
+	 * state 	Optional (recommended). Any client state that needs to be passed on to the client request URI.
+	 **/
+	@POST
+	@Path("/implicit")
+	public Response loginImplicit(
+			@FormParam("username") String brukernavn,
+			@FormParam("password") String passord,
+			@FormParam("redirect_uri") String redirectUri,
+			@FormParam("client_id") String clientId,
+			@FormParam("state") String state, 
+			@FormParam("reponse_type")String responseType) {
+		/*
+		 * Hook for implementing consent screen (which we currently don't have)
+		 */
+
+		/*
+		 * From the OAuth spec:
+		 * 
+		 * HTTP/1.1 302 Found Location:
+		 * https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA &state=xyz
+		 */
+		
+		BasicCredentials credentials = new BasicCredentials(brukernavn, passord);
+		Optional<Spiller> spiller = lobbyService.getSpiller(credentials);
+		
+		Legitimasjon legitimasjon = new Legitimasjon().
+				setClientId(clientId).
+				setResponseType("code").
+				setRedirectUri(redirectUri).
+				setScope("read").
+				setState(state);
+		
+		String authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
+
+		/*
+		 * Hook for implementation of Implicit Grant flow
+		 */
+		boolean autorisert = autorisert(spiller, authorizationCode);
+		
+		if (autorisert) {
+			return tryRedirect(redirectUri, state, authorizationCode);
+		} else {
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
+	}
 
 	private Response tryRedirect(String redirectUri, String state, String authorizationCode) {
 		String format = redirectUri.concat("?").concat("code=%s").concat("&state=%s");
