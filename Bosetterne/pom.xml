@@ -111,6 +111,7 @@
 				<artifactId>jdbcdriver</artifactId>
 				<version>1.0</version>
 			</dependency>
+			<!-- TODO: Ting til websocket -->
 			<!-- <dependency> -->
 			<!-- <groupId>org.eclipse.jetty</groupId> -->
 			<!-- <artifactId>jetty-websocket</artifactId> -->
