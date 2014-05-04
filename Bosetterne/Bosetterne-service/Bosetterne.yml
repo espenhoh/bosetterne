@@ -8,31 +8,6 @@ oauth2:
 # HTTP-specific options.
 # Extending from the default server configuration
 server:
-  applicationConnectors:
-    - type: http
-    
-      
-      
-      bindHost: 127.0.0.1 # only bind to loopback
-      headerCacheSize: 512 bytes
-      outputBufferSize: 32KiB
-      maxRequestHeaderSize: 8KiB
-      maxResponseHeaderSize: 8KiB
-      inputBufferSize: 8KiB
-      idleTimeout: 30 seconds
-      minBufferPoolSize: 64 bytes
-      bufferPoolIncrement: 1KiB
-      maxBufferPoolSize: 64KiB
-      acceptorThreads: 1
-      selectorThreads: 2
-      acceptQueueSize: 1024
-      reuseAddress: true
-      soLingerTime: 345s
-      useServerHeader: false
-      useDateHeader: true
-      useForwardedHeaders: true
-      
-server:
   #rootPath: /service/*  # Default is /*
   # Minimum number of thread to keep alive.
   minThreads: 10

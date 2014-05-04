@@ -44,7 +44,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     @Override
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
         bootstrap.addBundle(new AssetsBundle("/WebContent/", "/"));
-        bootstrap.addBundle(new DBIExceptionsBundle());
+        //bootstrap.addBundle(new DBIExceptionsBundle());
     }
     
     @Override
