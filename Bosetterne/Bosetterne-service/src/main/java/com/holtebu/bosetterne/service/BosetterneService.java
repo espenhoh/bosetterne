@@ -9,7 +9,6 @@ import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.LobbyResource;
-import com.holtebu.bosetterne.service.resources.LoginResource;
 import com.holtebu.bosetterne.service.resources.MyResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.OAuthAuthorizeResource;
@@ -46,7 +45,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
 
     @Override
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/WebContent/", "/bosetterne/"));
+        bootstrap.addBundle(new AssetsBundle("/WebContent/ressurser/", "/ressurser/"));
         bootstrap.addBundle(new DBIExceptionsBundle());
         bootstrap.addBundle(new ViewBundle());
     }
@@ -88,7 +87,6 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         environment.jersey().register(bosetterneInjector.getInstance(LobbyResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(HelloWorldResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(MyResource.class));
-        environment.jersey().register(new LoginResource());
         
         //Health checks
         logger.info("4/5 Legger til HealthChecks");

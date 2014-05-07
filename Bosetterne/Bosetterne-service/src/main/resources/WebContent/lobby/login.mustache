@@ -2,25 +2,29 @@
 <html>
     <head>
         <meta charset="utf-8">
-        <title>Spill</title>
-        <link rel="stylesheet" href="bosetterne/backup/css/sections.css">
-        <link rel="stylesheet" href="bosetterne/backup/css/tables.css">
-        <link rel="stylesheet" href="bosetterne/backup/css/text.css">
-        <link rel="stylesheet" href="bosetterne/backup/css/forms.css">
+        <title>Logg Inn</title>
+        <link rel="stylesheet" href="/ressurser/css/sections.css">
+        <link rel="stylesheet" href="/ressurser/css/tables.css">
+        <link rel="stylesheet" href="/ressurser/css/text.css">
+        <link rel="stylesheet" href="/ressurser/css/forms.css">
     </head>
     <body>
         <header>
             <hgroup>
-                <h1>Klokken er {{now}}. Vennsligst logg inn!</h1>
+                <h1>{{#loggedIn}}Innlogget{{/loggedIn}}
+                    {{^loggedIn}}Vennligst logg inn!{{/loggedIn}}</h1>
             </hgroup>
         </header>
         <nav>
             <p class="meny"><span>Meny</span><p>
             <ul class="menyliste">
-                <li class="meny"><a class="meny" href="index2.html">Home</a></li>
-                <li class="meny"><a class="meny" href="backup/register.html">Register</a></li>
-                <li class="meny"><a class="meny" href="login.html">login </a></li>
-                <li class="meny"><a class="meny" href="Bosetterne.html">Bosetterne </a></li>
+                <li class="meny"><a class="meny" href="hjem">Hjem</a></li>
+                <li class="meny"><a class="meny" href="../ressurser/register.html">Registrer</a></li>
+                <li class="meny"><a class="meny" href="logg_inn">Logg inn</a></li>
+                {{#loggedIn}}
+                    <li class="meny" v><a class="meny" href="bosetterne">Bosetterne</a></li>
+                    <li class="meny"><a class="meny" href="../ressurser/chat.html">Chat</a></li>
+                {{/loggedIn}}
             </ul>
         </nav>
         <article>
@@ -54,8 +58,8 @@
         <footer>
             All rights reserved © Espen
         </footer>
-<!--        <script type="text/javascript" src="backup/js/libs/jQuery/jquery-2.0.3.min.js"></script>
-        <script type="text/javascript" src="backup/js/hello.js"></script>-->
+<!--        <script type="text/javascript" src="ressurser/js/libs/jQuery/jquery-2.0.3.min.js"></script>
+        <script type="text/javascript" src="ressurser/js/hello.js"></script>-->
     </body>
 </html>
 

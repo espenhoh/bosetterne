@@ -27,7 +27,10 @@ import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+import com.holtebu.bosetterne.service.inject.names.HjemTemplate;
+import com.holtebu.bosetterne.service.inject.names.LoggInnTemplate;
 import com.holtebu.bosetterne.service.inject.names.Realm;
+
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.setup.Environment;
@@ -38,6 +41,8 @@ public class BosetterneModule extends AbstractModule {
 	//private final Environment environment;
 	private final Integer INIT_ANTALL_SPILL = 20;
 	private final DBI jdbi;
+	
+	private final String basePath = "/WebContent/";
     
 	public BosetterneModule(final BosetterneConfiguration configuration, Environment environment) {
 		this.configuration = configuration;
@@ -61,6 +66,10 @@ public class BosetterneModule extends AbstractModule {
         bind(Integer.class).annotatedWith(Names.named("antallSpill")).toInstance(INIT_ANTALL_SPILL);
         bind(String.class).annotatedWith(Realm.class).toInstance("protected-resources");
         //bind(DBI.class).toInstance(jdbi); //Trengs denne?
+        
+        //Bindtemplates
+        bind(String.class).annotatedWith(LoggInnTemplate.class).toInstance("/WebContent/lobby/login.mustache");
+        bind(String.class).annotatedWith(HjemTemplate.class).toInstance("/WebContent/lobby/hjem.mustache");
         
         bind(InjectableOAuthProvider.class).to(new TypeLiteral<InjectableOAuthProvider<Spiller>>(){});
         bind(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){}).to(PolettlagerIMinne.class).in(Scopes.SINGLETON);
