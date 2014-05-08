@@ -25,25 +25,39 @@ import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.views.HjemView;
 import com.holtebu.bosetterne.service.views.LoggInnView;
+import com.holtebu.bosetterne.service.views.RegistrerView;
 
 import io.dropwizard.auth.Auth;
  
 /**
- * Root resource (exposed at "myresource" path)
+ * Lobby resource (exposed at "lobby" path)
  */
 @Path("/lobby/")
 public class LobbyResource {
-	private final String KLOKKE_PATTERN = "HH:mm:ss";
+	private static final String KLOKKE_PATTERN = "HH:mm:ss";
+	private static final String LOGG_INN_TEMPLATE = "/WebContent/lobby/login.mustache";
+	private static final String HJEM_TEMPLATE = "/WebContent/lobby/hjem.mustache";
+	private static final String REGISTRER_TEMPLATE = "/WebContent/lobby/registrer.mustache";
 	
 	private final LobbyDAO dao;
-	private final LoggInnView loginView;
-	private final HjemView hjemView;
 	
 	@Inject
-	public LobbyResource(LobbyDAO dao, LoggInnView loginView, HjemView hjemView){
+	public LobbyResource(LobbyDAO dao){
 		this.dao = dao;
-		this.loginView = loginView;
-		this.hjemView = hjemView;
+	}
+	
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+    @Path("/hjem")
+	public HjemView hjem(@Context HttpServletRequest request) {
+		return new HjemView(HJEM_TEMPLATE);
+	}
+	
+	@GET
+	@Produces(MediaType.TEXT_HTML)
+    @Path("/registrer")
+	public RegistrerView registrer(@Context HttpServletRequest request) {
+		return new RegistrerView(REGISTRER_TEMPLATE);
 	}
 	
 	@GET
@@ -53,14 +67,7 @@ public class LobbyResource {
 //		Locale clientLocale = request.getLocale();
 //		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(KLOKKE_PATTERN, clientLocale);
 //		String now = simpleDateFormat.format(new Date());
-		return loginView;
-	}
-	
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-    @Path("/hjem")
-	public HjemView hjem(@Context HttpServletRequest request) {
-		return hjemView;
+		return new LoggInnView(LOGG_INN_TEMPLATE);
 	}
 	
 	/*

@@ -68,8 +68,8 @@ public class BosetterneModule extends AbstractModule {
         //bind(DBI.class).toInstance(jdbi); //Trengs denne?
         
         //Bindtemplates
-        bind(String.class).annotatedWith(LoggInnTemplate.class).toInstance("/WebContent/lobby/login.mustache");
-        bind(String.class).annotatedWith(HjemTemplate.class).toInstance("/WebContent/lobby/hjem.mustache");
+        //bind(String.class).annotatedWith(LoggInnTemplate.class).toInstance("/WebContent/lobby/login.mustache");
+        //bind(String.class).annotatedWith(HjemTemplate.class).toInstance("/WebContent/lobby/hjem.mustache");
         
         bind(InjectableOAuthProvider.class).to(new TypeLiteral<InjectableOAuthProvider<Spiller>>(){});
         bind(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){}).to(PolettlagerIMinne.class).in(Scopes.SINGLETON);

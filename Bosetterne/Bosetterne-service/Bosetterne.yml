@@ -8,7 +8,6 @@ oauth2:
 # HTTP-specific options.
 # Extending from the default server configuration
 server:
-  #rootPath: /service/*  # Default is /*
   # Minimum number of thread to keep alive.
   minThreads: 10
   # Maximum number of threads.

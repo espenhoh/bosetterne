@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <title>Console</title>
-        <link rel="stylesheet" href="css/sections.css">
-        <link rel="stylesheet" href="css/tables.css">
-        <link rel="stylesheet" href="css/text.css">
-        <link rel="stylesheet" href="css/forms.css">
+        <link rel="stylesheet" href="../ressurser/css/sections.css">
+        <link rel="stylesheet" href="../ressurser/css/tables.css">
+        <link rel="stylesheet" href="../ressurser/css/text.css">
+        <link rel="stylesheet" href="../ressurser/css/forms.css">
     </head>
     <body>
         <header>
@@ -16,11 +16,14 @@
         </header>
         <nav>
             <p class="meny"><span>Meny</span><p>
-            <ul class="menyliste" itemtype="">
-                <li class="meny"><a class="meny" href="../lobby/hjem.mustache">Home</a></li>
-                <li class="meny"><a class="meny" href="register.html">Register</a></li>
-                <li class="meny"><a class="meny" href="../login.html">login </a></li>
-                <li class="meny"><a class="meny" href="../Bosetterne.html">Bosetterne </a></li>
+            <ul class="menyliste">
+                <li class="meny"><a class="meny" href="hjem">Hjem</a></li>
+                <li class="meny"><a class="meny" href="registrer">Registrer</a></li>
+                <li class="meny"><a class="meny" href="logg_inn">Logg inn</a></li>
+                {{#loggedIn}}
+                    <li class="meny" v><a class="meny" href="bosetterne">Bosetterne</a></li>
+                    <li class="meny"><a class="meny" href="../ressurser/chat.html">Chat</a></li>
+                {{/loggedIn}}
             </ul>
         </nav>
         <article>

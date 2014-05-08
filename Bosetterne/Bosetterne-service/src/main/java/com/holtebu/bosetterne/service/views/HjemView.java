@@ -4,6 +4,7 @@ package com.holtebu.bosetterne.service.views;
 import com.google.inject.Inject;
 import com.holtebu.bosetterne.service.inject.names.HjemTemplate;
 
+import io.dropwizard.server.ServerFactory;
 import io.dropwizard.views.View;
 
 public class HjemView extends View {

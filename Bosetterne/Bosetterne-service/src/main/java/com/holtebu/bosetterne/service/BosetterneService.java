@@ -12,6 +12,7 @@ import com.holtebu.bosetterne.service.resources.LobbyResource;
 import com.holtebu.bosetterne.service.resources.MyResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.OAuthAuthorizeResource;
+import com.holtebu.bosetterne.service.resources.RedirectResource;
 
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -69,6 +70,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     @Override
     public void run(BosetterneConfiguration configuration, Environment environment) {
     	
+    	
     	//Dependency injectors
     	logger.info("1/5 Setter opp Guice injector");
         Injector bosetterneInjector = Guice.createInjector(new BosetterneModule(configuration, environment));
@@ -84,6 +86,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         
         //Resources
         logger.info("3/5 Legger til standard resources");
+        environment.jersey().register(bosetterneInjector.getInstance(RedirectResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(LobbyResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(HelloWorldResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(MyResource.class));
