@@ -7,6 +7,8 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -57,6 +59,22 @@ public class LobbyResource {
 	@Produces(MediaType.TEXT_HTML)
     @Path("/registrer")
 	public RegistrerView registrer(@Context HttpServletRequest request) {
+		return new RegistrerView(REGISTRER_TEMPLATE);
+	}
+	
+	@POST
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.TEXT_HTML)
+    @Path("/registrer_spiller")
+	public RegistrerView registrerSpiller(
+			@FormParam("brukernavn") String brukernavn,
+			@FormParam("kallenavn") String kallenavn,
+			@FormParam("spillerfarge") String farge,
+			@FormParam("epost") String epost,
+			@FormParam("passord1") String passord1,
+			@FormParam("passord2") String passord2) {
+		
+		System.out.println(brukernavn + kallenavn + farge + epost + passord1 + passord2);
 		return new RegistrerView(REGISTRER_TEMPLATE);
 	}
 	
