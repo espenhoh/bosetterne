@@ -3,10 +3,10 @@
     <head>
         <meta charset="utf-8">
         <title>Bosetterne - Registrering</title>
-        <link rel="stylesheet" href="../ressurser/css/sections.css">
-        <link rel="stylesheet" href="../ressurser/css/tables.css">
-        <link rel="stylesheet" href="../ressurser/css/text.css">
-        <link rel="stylesheet" href="../ressurser/css/forms.css">
+        <link rel="stylesheet" href="/ressurser/css/sections.css">
+        <link rel="stylesheet" href="/ressurser/css/tables.css">
+        <link rel="stylesheet" href="/ressurser/css/text.css">
+        <link rel="stylesheet" href="/ressurser/css/forms.css">
     </head>
     <body>
         <header>
@@ -22,44 +22,54 @@
                 <li class="meny"><a class="meny" href="logg_inn">Logg inn</a></li>
                 {{#loggedIn}}
                     <li class="meny" v><a class="meny" href="bosetterne">Bosetterne</a></li>
-                    <li class="meny"><a class="meny" href="../ressurser/chat.html">Chat</a></li>
+                    <li class="meny"><a class="meny" href="/ressurser/chat.html">Chat</a></li>
                 {{/loggedIn}}
             </ul>
         </nav>
         <article>
-            <h1>Registrer deg for tilgang</h1>
+            <h1 id="tittel">Registrer deg for tilgang</h1>
             
             <form id="frmRegister"
                   enctype="application/x-www-form-urlencoded"
                   accept-charset="utf-8"
-                  action="">
-                  <label for="txtKalleNavn">Kallenavn:</label>
-                  <input type="text" id="txtKalleNavn" name="txtKallenavn" class="felter" value="" size="15" maxlength="15">
-                  <br/>
+                  method="post"
+                  action="registrer_spiller">
+                <label for="txtBrukernavn">Brukernavn:</label>
+                <input type="text" id="txtBrukernavn" name="brukernavn" class="felter" value="" size="15" maxlength="15">
+                <br/>
+                <label for="txtKallenavn">Kallenavn:</label>
+                <br/>
+
+                <label class="farge" for="clrFarge">Ønsket farge:</label>
+                <input type="color" id="clrFarge" name="spillerfarge" class="felter" value="">
+                <br/>
+
+                <label for="txtEpost">Epost:</label>
+                <input type="email" id="txtEpost" name="epost" class="felter" value="" size="25" maxlength="25">
+                <br/>
+
+                <label for="pass1">Passord:</label>
+                <input type="password" id="pass1" name="passord1" class="felter" value="" size="15" maxlength="15">
+                <br/>
+
+                <label for="pass2">Passord (igjen):</label>
+                <input type="password" id="pass2" name="passord2" class="felter" value="" size="15" maxlength="15">
+                <br/>
+
+                <span><strong>Passordene stemmer ikke overens!</strong></span>
+
+
                   
-                  <label class="farge" for="clrFarge">Ønsket farge:</label>
-                  <input type="color" id="clrFarge" name="clrFarge" class="felter" value="">
-                  <br/>
-                  
-                  <label for="txtEpost">Epost:</label>
-                  <input type="email" id="txtEpost" name="txtEpost" class="felter" value="" size="25" maxlength="25">
-                  <br/>
-                  
-                  <label for="pass1">Passord:</label>
-                  <input type="password" id="pass1" name="pass1" class="felter" value="" size="15" maxlength="15">
-                  <br/>
-                  
-                  <label for="pass2">Passord (igjen):</label>
-                  <input type="password" id="pass2" name="pass2" class="felter" value="" size="15" maxlength="15">
-                  <br/>
-                  
-                  <input type="submit" value="Send inn">
+                  <input id="send_inn" type="submit" value="Send inn">
             </form>
 
         </article>
         <footer>
-            All rights reserved © Espen
+            Alle rettigheter © Espen
         </footer>
+
+        <script type="application/dart" src="../ressurser/dart/registrer.dart"></script>
+        <script src="../ressurser/packages/browser/dart.js"></script>
     </body>
 </html>
 

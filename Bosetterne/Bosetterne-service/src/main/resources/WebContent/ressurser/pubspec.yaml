@@ -1,0 +1,7 @@
+name: WebContent
+version: 0.0.1
+description: Bosetterne, Settlers!
+author: Espen Holtebu <espenhoh@gmail.com>
+homepage: http://localhost:8080/
+dependencies:
+  browser: any

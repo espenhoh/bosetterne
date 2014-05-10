@@ -11,6 +11,7 @@
 target/
 .idea/
 Bosetterne/Bosetterne-service/logs/
+Bosetterne/Bosetterne-service/src/main/resources/WebContent/ressurser/packages
 
 
 # Package Files #
