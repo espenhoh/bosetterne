@@ -36,10 +36,10 @@ import io.dropwizard.auth.Auth;
  */
 @Path("/lobby/")
 public class LobbyResource {
-	private static final String KLOKKE_PATTERN = "HH:mm:ss";
-	private static final String LOGG_INN_TEMPLATE = "/WebContent/lobby/login.mustache";
-	private static final String HJEM_TEMPLATE = "/WebContent/lobby/hjem.mustache";
-	private static final String REGISTRER_TEMPLATE = "/WebContent/lobby/registrer.mustache";
+	static final String KLOKKE_PATTERN = "HH:mm:ss";
+	static final String LOGG_INN_TEMPLATE = "/WebContent/lobby/login.mustache";
+	static final String HJEM_TEMPLATE = "/WebContent/lobby/hjem.mustache";
+	static final String REGISTRER_TEMPLATE = "/WebContent/lobby/registrer.mustache";
 	
 	private final LobbyDAO dao;
 	

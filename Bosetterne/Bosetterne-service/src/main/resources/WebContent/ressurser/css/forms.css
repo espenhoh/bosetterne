@@ -15,7 +15,7 @@ label {
     height: 30px;
     line-height: 30px;
     display: inline-block;
-    width: 300px;
+    width: 140px;
 }
 
 label.farge {
@@ -29,5 +29,5 @@ input {
 }
 
 input.felter {
-    left: -180px;
+    left: 0px;
 }

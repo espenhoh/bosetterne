@@ -11,6 +11,10 @@ root {
     
 }
 
+.feilmelding {
+    color: #ff0000;
+}
+
 h1 {
     font-size: 175%;
     font-weight: bold;

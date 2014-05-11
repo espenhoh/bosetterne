@@ -27,8 +27,6 @@ import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
-import com.holtebu.bosetterne.service.inject.names.HjemTemplate;
-import com.holtebu.bosetterne.service.inject.names.LoggInnTemplate;
 import com.holtebu.bosetterne.service.inject.names.Realm;
 
 import io.dropwizard.auth.Authenticator;
@@ -37,6 +35,8 @@ import io.dropwizard.setup.Environment;
 import io.dropwizard.jdbi.DBIFactory;
 
 public class BosetterneModule extends AbstractModule {
+	final String REALM = "protected-resources";
+	
 	private final BosetterneConfiguration configuration;
 	//private final Environment environment;
 	private final Integer INIT_ANTALL_SPILL = 20;
@@ -64,7 +64,7 @@ public class BosetterneModule extends AbstractModule {
 		bind(new TypeLiteral<Map<String, Legitimasjon>>(){}).to(new TypeLiteral<HashMap<String, Legitimasjon>>(){});
         bind(String.class).annotatedWith(Names.named("getit")).toInstance("ingenting");
         bind(Integer.class).annotatedWith(Names.named("antallSpill")).toInstance(INIT_ANTALL_SPILL);
-        bind(String.class).annotatedWith(Realm.class).toInstance("protected-resources");
+        bind(String.class).annotatedWith(Realm.class).toInstance(REALM);
         //bind(DBI.class).toInstance(jdbi); //Trengs denne?
         
         //Bindtemplates
