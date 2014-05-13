@@ -20,7 +20,7 @@ public class RedirectResource {
 	@GET
 	public Response redirect() {
 		try {
-			return Response.seeOther(new URI("lobby/hjem")).build();
+			return Response.seeOther(new URI("hjem")).build();
 		} catch (URISyntaxException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

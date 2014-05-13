@@ -10,6 +10,9 @@ SpanElement feilmeldingPassord2;
 SpanElement feilmeldingEpost;
 InputElement epostfelt;
 
+bool validEpost = true;
+bool validPass = true;
+
 void main() {
 
   brukernavn = querySelector('#txtBrukernavn');
@@ -23,17 +26,22 @@ void main() {
   epostfelt = querySelector('#txtEpost');
 
   brukernavn.onChange.listen(oppdaterKallenavn);
-  passord.onKeyUp.listen(validerEpostOgPassord);
-  passord2.onKeyUp.listen(validerEpostOgPassord);
-  epostfelt.onKeyUp.listen(validerEpostOgPassord);
+  passord.onKeyUp.listen(validerPassord);
+  passord2.onKeyUp.listen(validerPassord);
+  epostfelt.onKeyUp.listen(validerEpost);
 
   print('init ferdig');
 }
 
 oppdaterKallenavn(Event e) => kallenavn.value = brukernavn.value;
 
-validerEpostOgPassord(Event e){
-  bool korrekt = sjekkPassordOK() && sjekkEpostOK();
+validerEpost(Event e){
+  bool korrekt = validPass && sjekkEpostOK();
+  submit.disabled = !korrekt;
+}
+
+validerPassord(Event e){
+  bool korrekt = sjekkPassordOK() && validEpost;
   submit.disabled = !korrekt;
 }
 

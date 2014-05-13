@@ -34,12 +34,12 @@ import io.dropwizard.auth.Auth;
 /**
  * Lobby resource (exposed at "lobby" path)
  */
-@Path("/lobby/")
+@Path("/")
 public class LobbyResource {
 	static final String KLOKKE_PATTERN = "HH:mm:ss";
-	static final String LOGG_INN_TEMPLATE = "/WebContent/lobby/login.mustache";
-	static final String HJEM_TEMPLATE = "/WebContent/lobby/hjem.mustache";
-	static final String REGISTRER_TEMPLATE = "/WebContent/lobby/registrer.mustache";
+	static final String LOGG_INN_TEMPLATE = "/WebContent/login.mustache";
+	static final String HJEM_TEMPLATE = "/WebContent/hjem.mustache";
+	static final String REGISTRER_TEMPLATE = "/WebContent/registrer.mustache";
 	
 	private final LobbyDAO dao;
 	
@@ -50,7 +50,6 @@ public class LobbyResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-    @Path("/hjem")
 	public HjemView hjem(@Context HttpServletRequest request) {
 		return new HjemView(HJEM_TEMPLATE);
 	}
@@ -65,7 +64,7 @@ public class LobbyResource {
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces(MediaType.TEXT_HTML)
-    @Path("/registrer_spiller")
+    @Path("/registrer")
 	public RegistrerView registrerSpiller(
 			@FormParam("brukernavn") String brukernavn,
 			@FormParam("kallenavn") String kallenavn,

@@ -86,7 +86,6 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         
         //Resources
         logger.info("3/5 Legger til standard resources");
-        environment.jersey().register(bosetterneInjector.getInstance(RedirectResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(LobbyResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(HelloWorldResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(MyResource.class));
