@@ -23,11 +23,11 @@ import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
-import com.holtebu.bosetterne.service.resources.LobbyResource;
 import com.holtebu.bosetterne.service.resources.MyResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.RedirectResource;
+import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 
 import static org.mockito.Mockito.mock;
