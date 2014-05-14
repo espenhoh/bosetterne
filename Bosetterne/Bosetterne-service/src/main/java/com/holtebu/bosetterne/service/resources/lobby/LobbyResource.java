@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.resources;
+package com.holtebu.bosetterne.service.resources.lobby;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -39,7 +39,7 @@ public class LobbyResource {
 	static final String KLOKKE_PATTERN = "HH:mm:ss";
 	static final String LOGG_INN_TEMPLATE = "/WebContent/login.mustache";
 	static final String HJEM_TEMPLATE = "/WebContent/hjem.mustache";
-	static final String REGISTRER_TEMPLATE = "/WebContent/registrer.mustache";
+	
 	
 	private final LobbyDAO dao;
 	
@@ -54,28 +54,7 @@ public class LobbyResource {
 		return new HjemView(HJEM_TEMPLATE);
 	}
 	
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-    @Path("/registrer")
-	public RegistrerView registrer(@Context HttpServletRequest request) {
-		return new RegistrerView(REGISTRER_TEMPLATE);
-	}
 	
-	@POST
-	@Consumes("application/x-www-form-urlencoded")
-	@Produces(MediaType.TEXT_HTML)
-    @Path("/registrer")
-	public RegistrerView registrerSpiller(
-			@FormParam("brukernavn") String brukernavn,
-			@FormParam("kallenavn") String kallenavn,
-			@FormParam("spillerfarge") String farge,
-			@FormParam("epost") String epost,
-			@FormParam("passord1") String passord1,
-			@FormParam("passord2") String passord2) {
-		
-		System.out.println(brukernavn + kallenavn + farge + epost + passord1 + passord2);
-		return new RegistrerView(REGISTRER_TEMPLATE);
-	}
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
