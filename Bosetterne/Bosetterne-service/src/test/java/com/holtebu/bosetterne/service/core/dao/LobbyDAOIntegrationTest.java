@@ -3,6 +3,9 @@ package com.holtebu.bosetterne.service.core.dao;
 //import static org.junit.Assert.*;
 
 
+import java.sql.Date;
+import java.sql.Timestamp;
+
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +38,7 @@ public class LobbyDAOIntegrationTest{
 	public void testSkalFinneSpiller() throws Exception {
 		Spiller spillerFunnet = dao.finnSpillerVedNavn("testbruker");
 		
-		assertThat("test_navn skal ha passord test_passord", "", is(equalTo("test_passord")));
+		assertThat("test_navn skal ha passord test_passord", spillerFunnet.getPassord(), is(equalTo("test_passord")));
 	}
 	
 	@Test
@@ -46,29 +49,60 @@ public class LobbyDAOIntegrationTest{
 	}
 	
 	@Test //TODO
-	public void testHenteSpiller() throws Exception {
+	public void settSpillerInnlogget() throws Exception {
 		Spiller spillerFunnet = dao.finnSpillerVedNavn("testbruker");
 		
-		assertThat("test_navn skal ha passord test_passord", "", is(equalTo("test_passord")));
+		assertThat("test_navn skal ha passord test_passord", spillerFunnet.getPassord(), is(equalTo("test_passord")));
+	}
+	
+	@Test
+	public void oppdaterSpiller() throws Exception {
+		Spiller spiller = lagSpiller();
+		
+		fjernTestSpillerHvisEksisterer(spiller.getBrukernavn());
+		dao.registrerSpiller(spiller);
+		
+		spiller.setISpill(true);
+		dao.oppdaterSpiller(spiller);
+		Spiller hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
+		assertThat("Spiller skal være i spill", hentetSpiller.isISpill(), is(equalTo(true)));
+		
+		spiller.setISpill(false);
+		dao.oppdaterSpiller(spiller);
+		hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
+		assertThat("Spiller skal ikke være i spill", hentetSpiller.isISpill(), is(equalTo(false)));
+		
+		spiller.setInnlogget(true);
+		dao.oppdaterSpiller(spiller);
+		hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
+		assertThat("Spiller skal være innlogget", hentetSpiller.isInnlogget(), is(equalTo(true)));
+		
+		spiller.setInnlogget(false);
+		dao.oppdaterSpiller(spiller);
+		hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
+		assertThat("Spiller skal ikke være innlogget", hentetSpiller.isInnlogget(), is(equalTo(false)));
+		
+		Timestamp sistInnlogget = new Timestamp(System.currentTimeMillis());
+		spiller.setSistInnlogget(sistInnlogget);
+		dao.oppdaterSpiller(spiller);
+		hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
+		//assertThat("Spiller skal være innlogget nettopp", hentetSpiller.getSistInnlogget().getTime(), is(equalTo(sistInnlogget.getTime())));
 	}
 	
 	@Test
 	public void settInnReturnerOgSlettSpiller() {
-		String testNavn = "Petter";
-		String testPassord = "Edderkopp";
-		String testEpost = "test@epost.com";
+
+		Spiller testSpiller = lagSpiller();
 		
-		Spiller testSpiller = new Spiller();
-		
-		fjernTestSpillerHvisEksisterer(testNavn);
+		fjernTestSpillerHvisEksisterer(testSpiller.getBrukernavn());
 		
 		dao.registrerSpiller(testSpiller);
-		Spiller spillerFunnet = dao.finnSpillerVedNavn(testNavn);
-		assertThat(testNavn + " skal ha passord " + testPassord, "", is(equalTo(testPassord)));
+		Spiller spillerFunnet = dao.finnSpillerVedNavn(testSpiller.getBrukernavn());
+		assertThat(testSpiller.getBrukernavn() + " skal ha passord " + testSpiller.getPassord(), spillerFunnet.getPassord(), is(equalTo(testSpiller.getPassord())));
 		
-		dao.slettSpiller(testNavn);
-		spillerFunnet = dao.finnSpillerVedNavn(testNavn);
-		assertThat(testNavn + " skal ikke eksistere i databasen.", spillerFunnet, is(nullValue()));
+		dao.slettSpiller(testSpiller.getBrukernavn());
+		spillerFunnet = dao.finnSpillerVedNavn(testSpiller.getBrukernavn());
+		assertThat(testSpiller.getBrukernavn() + " skal ikke eksistere i databasen.", spillerFunnet, is(nullValue()));
 	}
 
 	private void fjernTestSpillerHvisEksisterer(String testNavn){
@@ -76,6 +110,23 @@ public class LobbyDAOIntegrationTest{
 		if(spillerFunnet != null) {
 			dao.slettSpiller(testNavn);
 		}
+	}
+	
+	Spiller lagSpiller(){
+		String testBrukernavn = "Petter";
+		String testKallenavn = "Petter";
+		String testFarge = "#ff0000";
+		String testEpost = "Petter";
+		String testPassord = "Edderkopp";
+		Date datoReg = new Date(System.currentTimeMillis());
+		
+		return new Spiller(
+				testBrukernavn,
+				testKallenavn,
+				testFarge,
+				testEpost,
+				testPassord,
+				datoReg);
 	}
 
 

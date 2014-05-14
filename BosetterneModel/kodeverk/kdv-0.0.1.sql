@@ -1,5 +1,6 @@
 -- Testpersoner
-insert into bosetterne.SPILLER (brukernavn, passord, kallenavn, epost, dato_registrert) VALUES ('testbruker','test_passord','kalle', 'test@test.com', CURDATE());
+
+INSERT INTO bosetterne.SPILLER (brukernavn, kallenavn, farge, epost, passord, dato_registrert) VALUES ('testbruker', 'testbruker', '#000000', 'test@test.com', 'test_passord', CURDATE());
 
 -- Kodeverk
 insert into bosetterne.K_TYPE (k_type, dekode) values ('BOSETTERNE','Bosetterne basisspillet');

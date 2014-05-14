@@ -1,17 +1,15 @@
 package com.holtebu.bosetterne.api;
 
-import java.awt.Color;
-import java.util.Date;
+
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.Set;
-
-
-
 
 public class Spiller {
 
 	public Spiller(){}
 	
-    public Spiller(String brukernavn, String kallenavn, Color farge,
+    public Spiller(String brukernavn, String kallenavn, String farge,
 			String epost, String passord, Date datoRegistrert) {
 		super();
 		this.brukernavn = brukernavn;
@@ -24,14 +22,15 @@ public class Spiller {
 
 	private String brukernavn;
     private String kallenavn;
-    private Color farge;
+    private String farge;
 	private String epost;
     private String passord;
     private Date datoRegistrert;
     
     private boolean innlogget;
+    private boolean ISpill;
     private Set<Game> iGame;
-    private Date sistInnlogget;
+    private Timestamp sistInnlogget;
     
     public String getPassord() {
 		return passord;
@@ -57,15 +56,19 @@ public class Spiller {
 		return iGame;
 	}
 
-	public Date getSistInnlogget() {
+	public Timestamp getSistInnlogget() {
 		return sistInnlogget;
 	}
 	
-	public Color getFarge() {
+	public void setSistInnlogget(Timestamp sistInnlogget) {
+		this.sistInnlogget = sistInnlogget;
+	}
+	
+	public String getFarge() {
 		return farge;
 	}
 
-	public void setFarge(Color farge) {
+	void setFarge(String farge) {
 		this.farge = farge;
 	}
 
@@ -73,7 +76,7 @@ public class Spiller {
 		return epost;
 	}
 
-	public void setEpost(String epost) {
+	void setEpost(String epost) {
 		this.epost = epost;
 	}
 
@@ -81,8 +84,16 @@ public class Spiller {
 		return datoRegistrert;
 	}
 
-	public void setDatoRegistrert(Date datoRegistrert) {
+	void setDatoRegistrert(Date datoRegistrert) {
 		this.datoRegistrert = datoRegistrert;
+	}
+
+	public boolean isISpill() {
+		return ISpill;
+	}
+
+	public void setISpill(boolean ISpill) {
+		this.ISpill = ISpill;
 	}
 	
 

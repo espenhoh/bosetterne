@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.core.dao;
+package com.holtebu.bosetterne.api;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,20 +9,22 @@ import java.util.Set;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
-import com.holtebu.bosetterne.api.Game;
-import com.holtebu.bosetterne.api.Spiller;
-
 public class SpillerMapper implements ResultSetMapper<Spiller> {
 	//TODO add games
 	@Override
 	public Spiller map(int index, ResultSet r, StatementContext ctx)
 			throws SQLException {
-		return new Spiller(
+		Spiller spiller = new Spiller(
 				r.getString("brukernavn"),
-				r.getString("passord"),
 				r.getString("kallenavn"),
-				r.getBoolean("innlogget"),
-				new HashSet<Game>(),
-				r.getDate("dato_sist_innlogget"));
+				r.getString("farge"),
+				r.getString("epost"),
+				r.getString("passord"),
+				r.getDate("dato_registrert"));
+		
+		spiller.setSistInnlogget(r.getTimestamp("dato_sist_innlogget"));
+		spiller.setInnlogget(r.getBoolean("innlogget"));
+		spiller.setISpill(r.getBoolean("i_spill"));
+		return spiller;
 	}
 }

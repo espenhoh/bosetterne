@@ -14,11 +14,12 @@ import com.google.inject.Inject;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.views.RegistrerView;
 
-@Path("/")
+@Path("/registrer")
 public class RegistrerResource {
 	
 	//TODO legg til i YAML
 	static final String registrer_template = "/WebContent/registrer.mustache";
+	static final String registrert_template = "/WebContent/registrert.mustache";
 
 	private LobbyDAO dao;
 
@@ -29,7 +30,6 @@ public class RegistrerResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-    @Path("/registrer")
 	public RegistrerView registrer(@Context HttpServletRequest request) {
 		return new RegistrerView(registrer_template);
 	}
@@ -37,7 +37,6 @@ public class RegistrerResource {
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces(MediaType.TEXT_HTML)
-    @Path("/registrer")
 	public RegistrerView registrerSpiller(
 			@FormParam("brukernavn") String brukernavn,
 			@FormParam("kallenavn") String kallenavn,
@@ -51,7 +50,9 @@ public class RegistrerResource {
 		//Spiller spiller = new Spiller(brukernavn, kallenavn, farge, epost, passord, new Date());
 		
 		System.out.println(brukernavn + kallenavn + farge + epost + passord1 + passord2);
-		return view;
+		//return view;
+		
+		return new RegistrerView(registrert_template);
 	}
 
 }
