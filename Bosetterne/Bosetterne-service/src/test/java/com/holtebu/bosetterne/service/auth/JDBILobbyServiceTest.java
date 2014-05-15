@@ -63,7 +63,7 @@ public class JDBILobbyServiceTest {
 		String username = "test";
 		String password = "testPassord";
 		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spillerFraDB = new Spiller(username, password, "", true, null, null);
+		Spiller spillerFraDB = new Spiller(username, username, "", "", password, null);
 		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(spillerFraDB);
 		
 		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
@@ -78,7 +78,7 @@ public class JDBILobbyServiceTest {
 		String password = "testPassord";
 		String annetPassord = "testPassord2";
 		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spillerFraDB = new Spiller(username, annetPassord, "", true, null, null);
+		Spiller spillerFraDB = new Spiller(username, username, "", "", annetPassord, null);
 		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(spillerFraDB);
 		
 		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
@@ -105,7 +105,7 @@ public class JDBILobbyServiceTest {
 		String password = "testPassord";
 		verify(daoMock, Mockito.times(0)).finnSpillerVedNavn(eq(username));
 		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spillerFraDB = new Spiller(username, password, "", true, null, null);
+		Spiller spillerFraDB = new Spiller(username, username, "", "", password, null);
 		
 		Optional<Spiller> hentetSpiller = lobbyService.hentSpillerFraCache(new BasicCredentials("skal ikke", "finnes"));
 		assertThat("Spiller skal ikke finnes", hentetSpiller.isPresent(), is(equalTo(false)));
@@ -126,7 +126,7 @@ public class JDBILobbyServiceTest {
 		String username = "test";
 		String password = "testPassord";
 		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spiller = new Spiller(username, password, "", true, null, null);
+		Spiller spiller = new Spiller(username, username, "", "", password, null);
 		
 		boolean riktigPassord = lobbyService.riktigPassord(spiller, cred);
 		
@@ -139,7 +139,7 @@ public class JDBILobbyServiceTest {
 		String password = "testPassord";
 		String annetPassord = "testPassord2";
 		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spiller = new Spiller(username, annetPassord, "", true, null, null);
+		Spiller spiller = new Spiller(username, username, "", "", annetPassord, null);
 		
 		boolean riktigPassord = lobbyService.riktigPassord(spiller, cred);
 		

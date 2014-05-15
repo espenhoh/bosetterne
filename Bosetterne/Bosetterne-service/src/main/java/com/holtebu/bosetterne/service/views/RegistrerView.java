@@ -6,11 +6,14 @@ import com.holtebu.bosetterne.api.Spiller;
 import io.dropwizard.views.View;
 
 public class RegistrerView extends View {
-
-	private boolean loggedIn = false;
-	private String brukernavnEksisterer = "";
-	private String fargeEksisterer = "";
-	private String epostEksisterer = "";
+	private static final String BRUKERNAVN_EKSISTERER_SPAN = "<span id=\"brukernavn_fail\" class=\"feilmelding\" hidden><strong>Brukernavnet eksisterer, velg et annet.</strong></span>";
+	private static final String FARGE_EKSISTERER_SPAN = "<span id=\"farge_fail\" class=\"feilmelding\" hidden><strong>Fargen eksisterer, velg en annen.</strong></span>";
+	private static final String EPOST_EKSISTERER_SPAN = "<span id=\"epost_fail\" class=\"feilmelding\" hidden><strong>Eposten eksisterer, du er fucked!</strong></span>";
+	
+	private boolean loggedIn;
+	private String brukernavnEksisterer;
+	private String fargeEksisterer;
+	private String epostEksisterer;
 	
 	private Spiller registrertSpiller;
 
@@ -44,9 +47,9 @@ public class RegistrerView extends View {
 
 	public void setBrukernavnEksisterer(boolean brukernavnEksisterer) {
 		if (brukernavnEksisterer) {
-			this.brukernavnEksisterer = "<span id=\"brukernavn_fail\" class=\"feilmelding\" hidden><strong>Brukernavnet eksisterer, velg et annet.</strong></span>";
+			this.brukernavnEksisterer = BRUKERNAVN_EKSISTERER_SPAN;
 		} else {
-			this.brukernavnEksisterer = "";
+			this.brukernavnEksisterer = null;
 		}
 	}
 
@@ -56,9 +59,9 @@ public class RegistrerView extends View {
 
 	public void setFargeEksisterer(boolean fargeEksisterer) {
 		if (fargeEksisterer) {
-			this.brukernavnEksisterer = "<span id=\"farge_fail\" class=\"feilmelding\" hidden><strong>Fargen eksisterer, velg en annen.</strong></span>";
+			this.fargeEksisterer = FARGE_EKSISTERER_SPAN;
 		} else {
-			this.brukernavnEksisterer = "";
+			this.fargeEksisterer = null;
 		}
 	}
 
@@ -68,9 +71,9 @@ public class RegistrerView extends View {
 
 	public void setEpostEksisterer(boolean epostEksisterer) {
 		if (epostEksisterer) {
-			this.brukernavnEksisterer = "<span id=\"epost_fail\" class=\"feilmelding\" hidden><strong>Eposten eksisterer, du er fucked!</strong></span>";
+			this.brukernavnEksisterer = EPOST_EKSISTERER_SPAN;
 		} else {
-			this.brukernavnEksisterer = "";
+			this.brukernavnEksisterer = null;
 		}
 	}
 }

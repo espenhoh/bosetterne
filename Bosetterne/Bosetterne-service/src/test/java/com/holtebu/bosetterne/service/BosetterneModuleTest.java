@@ -26,7 +26,6 @@ import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.MyResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.OAuthAuthorizeResource;
-import com.holtebu.bosetterne.service.resources.RedirectResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 
@@ -50,7 +49,6 @@ public class BosetterneModuleTest {
 	private OAuthAccessTokenResource oAuthAccessTokenResource;
 	private OAuthAuthorizeResource oAuthAuthorizeResource;
 	
-	private RedirectResource redirectResource;
 	private LobbyResource lobbyResource;
 	private HelloWorldResource helloWorldResource;
 	private MyResource myResource;
@@ -79,7 +77,6 @@ public class BosetterneModuleTest {
         //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));        
         
         //Resources
-		redirectResource = bosetterneInjector.getInstance(RedirectResource.class);
 		lobbyResource = bosetterneInjector.getInstance(LobbyResource.class);
 		helloWorldResource = bosetterneInjector.getInstance(HelloWorldResource.class);
         myResource = bosetterneInjector.getInstance(MyResource.class);

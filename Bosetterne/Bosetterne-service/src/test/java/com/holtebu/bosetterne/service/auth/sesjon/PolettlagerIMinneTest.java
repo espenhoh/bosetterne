@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -18,6 +19,7 @@ import com.holtebu.bosetterne.service.ConfigurationStub;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
+
 import io.dropwizard.auth.basic.BasicCredentials;
 
 import org.hamcrest.core.IsNull;
@@ -240,10 +242,20 @@ public class PolettlagerIMinneTest {
 	}
 	
 	private Spiller lagTestspiller() {
-		String username = "test";
-		String password = "testPassord";
-		Spiller spiller = new Spiller(username, password, "", true, null, null);
-		return spiller;
+		String testBrukernavn = "test";
+		String testKallenavn = "Petter";
+		String testFarge = "#ff0000";
+		String testEpost = "Petter@pettersen.com";
+		String testPassord = "testPassord";
+		Date datoReg = new Date(System.currentTimeMillis());
+		
+		return new Spiller(
+				testBrukernavn,
+				testKallenavn,
+				testFarge,
+				testEpost,
+				testPassord,
+				datoReg);
 	}
 
 }

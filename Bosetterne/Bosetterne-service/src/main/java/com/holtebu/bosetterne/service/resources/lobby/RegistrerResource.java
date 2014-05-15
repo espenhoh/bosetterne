@@ -10,7 +10,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.google.common.base.Optional;
 import com.google.inject.Inject;
+import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.views.RegistrerView;
 
@@ -46,6 +48,13 @@ public class RegistrerResource {
 			@FormParam("passord2") String passord2) {
 		
 		RegistrerView view = new RegistrerView(registrer_template);
+		
+		if (passord1.equals(passord2)){
+			view = new RegistrerView(registrer_template);
+		}
+		
+		Optional<Spiller> spillerFraBase = Optional.fromNullable(dao.finnSpillerVedNavn(brukernavn));
+		view.setBrukernavnEksisterer(spillerFraBase.isPresent());
 		
 		//Spiller spiller = new Spiller(brukernavn, kallenavn, farge, epost, passord, new Date());
 		

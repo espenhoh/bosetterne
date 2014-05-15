@@ -24,7 +24,7 @@ public class SpillerMapper implements ResultSetMapper<Spiller> {
 		
 		spiller.setSistInnlogget(r.getTimestamp("dato_sist_innlogget"));
 		spiller.setInnlogget(r.getBoolean("innlogget"));
-		spiller.setISpill(r.getBoolean("i_spill"));
+		spiller.setiSpill(r.getBoolean("i_spill"));
 		return spiller;
 	}
 }

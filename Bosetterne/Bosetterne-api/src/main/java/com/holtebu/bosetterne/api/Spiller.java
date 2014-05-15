@@ -28,12 +28,16 @@ public class Spiller {
     private Date datoRegistrert;
     
     private boolean innlogget;
-    private boolean ISpill;
+    private boolean iSpill;
     private Set<Game> iGame;
     private Timestamp sistInnlogget;
     
     public String getPassord() {
 		return passord;
+	}
+    
+    public void setPassord(String passord) {
+		this.passord = passord;
 	}
     
 	public boolean isInnlogget() {
@@ -46,6 +50,10 @@ public class Spiller {
 
 	public String getBrukernavn() {
 		return brukernavn;
+	}
+	
+	public void setBrukernavn(String brukernavn) {
+		this.brukernavn = brukernavn;
 	}
 
 	public String getKallenavn() {
@@ -68,7 +76,7 @@ public class Spiller {
 		return farge;
 	}
 
-	void setFarge(String farge) {
+	public void setFarge(String farge) {
 		this.farge = farge;
 	}
 
@@ -76,7 +84,7 @@ public class Spiller {
 		return epost;
 	}
 
-	void setEpost(String epost) {
+	public void setEpost(String epost) {
 		this.epost = epost;
 	}
 
@@ -88,12 +96,12 @@ public class Spiller {
 		this.datoRegistrert = datoRegistrert;
 	}
 
-	public boolean isISpill() {
-		return ISpill;
+	public boolean isiSpill() {
+		return iSpill;
 	}
 
-	public void setISpill(boolean ISpill) {
-		this.ISpill = ISpill;
+	public void setiSpill(boolean iSpill) {
+		this.iSpill = iSpill;
 	}
 	
 

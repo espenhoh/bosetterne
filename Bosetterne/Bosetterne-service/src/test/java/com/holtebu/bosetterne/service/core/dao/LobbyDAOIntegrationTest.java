@@ -15,6 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.core.StringContains.containsString;
 
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
@@ -42,10 +43,34 @@ public class LobbyDAOIntegrationTest{
 	}
 	
 	@Test
-	public void testSkalIkkeFinnePassord() throws Exception {
-		Spiller spillerFunnet = dao.finnSpillerVedNavn("ikke_eksisterende_navn");
+	public void testDuplikat() throws Exception {
+		Spiller spiller = lagSpiller();
+		Spiller spiller2 = lagSpiller();
 		
-		assertThat("Brukeren skal ikke eksistere", spillerFunnet, is(nullValue()));
+		fjernTestSpillerHvisEksisterer(spiller.getBrukernavn());
+		dao.registrerSpiller(spiller);
+		try {
+			dao.registrerSpiller(spiller2);
+		} catch (org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException e){
+			
+			assertThat(e.getMessage(), containsString("Duplicate entry 'Petter' for key 'PRIMARY'"));
+		}
+		
+		
+		spiller2.setBrukernavn("NyBruker");
+		try {
+			dao.registrerSpiller(spiller2);
+		} catch (org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException e){
+			assertThat(e.getMessage(), containsString("Duplicate entry '#ff0000' for key 'farge_UNIQUE'"));
+			
+		}
+		
+		spiller2.setFarge("#444444");
+		try {
+			dao.registrerSpiller(spiller2);
+		} catch (org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException e){
+			assertThat(e.getMessage(), containsString("Duplicate entry 'Petter@pettersen.com' for key 'epost_UNIQUE'"));
+		}
 	}
 	
 	@Test //TODO
@@ -62,32 +87,41 @@ public class LobbyDAOIntegrationTest{
 		fjernTestSpillerHvisEksisterer(spiller.getBrukernavn());
 		dao.registrerSpiller(spiller);
 		
-		spiller.setISpill(true);
+		long expectedTime = (System.currentTimeMillis()/1000L)*1000L;
+		Timestamp sistInnlogget = new Timestamp(expectedTime);
+		
+		spiller.setiSpill(true);
+		spiller.setInnlogget(true);
+		spiller.setSistInnlogget(sistInnlogget);
 		dao.oppdaterSpiller(spiller);
 		Spiller hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
-		assertThat("Spiller skal være i spill", hentetSpiller.isISpill(), is(equalTo(true)));
-		
-		spiller.setISpill(false);
-		dao.oppdaterSpiller(spiller);
-		hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
-		assertThat("Spiller skal ikke være i spill", hentetSpiller.isISpill(), is(equalTo(false)));
-		
-		spiller.setInnlogget(true);
-		dao.oppdaterSpiller(spiller);
-		hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
+		assertThat("Spiller skal være i spill", hentetSpiller.isiSpill(), is(equalTo(true)));
 		assertThat("Spiller skal være innlogget", hentetSpiller.isInnlogget(), is(equalTo(true)));
+		assertThat("Spiller skal være innlogget nettopp", hentetSpiller.getSistInnlogget().getTime(), is(equalTo(expectedTime)));
 		
+		spiller.setiSpill(false);
 		spiller.setInnlogget(false);
 		dao.oppdaterSpiller(spiller);
 		hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
-		assertThat("Spiller skal ikke være innlogget", hentetSpiller.isInnlogget(), is(equalTo(false)));
-		
-		Timestamp sistInnlogget = new Timestamp(System.currentTimeMillis());
-		spiller.setSistInnlogget(sistInnlogget);
-		dao.oppdaterSpiller(spiller);
-		hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
-		//assertThat("Spiller skal være innlogget nettopp", hentetSpiller.getSistInnlogget().getTime(), is(equalTo(sistInnlogget.getTime())));
+		assertThat("Spiller skal ikke være i spill", hentetSpiller.isiSpill(), is(equalTo(false)));
+		assertThat("Spiller skal ikke være innlogget", hentetSpiller.isInnlogget(), is(equalTo(false)));		
 	}
+	
+	@Test
+	public void oppdaterPassord() throws Exception {
+		Spiller spiller = lagSpiller();
+		
+		fjernTestSpillerHvisEksisterer(spiller.getBrukernavn());
+		dao.registrerSpiller(spiller);
+		
+		String nyttPassord = "&ØØØ#";
+		spiller.setPassord(nyttPassord);
+		dao.oppdaterPassord(spiller);
+		Spiller hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
+		assertThat("Spiller skal ha passord: \"nyttPassord\"", hentetSpiller.getPassord(), is(equalTo(nyttPassord)));
+	}
+	
+	
 	
 	@Test
 	public void settInnReturnerOgSlettSpiller() {
@@ -116,7 +150,7 @@ public class LobbyDAOIntegrationTest{
 		String testBrukernavn = "Petter";
 		String testKallenavn = "Petter";
 		String testFarge = "#ff0000";
-		String testEpost = "Petter";
+		String testEpost = "Petter@pettersen.com";
 		String testPassord = "Edderkopp";
 		Date datoReg = new Date(System.currentTimeMillis());
 		

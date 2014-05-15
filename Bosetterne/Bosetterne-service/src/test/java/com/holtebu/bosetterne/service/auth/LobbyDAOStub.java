@@ -32,4 +32,22 @@ public class LobbyDAOStub implements LobbyDAO{
 		return null;
 	}
 
+	@Override
+	public void oppdaterSpiller(Spiller spiller) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void oppdaterPassord(Spiller spiller) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String epostEksisterer(String epost) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }
