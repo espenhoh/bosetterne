@@ -1,5 +1,7 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
+import java.sql.Date;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -22,6 +24,7 @@ public class RegistrerResource {
 	//TODO legg til i YAML
 	static final String registrer_template = "/WebContent/registrer.mustache";
 	static final String registrert_template = "/WebContent/registrert.mustache";
+	static final String registrering_feilet_template = "/WebContent/registrering_feilet.mustache";
 
 	private LobbyDAO dao;
 
@@ -47,19 +50,30 @@ public class RegistrerResource {
 			@FormParam("passord1") String passord1,
 			@FormParam("passord2") String passord2) {
 		
+		Spiller registrertSpiller = new Spiller(brukernavn, kallenavn, farge, epost, passord1, new Date(System.currentTimeMillis()));
+		
 		RegistrerView view = new RegistrerView(registrer_template);
 		
-		if (passord1.equals(passord2)){
-			view = new RegistrerView(registrer_template);
+		view.setPassordMatcherIkke(!passord1.equals(passord2));
+		view.setPassordForKort(passord1.length() < 6);
+		
+		try {
+			dao.registrerSpiller(registrertSpiller);
+		} catch (org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException e) {
+			view.setRegistrertSpiller(registrertSpiller);
+			String feilMelding = e.getMessage();
+			if (feilMelding.contains("Duplicate entry")){
+				view.setBrukernavnEksisterer(feilMelding.contains("for key 'PRIMARY'"));
+				view.setEpostEksisterer(feilMelding.contains("for key 'epost_UNIQUE'"));
+				view.setFargeEksisterer(feilMelding.contains("for key 'farge_UNIQUE'"));
+			} else {
+				return new RegistrerView(registrering_feilet_template);
+			}
 		}
 		
-		Optional<Spiller> spillerFraBase = Optional.fromNullable(dao.finnSpillerVedNavn(brukernavn));
-		view.setBrukernavnEksisterer(spillerFraBase.isPresent());
-		
-		//Spiller spiller = new Spiller(brukernavn, kallenavn, farge, epost, passord, new Date());
-		
-		System.out.println(brukernavn + kallenavn + farge + epost + passord1 + passord2);
-		//return view;
+		if(view.feilet()) {
+			return view;
+		}
 		
 		return new RegistrerView(registrert_template);
 	}

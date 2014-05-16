@@ -30,29 +30,26 @@
         </nav>
         <article>
             <h1 id="loginForAASpille"></h1>
-            <h1>
-            	Hallo 
-            	<span id="HelloWorld"></span>
-            	. Du har kalt 
-            	<span id="antallKall"></span>
-            	ganger!
-            </h1>
-            
+
             <form id="frmLogin"
                   enctype="application/x-www-form-urlencoded"
                   accept-charset="utf-8"
-                  action="http://localhost:8080/hello-world"
-                  method="get">
+                  action="http://localhost:8080/service/authorize"
+                  method="POST">
                 <label for="txtKalleNavn">Kallenavn:</label>
-                <input type="text" id="txtKalleNavn" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$"  name="name" class="felter" value="" size="15" maxlength="15">
-                <!-- <br/>
-                <label for="pass">Passord: </label>
-                <input type="password" id="pass" name="pass" class="felter" value="" size="15" maxlength="15">-->
+                <input type="text" id="txtKalleNavn" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$"  name="username" class="felter" value="" size="15" maxlength="15">
                 <br/>
+                <label for="pass">Passord: </label>
+                <input type="password" id="pass" name="password" class="felter" value="" size="15" maxlength="15">
+                <br/>
+
+                <input type="hidden" name="redirect_uri" value="http://localhost:8080/service/hello-world?name=Yay-logget-inn!"/>
+                <input type="hidden" name="client_id" value="Bosetterne"/>
+                <input type="hidden" name="state" value="fantastisk"/>
                 <input type="submit" value="Logg inn">
 
             </form>
-            
+
             <input type="button" id="SayHello" name="SayHello" value="Hello"></input>
 
         </article>
