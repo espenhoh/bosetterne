@@ -8,10 +8,11 @@ import com.google.inject.Injector;
 import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
-import com.holtebu.bosetterne.service.resources.MyResource;
+import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
+import com.holtebu.bosetterne.service.resources.lobby.LoggInnResource;
 import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
 
 import io.dropwizard.assets.AssetsBundle;
@@ -88,8 +89,9 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         logger.info("3/5 Legger til standard resources");
         environment.jersey().register(bosetterneInjector.getInstance(LobbyResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(RegistrerResource.class));
+        environment.jersey().register(bosetterneInjector.getInstance(LoggInnResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(HelloWorldResource.class));
-        environment.jersey().register(bosetterneInjector.getInstance(MyResource.class));
+        environment.jersey().register(bosetterneInjector.getInstance(BosetterneResource.class));
         
         //Health checks
         logger.info("4/5 Legger til HealthChecks");

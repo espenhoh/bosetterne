@@ -97,7 +97,7 @@ public class PolettlagerIMinne implements
 		
 		Legitimasjon leg = codes.get(code);
 		if (leg != null) {
-			spiller = codes.get(code).getSpiller();
+			spiller = leg.getSpiller();
 		}
 		return Optional.fromNullable(spiller);
 	}

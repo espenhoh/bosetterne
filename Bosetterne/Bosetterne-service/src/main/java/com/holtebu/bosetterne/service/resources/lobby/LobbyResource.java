@@ -37,7 +37,6 @@ import io.dropwizard.auth.Auth;
 @Path("/")
 public class LobbyResource {
 	static final String KLOKKE_PATTERN = "HH:mm:ss";
-	static final String LOGG_INN_TEMPLATE = "/WebContent/login.mustache";
 	static final String HJEM_TEMPLATE = "/WebContent/hjem.mustache";
 	
 	
@@ -55,17 +54,7 @@ public class LobbyResource {
 	}
 	
 	
-	
-	@GET
-	@Produces(MediaType.TEXT_HTML)
-    @Path("/logg_inn")
-	public LoggInnView logInn(@Context HttpServletRequest request) {
-//		Locale clientLocale = request.getLocale();
-//		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(KLOKKE_PATTERN, clientLocale);
-//		String now = simpleDateFormat.format(new Date());
-		return new LoggInnView(LOGG_INN_TEMPLATE);
-	}
-	
+
 	/*
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)

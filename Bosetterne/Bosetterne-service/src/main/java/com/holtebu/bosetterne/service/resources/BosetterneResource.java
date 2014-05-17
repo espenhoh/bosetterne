@@ -20,14 +20,14 @@ import com.holtebu.bosetterne.api.Spiller;
  * Root resource (exposed at "myresource" path)
  */
 @Path("/brett")
-public class MyResource {
+public class BosetterneResource {
 	
 	private final Bosetterne bosetterne;
 	
 	private String getit;
 	
 	@Inject
-	public MyResource(Bosetterne bosetterne, @Named("getit") String getit){
+	public BosetterneResource(Bosetterne bosetterne, @Named("getit") String getit){
 		this.bosetterne = bosetterne;
 		this.getit = getit;
 	}

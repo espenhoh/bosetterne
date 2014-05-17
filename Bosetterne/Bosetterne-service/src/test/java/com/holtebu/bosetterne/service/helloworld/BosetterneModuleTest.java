@@ -24,7 +24,8 @@ import com.google.inject.Injector;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.BosetterneModule;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
-import com.holtebu.bosetterne.service.resources.MyResource;
+import com.holtebu.bosetterne.service.resources.BosetterneResource;
+
 import io.dropwizard.setup.Environment;
 
 /**
@@ -66,7 +67,7 @@ public class BosetterneModuleTest {
 
 	@Test
 	public void testConfigure() {
-		MyResource myResource = bosetterneInjector.getInstance(MyResource.class);
+		BosetterneResource myResource = bosetterneInjector.getInstance(BosetterneResource.class);
 		assertThat("getit should be \"ingenting\"",myResource.getIt(),is(equalTo("ingenting")));
 	}
 
