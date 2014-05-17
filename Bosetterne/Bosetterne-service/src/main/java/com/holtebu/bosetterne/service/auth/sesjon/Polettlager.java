@@ -16,6 +16,13 @@ import com.google.common.base.Optional;
  */
 public interface Polettlager<T, I, L, C> {
 
+	/**
+	 * Autoriserer en spiller. Lagrer spilleren sammen med en ny accesstoken.
+	 * 
+	 * @param leg
+	 *            legitimasjon som inneholder en spiller.
+	 * @return accessToken som kan brukes for å få tilgang til resources.
+	 */
 	T storeAccessToken(L leg) throws AutorisasjonsUnntak;
 
 	Optional<I> getSpillerByAccessToken(String accessToken);

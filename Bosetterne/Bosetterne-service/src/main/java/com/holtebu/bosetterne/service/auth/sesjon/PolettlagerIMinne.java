@@ -54,13 +54,7 @@ public class PolettlagerIMinne implements
 		this.oAuth2Verdier = oAuth2Verdier;
 	}
 
-	/**
-	 * Autoriserer en spiller. Lagerer spilleren sammen med en ny accesstoken.
-	 * 
-	 * @param leg
-	 *            legitimasjon som inneholder en spiller.
-	 * @return accessToken som kan brukes for å få tilgang til resources.
-	 */
+
 	@Override
 	public AccessToken storeAccessToken(Legitimasjon leg) {
 		AccessToken accessToken = null;
