@@ -37,17 +37,17 @@
                   action="/authorize/implicit"
                   method="POST">
                 <label for="txtKalleNavn">Kallenavn:</label>
-                <input type="text" id="txtKalleNavn" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$"  name="username" class="felter" value="" size="15" maxlength="15">
+                <input type="text" id="txtKalleNavn" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$"  name="username" class="felter" value="" size="15" maxlength="15" autocomplete required autofocus>
                 <br/>
                 <label for="pass">Passord: </label>
-                <input type="password" id="pass" name="password" class="felter" value="" size="15" maxlength="15">
+                <input type="password" id="pass" name="password" class="felter" value="" size="15" maxlength="15" required>
                 <br/>
 
                 <input type="hidden" name="redirect_uri" value="http://localhost:8080/service/hello-world?name=Yay-logget-inn!"/>
                 <input type="hidden" name="client_id" value="Bosetterne"/>
                 <input type="hidden" name="scope" value="bosetterne"/>
                 <input type="hidden" name="reponse_type" value="token"/>
-                <input type="submit" value="Logg inn">
+                <input type="submit" value="Logg inn" onclick="{{=<% %>=}}{{onSubmit}}<%={{ }}=%>">
 
             </form>
 
@@ -55,8 +55,9 @@
         <footer>
             All rights reserved © Espen
         </footer>
-<!--        <script type="text/javascript" src="ressurser/js/libs/jQuery/jquery-2.0.3.min.js"></script>
-        <script type="text/javascript" src="ressurser/js/hello.js"></script>-->
+
+        <script type="application/dart" src="/ressurser/dart/login/login.dart"></script>
+        <script src="/ressurser/packages/browser/dart.js"></script>
 
     </body>
 </html>

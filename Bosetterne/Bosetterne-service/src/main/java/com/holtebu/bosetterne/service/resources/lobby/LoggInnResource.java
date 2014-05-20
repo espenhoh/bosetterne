@@ -9,11 +9,13 @@ import javax.ws.rs.core.MediaType;
 
 import com.holtebu.bosetterne.service.views.LoggInnView;
 
+
 @Path("/logg_inn")
 public class LoggInnResource {
 	
 
 	static final String LOGG_INN_TEMPLATE = "/WebContent/login.mustache";
+	static final String LOGGET_INN_TEMPLATE = "/WebContent/logget_inn.mustache";
 
 	public LoggInnResource() {
 		// TODO Auto-generated constructor stub
@@ -27,5 +29,7 @@ public class LoggInnResource {
 //		String now = simpleDateFormat.format(new Date());
 		return new LoggInnView(LOGG_INN_TEMPLATE);
 	}
+	
+	
 
 }

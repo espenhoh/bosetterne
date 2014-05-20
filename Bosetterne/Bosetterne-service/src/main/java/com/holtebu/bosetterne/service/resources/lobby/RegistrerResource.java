@@ -12,6 +12,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
 import com.holtebu.bosetterne.api.Spiller;
@@ -20,6 +23,8 @@ import com.holtebu.bosetterne.service.views.RegistrerView;
 
 @Path("/registrer")
 public class RegistrerResource {
+	
+	private final static Logger logger = LoggerFactory.getLogger("RegistrerResource.class");
 	
 	//TODO legg til i YAML
 	static final String registrer_template = "/WebContent/registrer.mustache";
@@ -50,6 +55,8 @@ public class RegistrerResource {
 			@FormParam("passord1") String passord1,
 			@FormParam("passord2") String passord2) {
 		
+		logger.info("Forsøker å registrere spiller {}", brukernavn);
+		
 		Spiller registrertSpiller = new Spiller(brukernavn, kallenavn, farge, epost, passord1, new Date(System.currentTimeMillis()));
 		
 		RegistrerView view = new RegistrerView(registrer_template);
@@ -59,14 +66,16 @@ public class RegistrerResource {
 		
 		try {
 			dao.registrerSpiller(registrertSpiller);
-		} catch (org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException e) {
+		} catch (org.skife.jdbi.v2.exceptions.UnableToExecuteStatementException utese) {
 			view.setRegistrertSpiller(registrertSpiller);
-			String feilMelding = e.getMessage();
+			String feilMelding = utese.getMessage();
 			if (feilMelding.contains("Duplicate entry")){
 				view.setBrukernavnEksisterer(feilMelding.contains("for key 'PRIMARY'"));
 				view.setEpostEksisterer(feilMelding.contains("for key 'epost_UNIQUE'"));
 				view.setFargeEksisterer(feilMelding.contains("for key 'farge_UNIQUE'"));
 			} else {
+				logger.warn("Annen feil enn \"Duplicate entry\" ved registrering" , utese);
+				utese.printStackTrace();
 				return new RegistrerView(registrering_feilet_template);
 			}
 		}

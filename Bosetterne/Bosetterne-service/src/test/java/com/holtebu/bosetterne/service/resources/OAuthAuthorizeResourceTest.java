@@ -63,7 +63,7 @@ public class OAuthAuthorizeResourceTest {
 				.build(loader)
 			);
 		tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(),new HashMap<String, Legitimasjon>(),new OAuth2Cred("id","secret"));
-		authResource = new OAuthAuthorizeResource(tokenStore, lobbyService);
+		authResource = new OAuthAuthorizeResource(tokenStore, lobbyService, null);
 	}
 
 	@After

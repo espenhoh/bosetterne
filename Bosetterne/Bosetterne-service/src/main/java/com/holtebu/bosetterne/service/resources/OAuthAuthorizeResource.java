@@ -3,6 +3,7 @@ package com.holtebu.bosetterne.service.resources;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -13,6 +14,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.ResponseBuilder;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +35,7 @@ import io.dropwizard.auth.basic.BasicCredentials;
  * Entry point for oauth authorize calls
  * 
  */
+@Singleton
 @Path("/authorize")
 public class OAuthAuthorizeResource {
 	
@@ -97,7 +100,7 @@ public class OAuthAuthorizeResource {
 		
 		if (autorisert) {
 			redirectUri = authorizationCodeRedirectURI(redirectUri, state, authorizationCode);
-			return tryRedirect(redirectUri);
+			return tryRedirect(redirectUri).build();
 		} else {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
@@ -150,9 +153,15 @@ public class OAuthAuthorizeResource {
 				setScope("bosetterne").
 				setState(scope);
 		
-		String authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
+		//String authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
 
 		AccessToken token = tokenStore.storeAccessToken(legitimasjon);
+		
+		
+		
+		Response result = tryRedirect(redirectUri).header("Set-Cookie", token.getAccess_token()).build();
+		
+		return token;
 		
 		/*
 		if (authorization == null) {
@@ -182,7 +191,7 @@ public class OAuthAuthorizeResource {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}*/
 		
-		return new AccessToken("HAHAH", Long.MAX_VALUE);
+		//return new AccessToken("HAHAH", Long.MAX_VALUE);
 	}
 	
 	String authorizationCodeRedirectURI(String redirectUri, String state, String authorizationCode) {
@@ -195,9 +204,9 @@ public class OAuthAuthorizeResource {
 		return String.format(format, authorizationCode, state);
 	}
 
-	private Response tryRedirect(String uri) {
+	private ResponseBuilder tryRedirect(String uri) {
 		try {
-			return Response.seeOther(new URI(uri)).build();
+			return Response.seeOther(new URI(uri));
 		} catch (URISyntaxException e) {
 			Exception ex = new RuntimeException(String.format("Redirect URI '%s' is not valid", uri));
 			logger.warn("Noen har ikke brukt riktig URI", ex);
