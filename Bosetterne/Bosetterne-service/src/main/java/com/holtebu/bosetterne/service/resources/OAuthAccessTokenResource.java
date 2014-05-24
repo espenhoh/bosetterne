@@ -26,7 +26,7 @@ import com.sun.jersey.core.util.Base64;
 */
 @Path("/token")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+@Consumes(MediaType.MULTIPART_FORM_DATA)
 public class OAuthAccessTokenResource {
 
   private final Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;

@@ -122,7 +122,7 @@ public class OAuthAuthorizeResource {
 	 * 	state 	Required, if present in the autorization request. Must be same value as state parameter in request.*/
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+	@Consumes(MediaType.MULTIPART_FORM_DATA)
 	@Path("/implicit")
 	public AccessToken loginImplicit(
 			@FormParam("username") String brukernavn,
@@ -142,7 +142,7 @@ public class OAuthAuthorizeResource {
 		 * https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA &state=xyz
 		 */
 		
-		BasicCredentials credentials = new BasicCredentials(brukernavn, passord);
+		BasicCredentials credentials = new BasicCredentials("", "");
 		Optional<Spiller> spiller = lobbyService.getSpiller(credentials);
 		
 		Legitimasjon legitimasjon = new Legitimasjon().
@@ -159,7 +159,7 @@ public class OAuthAuthorizeResource {
 		
 		
 		
-		Response result = tryRedirect(redirectUri).header("Set-Cookie", token.getAccess_token()).build();
+		//Response result = tryRedirect(redirectUri).header("Set-Cookie", token.getAccess_token()).build();
 		
 		return token;
 		

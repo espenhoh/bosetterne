@@ -43,10 +43,10 @@
                 <input type="password" id="pass" name="password" class="felter" value="" size="15" maxlength="15" required>
                 <br/>
 
-                <input type="hidden" name="redirect_uri" value="http://localhost:8080/service/hello-world?name=Yay-logget-inn!"/>
-                <input type="hidden" name="client_id" value="Bosetterne"/>
-                <input type="hidden" name="scope" value="bosetterne"/>
-                <input type="hidden" name="reponse_type" value="token"/>
+                <input type="hidden" id="redirect_uri" name="redirect_uri" value="http://localhost:8080/service/hello-world?name=Yay-logget-inn!"/>
+                <input type="hidden" id="client_id" name="client_id" value="Bosetterne"/>
+                <input type="hidden" id="scope" name="scope" value="bosetterne"/>
+                <input type="hidden" id="reponse_type" name="reponse_type" value="token"/>
                 <input type="submit" value="Logg inn" onclick="{{=<% %>=}}{{onSubmit}}<%={{ }}=%>">
 
             </form>

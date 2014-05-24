@@ -6,15 +6,46 @@ class BasicCred {
   String password;
 
   BasicCred(this.username, this.password);
-}
 
-
-class Login {
-  Login() {
+  String toString() {
+    return 'Basic ' + window.btoa(username + ':' + password);
   }
 }
 
-void main() {onSubmit();}
+
+void main() {
+  FormElement loginForm = querySelector('form#frmLogin');
+  //print(loginForm.toString());
+
+  Map data = new Map();
+
+  for(Element e in loginForm.children) {
+    if (e is InputElement) {
+      InputElement ie = e as InputElement;
+      print('${ie.name} ,${ie.value}');
+      data[ie.name] = ie.value;
+    }
+  }
+
+  HttpRequest.postFormData("/authorize/implicit", method: "post", sendData: data)
+  .then((HttpRequest resp){
+    print(resp);
+  });
+
+  /*
+  HttpRequest.request("/authorize/implicit", method: "post", withCredentials: true, requestHeaders: reqHeader, sendData: data)
+  .then((HttpRequest resp){
+    print(resp);
+  });*/
+
+  /*
+  HttpRequest.request(loginForm.action, method: 'POST', sendData: data)
+    .then((resp) {
+
+  });*/
+
+  //onSubmit();
+}
 
 void onSubmit(){//}Event e) {
   //e.preventDefault();
@@ -22,35 +53,70 @@ void onSubmit(){//}Event e) {
 
   InputElement spiller = querySelector('#txtKalleNavn');
   InputElement passord = querySelector('#pass');
+  InputElement redirect_uri = querySelector('#redirect_uri');
+  InputElement client_id = querySelector('#client_id');
+  InputElement scope = querySelector('#scope');
+  InputElement reponse_type = querySelector('#reponse_type');
+  FormElement loginForm = querySelector('form#frmLogin');
 
+  final xhr = new HttpRequest();
+  var url = "/authorize/implicit";
+  var method = 'POST';
 
-
-  BasicCred creds = new BasicCred(spiller.value,passord.value);
-  HttpRequest request = new HttpRequest(); // create a new XHR
+  xhr.open(method, url);
 
   // add an event handler that is called when the request finishes
-  request.onReadyStateChange.listen((_) {
-    if (request.readyState == HttpRequest.DONE &&
-    (request.status == 200 || request.status == 0)) {
-      // data saved OK.
-      print(request.responseText); // output the response from the server
+  xhr.onReadyStateChange.listen((e) {
+    if (xhr.readyState == HttpRequest.DONE && (xhr.status == 200 || xhr.status == 0)) {
+      // on OK
+      print(xhr.responseText);
     }
   });
 
+  BasicCred creds = new BasicCred(spiller.value,passord.value);
+
+  Map reqHdr = new Map();
+  reqHdr['Content-Type'] = '';
+
+  xhr.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
+  xhr.setRequestHeader('Authorization',creds.toString());
+
+
+  // send datas by using an existing form and adding some additional datas
+  xhr.send(new FormData(loginForm));
+
+  /*
+  Map formData = new Map();
+  formData['redirect_uri'] = redirect_uri.value;
+  formData['client_id'] = client_id.value;
+  formData['scope'] = scope.value;
+  formData['reponse_type'] = reponse_type.value;
+
+
+
+
+
   // POST the data to the server
-  var url = "/authorize/implicit";
-  request.open("POST", url, async: false);
+  request.open("POST", "/authorize/implicit", async: false, user: spiller.value, password: passord.value);
 
-  request.setRequestHeader('Content-Type','application/x-www-form-urlencoded');
-  request.
+
+
   print(request);
-  //request.setRequestHeader();
 
-  Map
+  var myForm = querySelector('form#frmLogin');
+  var data = new FormData();
+  data.append("redirect_uri",redirect_uri.value);
+  data.append("client_id",client_id.value);
+  data.append("scope",scope.value);
+  data.append("reponse_type",reponse_type.value);
 
-  String jsonData = '{"language":"dart"}'; // etc...
-  request.postFormData(url,);
-  request.send(jsonData); // perform the async POST
+  HttpRequest.request("/authorize/implicit", method: "post", withCredentials: true, requestHeaders: reqHeader, sendData: data)
+  .then((HttpRequest resp){
+    print(resp);
+  });*/
+
+  //request.send(formData);
+  //request.send(jsonData); // perform the async POST
 }
 /*
 Request URL:http://localhost:8080/authorize/implicit
