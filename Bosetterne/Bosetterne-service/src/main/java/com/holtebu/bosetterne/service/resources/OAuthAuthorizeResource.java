@@ -122,7 +122,7 @@ public class OAuthAuthorizeResource {
 	 * 	state 	Required, if present in the autorization request. Must be same value as state parameter in request.*/
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.MULTIPART_FORM_DATA)
+	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
 	@Path("/implicit")
 	public AccessToken loginImplicit(
 			@FormParam("username") String brukernavn,

@@ -69,10 +69,13 @@ public class LobbyResource {
     @Path("{brukernavn}/secretPlan")
     public String getSecretPlan(@PathParam("brukernavn") String brukernavn, @Auth Spiller spiller) {
     	
+    	Object[] f = {,};
     	if(brukernavn.equals(spiller.getBrukernavn())){
     		return "Secret plan revealed!";
     	} else {
     		return "no luck";
     	}
+    	
+        
     }
 }

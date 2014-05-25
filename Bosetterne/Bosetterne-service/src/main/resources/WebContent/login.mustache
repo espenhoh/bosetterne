@@ -33,21 +33,30 @@
 
             <form id="frmLogin"
                   enctype="application/x-www-form-urlencoded"
-                  accept-charset="utf-8"
-                  action="/authorize/implicit"
-                  method="POST">
+                  accept-charset="utf-8">
+                <label for="sel_scope">Spill:</label>
+                <select id="sel_scope" name="sel_scope" class="felter"  size="1" required>
+                    <option value="BOSETTERNE" selected>Bosetterne</option>
+                    <option value="BYERRIDDER" disabled>Byer og riddere</option>
+                    <option value="SJØFARER" disabled>Sjøfarer</option>
+                    <option value="SJØOGLAND" disabled>Sjøfarerutvidelsen med byer og riddere</option>
+                    <option value="HANDELBARB" disabled>Traders and barbarians ikke planlagt implementert</option>
+                    <option value="EXPLPIRAT" disabled>Explorers & Pirates ikke planlagt implementert</option>
+                </select>
+                <br/>
+
                 <label for="txtKalleNavn">Kallenavn:</label>
                 <input type="text" id="txtKalleNavn" pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{1,15}$"  name="username" class="felter" value="" size="15" maxlength="15" autocomplete required autofocus>
                 <br/>
+
                 <label for="pass">Passord: </label>
                 <input type="password" id="pass" name="password" class="felter" value="" size="15" maxlength="15" required>
                 <br/>
 
                 <input type="hidden" id="redirect_uri" name="redirect_uri" value="http://localhost:8080/service/hello-world?name=Yay-logget-inn!"/>
                 <input type="hidden" id="client_id" name="client_id" value="Bosetterne"/>
-                <input type="hidden" id="scope" name="scope" value="bosetterne"/>
                 <input type="hidden" id="reponse_type" name="reponse_type" value="token"/>
-                <input type="submit" value="Logg inn" onclick="{{=<% %>=}}{{onSubmit}}<%={{ }}=%>">
+                <input type="submit" id="logg_inn" value="Logg inn">
 
             </form>
 
