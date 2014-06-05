@@ -13,7 +13,6 @@
 
 	<name>Bosetterne-service</name>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>com.holtebu.bosetterne.api</groupId>
@@ -58,6 +57,10 @@
 		<dependency>
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-views-mustache</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
+			<artifactId>jersey-test-framework-provider-jetty</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
@@ -157,7 +160,7 @@
 						<ignoredResource>META-INF.*</ignoredResource>
 						<ignoredResource>about\.html</ignoredResource>
 					</ignoredResources>
-					<failBuildInCaseOfConflict>true</failBuildInCaseOfConflict>
+					<failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
 					<exceptions>
 						<exception>
 							<conflictingDependencies>
@@ -175,6 +178,29 @@
 							<packages>
 								<package>org.atmosphere.annotation</package>
 							</packages>
+						</exception>
+						<exception>
+							<conflictingDependencies>
+								<dependency>
+									<groupId>com.google.code.findbugs</groupId>
+									<artifactId>annotations</artifactId>
+									<version>2.0.2</version>
+								</dependency>
+								<dependency>
+									<groupId>com.google.code.findbugs</groupId>
+									<artifactId>jsr305</artifactId>
+									<version>2.0.3</version>
+								</dependency>
+							</conflictingDependencies>
+							<packages>
+								<package>javax.annotation</package>
+							</packages>
+							<resources>
+								<resource>javax/annotation/</resource>
+							</resources>
+							<resourcePatterns>
+								<resourcePattern>javax/annotation/*</resourcePattern>
+							</resourcePatterns>
 						</exception>
 						<exception>
 							<conflictingDependencies>

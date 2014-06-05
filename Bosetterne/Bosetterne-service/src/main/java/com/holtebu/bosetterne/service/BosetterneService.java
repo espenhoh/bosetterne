@@ -10,9 +10,9 @@ import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
-import com.holtebu.bosetterne.service.resources.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
 import com.holtebu.bosetterne.service.resources.lobby.LoggInnResource;
+import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
 
 import io.dropwizard.assets.AssetsBundle;

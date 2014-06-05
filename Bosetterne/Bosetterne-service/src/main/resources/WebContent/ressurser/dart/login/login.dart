@@ -39,7 +39,7 @@ void onSubmit(Event e) {
 
   Map reqHdr = {'Authorization': creds.toString()};
 
-  HttpRequest.postFormData("/authorize/implicit", data, withCredentials: true, requestHeaders: reqHdr)
+  HttpRequest.postFormData("/token/implicit", data, withCredentials: true, requestHeaders: reqHdr)
   .then((HttpRequest resp){
     print(resp.responseText);
   });

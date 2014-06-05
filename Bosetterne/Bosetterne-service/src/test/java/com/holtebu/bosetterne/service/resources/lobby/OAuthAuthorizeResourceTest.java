@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.resources;
+package com.holtebu.bosetterne.service.resources.lobby;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -33,6 +33,8 @@ import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
+
 import io.dropwizard.auth.basic.BasicCredentials;
 
 public class OAuthAuthorizeResourceTest {

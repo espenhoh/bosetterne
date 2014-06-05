@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.resources;
+package com.holtebu.bosetterne.service.resources.lobby;
 
 import javax.ws.rs.core.Application;
 

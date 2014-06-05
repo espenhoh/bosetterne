@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.service.resources;
+package com.holtebu.bosetterne.service.resources.lobby;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -104,94 +104,6 @@ public class OAuthAuthorizeResource {
 		} else {
 			return Response.status(Response.Status.UNAUTHORIZED).build();
 		}
-	}
-	
-	/**
-	 * Request:
-	 * response_type 	Required. Must be set to token .
-	 * client_id 	Required. The client identifier as assigned by the authorization server, when the client was registered.
-	 * redirect_uri 	Optional. The redirect URI registered by the client.
-	 * scope 	Optional. The possible scope of the request.
-	 * state 	Optional (recommended). Any client state that needs to be passed on to the client request URI.
-	 * 
-	 * Response
-	 * 	access_token 	Required. The access token assigned by the authorization server.
-	 * 	token_type 	Required. The type of the token
-	 * 	expires_in 	Recommended. A number of seconds after which the access token expires.
-	 * 	scope 	Optional. The scope of the access token.
-	 * 	state 	Required, if present in the autorization request. Must be same value as state parameter in request.*/
-	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Path("/implicit")
-	public AccessToken loginImplicit(
-			@FormParam("username") String brukernavn,
-			@FormParam("password") String passord,
-			@FormParam("redirect_uri") String redirectUri,
-			@FormParam("client_id") String clientId,
-			@FormParam("scope") String scope, 
-			@FormParam("reponse_type")String responseType) {
-		/*
-		 * Hook for implementing consent screen (which we currently don't have)
-		 */
-
-		/*
-		 * From the OAuth spec:
-		 * 
-		 * HTTP/1.1 302 Found Location:
-		 * https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA &state=xyz
-		 */
-		
-		BasicCredentials credentials = new BasicCredentials("", "");
-		Optional<Spiller> spiller = lobbyService.getSpiller(credentials);
-		
-		Legitimasjon legitimasjon = new Legitimasjon().
-				setClientId(clientId).
-				setSecret(oAuth2Verdier.getClientSecret()).
-				setResponseType("code").
-				setRedirectUri(redirectUri).
-				setScope("bosetterne").
-				setState(scope);
-		
-		//String authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
-
-		AccessToken token = tokenStore.storeAccessToken(legitimasjon);
-		
-		
-		
-		//Response result = tryRedirect(redirectUri).header("Set-Cookie", token.getAccess_token()).build();
-		
-		return token;
-		
-		/*
-		if (authorization == null) {
-		      throw new WebApplicationException(Response.status(Response.Status.UNAUTHORIZED)
-		          .entity("Base64 encoded authorization header is required when obtaining an access token")
-		          .type(MediaType.TEXT_PLAIN_TYPE).build());
-		    }
-		    String[] values = new String(Base64.decode(authorization.substring("Basic ".length()))).split(":");
-		    String clientId = values[0];
-		    String secret = values[1];
-		    Optional<Spiller> opt = tokenStore.getSpillerByAuthorizationCode(code);
-		    if (opt.isPresent()) {
-		    	Spiller clientDetails = opt.get();
-		    	//LOG.debug("Handing out access token for client {} with secret {}", clientId, secret);
-		      	return tokenStore.storeAccessToken(new Legitimasjon());
-		    }
-		    throw new WebApplicationException(Response.status(Response.Status.UNAUTHORIZED).entity("Invalid authorization")
-		        .type(MediaType.TEXT_PLAIN_TYPE).build());
-		/*
-		 * Hook for implementation of Implicit Grant flow
-		 *//*
-		boolean autorisert = autorisert(spiller, authorizationCode);
-		
-		if (autorisert) {
-			return tryRedirect(redirectUri, scope, authorizationCode);
-		} else {
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-		}*/
-		
-		//return new AccessToken("HAHAH", Long.MAX_VALUE);
 	}
 	
 	String authorizationCodeRedirectURI(String redirectUri, String state, String authorizationCode) {
