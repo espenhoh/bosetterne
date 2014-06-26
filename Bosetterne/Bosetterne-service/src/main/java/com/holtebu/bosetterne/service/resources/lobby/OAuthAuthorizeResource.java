@@ -1,17 +1,15 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
+import io.dropwizard.auth.basic.BasicCredentials;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 
 import javax.inject.Singleton;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
@@ -27,9 +25,6 @@ import com.holtebu.bosetterne.service.auth.LobbyService;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
-import com.sun.jersey.core.util.Base64;
-
-import io.dropwizard.auth.basic.BasicCredentials;
 
 /**
  * Entry point for oauth authorize calls
@@ -93,9 +88,6 @@ public class OAuthAuthorizeResource {
 		
 		String authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
 
-		/*
-		 * Hook for implementation of Implicit Grant flow
-		 */
 		boolean autorisert = autorisert(spiller, authorizationCode);
 		
 		if (autorisert) {
@@ -106,7 +98,7 @@ public class OAuthAuthorizeResource {
 		}
 	}
 	
-	String authorizationCodeRedirectURI(String redirectUri, String state, String authorizationCode) {
+	private String authorizationCodeRedirectURI(String redirectUri, String state, String authorizationCode) {
 		String format = redirectUri.concat("?").concat("code=%s").concat("&state=%s");
 		return String.format(format, authorizationCode, state);
 	}
@@ -126,7 +118,8 @@ public class OAuthAuthorizeResource {
 		}
 	}
 
-	private boolean autorisert(Optional<Spiller> spiller,
+	private boolean autorisert(
+			Optional<Spiller> spiller,
 			String authorizationCode) {
 		return spiller.isPresent() && authorizationCode != null;
 	}

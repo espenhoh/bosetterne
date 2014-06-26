@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.skife.jdbi.v2.DBI;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.isA;
@@ -30,8 +31,11 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.service.BosetterneConfiguration;
+import com.holtebu.bosetterne.service.BosetterneModule;
 import com.holtebu.bosetterne.service.auth.JDBILobbyService;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+
 import io.dropwizard.auth.basic.BasicCredentials;
 
 public class JDBILobbyServiceTest {
@@ -44,18 +48,11 @@ public class JDBILobbyServiceTest {
 	public void setUp(){
 		daoMock = mock(LobbyDAO.class);
 		
-		CacheLoader<String, Optional<Spiller>> loader = new CacheLoader<String, Optional<Spiller>> () {
-			  public Optional<Spiller> load(String key) throws Exception {
-				  return Optional.fromNullable(daoMock.finnSpillerVedNavn(key));
-			  }
-		};
-
+		BosetterneModule testModule = new BosetterneModule(mock(BosetterneConfiguration.class), mock(DBI.class));
+		
 		lobbyService = new JDBILobbyService(
-			CacheBuilder.newBuilder()
-				.maximumSize(1000)
-				.expireAfterWrite(10, TimeUnit.MINUTES)
-				.build(loader)
-			);
+				testModule.provideSpillerCache(daoMock)
+				);
 	}
 	
 	@Test

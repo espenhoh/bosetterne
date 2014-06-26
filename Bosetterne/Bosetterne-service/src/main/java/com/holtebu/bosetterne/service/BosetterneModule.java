@@ -97,9 +97,13 @@ public class BosetterneModule extends AbstractModule {
         return jdbi.onDemand(LobbyDAO.class);
 	}
 	
+	@Provides @Named("spillerCacheDAO")
+	LobbyDAO provideSpillerCacheDAO () {
+        return jdbi.onDemand(LobbyDAO.class);
+	}
+	
 	@Provides @Named("spillerCache")
-	LoadingCache<String, Optional<Spiller>> provideSpillerCache(){
-		final LobbyDAO dao = provideSpillerDAO();
+	public LoadingCache<String, Optional<Spiller>> provideSpillerCache(@Named("spillerCacheDAO") final LobbyDAO dao){
 		CacheLoader<String, Optional<Spiller>> loader = new CacheLoader<String, Optional<Spiller>> () {
 			  public Optional<Spiller> load(String key) throws Exception {
 				  return Optional.fromNullable(dao.finnSpillerVedNavn(key));
