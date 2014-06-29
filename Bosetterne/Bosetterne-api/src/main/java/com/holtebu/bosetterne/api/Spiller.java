@@ -60,6 +60,10 @@ public class Spiller {
 		return kallenavn;
 	}
 
+	void setKallenavn(String kallenavn) {
+		this.kallenavn = kallenavn;
+	}
+
 	public Set<Game> getiGame() {
 		return iGame;
 	}
@@ -105,6 +109,31 @@ public class Spiller {
 	}
 	
 
+	/**
+	 * Spillere skal være like når brukernavn er like
+	 */
+	@Override
+	public boolean equals(Object o){
+		boolean result;
+		if( o == null || getClass() != o.getClass()) {
+			result = false;
+		} else {
+			Spiller spiller = (Spiller) o;
+			result = brukernavn.equals(spiller.brukernavn);
+		}
+		return result;
+	}
+	
+	@Override
+	public int hashCode(){
+		int hashCode;
+		if(brukernavn == null) {
+			hashCode = 0;
+		} else {
+			hashCode = brukernavn.hashCode();
+		}
+		return hashCode;
+	}
     
 }
 

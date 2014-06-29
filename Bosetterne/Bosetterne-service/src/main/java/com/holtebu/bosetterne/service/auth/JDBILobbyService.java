@@ -24,13 +24,32 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	
 	private final static Logger logger = LoggerFactory.getLogger("JDBILobbyService.class");
 	
-	private final LoadingCache<String, Optional<Spiller>> spillere;
+	private final LoadingCache<String, Optional<Spiller>> spillerCache;
 	
 	@Inject
 	public JDBILobbyService(@Named("spillerCache") LoadingCache<String, Optional<Spiller>> spillerCache) {
-		this.spillere = spillerCache;
+		this.spillerCache = spillerCache;
 	}
 
+	/**
+	 * Denne implementasjonen kan hente spiller fra database eller cache.
+	 */
+	@Override
+	public Optional<Spiller> getSpiller(BasicCredentials leg) {
+		Optional<Spiller> spiller = Optional.absent();
+		
+		try {
+			spiller = spillerCache.get(leg.getUsername());
+		} catch (ExecutionException e) {
+			e.printStackTrace();
+		}
+		
+		return spiller;
+	}
+	
+	
+
+	/*
 	@Override
 	public Optional<Spiller> getSpiller(BasicCredentials cred) {
 		Optional<Spiller> hentetSpiller = hentSpillerFraCache(cred);
@@ -54,7 +73,7 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	
 	boolean riktigPassord(Spiller spiller, BasicCredentials credentials) {
 		return credentials.getPassword().equals(spiller.getPassord());
-	}
+	}*/
 }
 
 
