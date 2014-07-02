@@ -16,6 +16,7 @@ import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.skife.jdbi.v2.DBI;
+import org.slf4j.LoggerFactory;
 
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -49,32 +50,30 @@ public class JDBILobbyServiceTest {
 	
 	private JDBILobbyService lobbyService;
 	
-	private String username;
-	private String password;
+	private String brukernavn;
+	private String passord;
+	
+	BasicCredentials cred;
 
 	@Before
 	public void setUp(){
 		daoMock = mock(LobbyDAO.class);
 		
-		BosetterneModule testModule = new BosetterneModule(mock(BosetterneConfiguration.class), mock(DBI.class));
+		BosetterneModule testModule = new BosetterneModule();
 		
 		spillerCache = spy(testModule.provideSpillerCache(daoMock));
 		
-		lobbyService = new JDBILobbyService(
-				testModule.provideSpillerCache(daoMock)
-				);
+		lobbyService = new JDBILobbyService(spillerCache);
 		
-		username = "test";
-		password = "testPassord";
+		brukernavn = "test";
+		passord = "testPassord";
+		
+		cred = new BasicCredentials(brukernavn, passord);
 	}
 	
 	@Test
 	public void testDersomSpillerMedRettLegitimasjonFinnesIDBSkalSpillerenReturneres(){
-		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spillerFraDatabase = new SpillerBuilder().
-				withBrukernavn(username).
-				withKallenavn(username).
-				withPassord(password).build();
+		Spiller spillerFraDatabase = testSpiller();
 		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(spillerFraDatabase);
 		
 		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
@@ -84,104 +83,50 @@ public class JDBILobbyServiceTest {
 	}
 	
 	@Test
-	public void testDersomDBKasterExceptionSkalIngenSpillerReturneres() throws Exception {
-		BasicCredentials cred = new BasicCredentials(username, password);
+	public void testGetSpillerFraCache(){
+		Spiller spillerFraCache = testSpiller();
+		spillerCache.put(cred.getUsername(), Optional.of(spillerFraCache));
 		
-		when(spillerCache.get(isA(String.class))).thenThrow(new ExecutionException(new Exception()));
-		//doThrow(ExecutionException.class).when(spillerCache).get(isA(String.class));
+		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
+		
+		assertThat("Skal eksistere", spiller.isPresent(), is(equalTo(true)));
+		assertThat("Spillere skal være like", spiller.get(), is(spillerFraCache));
+	}
+	
+	@Test
+	public void testDersomDBKasterExceptionSkalIngenSpillerReturneres() throws Exception {
+		doThrow(new ExecutionException(new Exception("TestException"))).when(spillerCache).get(isA(String.class));
 		
 		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
 		
 		assertThat("Spiller skal være absent", spiller.isPresent(), is(equalTo(false)));
 	}
 	
-	/*
 	@Test
-	public void getSpillerFinnes() {
-		String username = "test";
-		String password = "testPassord";
-		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spillerFraDB = new Spiller(username, username, "", "", password, null);
-		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(spillerFraDB);
-		
-		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
-		
-		assertThat("Skal eksistere", spiller.isPresent(), is(equalTo(true)));
-		assertThat("Spillere skal være like", spiller.get(), is(spillerFraDB));
-	}
-	
-	@Test
-	public void getSpillerPassordFeil() {
-		String username = "test";
-		String password = "testPassord";
-		String annetPassord = "testPassord2";
-		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spillerFraDB = new Spiller(username, username, "", "", annetPassord, null);
-		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(spillerFraDB);
-		
-		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
-		
-		assertThat("Skal ikke returneres", spiller.isPresent(), is(equalTo(false)));
-	}
-	
-	@Test
-	public void getSpillerFinnesIkke() {
-		String username = "Ikkeeksisterende";
-		String password = "testspiller";
-		BasicCredentials cred = new BasicCredentials(username, password);
+	public void testDersomBrukernavnIkkeFinnesIDatabaseSaSkalAbsentReturneres() {
 		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(null);
 		
 		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
 		
-		assertThat("Skal eksistere", spiller.isPresent(), is(equalTo(false)));
+		assertThat("Spiller skal være absent", spiller.isPresent(), is(equalTo(false)));
 	}
 	
 	@Test
-	public void hentSpillerFraCache(){
+	public void testDersomPassordErFeilSkalAbsentReturneres() {
+		Spiller spillerFraDatabase = testSpiller();
+		spillerFraDatabase.setPassord("Helt feil passord");
+		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(spillerFraDatabase);
 		
-		String username = "test";
-		String password = "testPassord";
-		verify(daoMock, Mockito.times(0)).finnSpillerVedNavn(eq(username));
-		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spillerFraDB = new Spiller(username, username, "", "", password, null);
+		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
 		
-		Optional<Spiller> hentetSpiller = lobbyService.hentSpillerFraCache(new BasicCredentials("skal ikke", "finnes"));
-		assertThat("Spiller skal ikke finnes", hentetSpiller.isPresent(), is(equalTo(false)));
-		
-		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(spillerFraDB);
-		
-		for (int i = 0; i < 6; i++) {
-			hentetSpiller = lobbyService.hentSpillerFraCache(cred);
-			assertThat("Spiller skal finnes", hentetSpiller.isPresent(), is(equalTo(true)));
-			assertThat("Spillere skal være like", hentetSpiller.get(), is(spillerFraDB));
-		}
-
-		verify(daoMock, Mockito.times(1)).finnSpillerVedNavn(eq(username));
+		assertThat("Spiller skal være absent", spiller.isPresent(), is(equalTo(false)));
 	}
 	
-	@Test
-	public void riktigPassord(){
-		String username = "test";
-		String password = "testPassord";
-		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spiller = new Spiller(username, username, "", "", password, null);
-		
-		boolean riktigPassord = lobbyService.riktigPassord(spiller, cred);
-		
-		assertThat("Passord skal være like", riktigPassord, is(equalTo(true)));
+	private Spiller testSpiller(){
+		return new SpillerBuilder().
+				withBrukernavn(brukernavn).
+				withKallenavn(brukernavn).
+				withPassord(passord).build();
 	}
-	
-	@Test
-	public void galtPassord(){
-		String username = "test";
-		String password = "testPassord";
-		String annetPassord = "testPassord2";
-		BasicCredentials cred = new BasicCredentials(username, password);
-		Spiller spiller = new Spiller(username, username, "", "", annetPassord, null);
-		
-		boolean riktigPassord = lobbyService.riktigPassord(spiller, cred);
-		
-		assertThat("Passord skal være ulike", riktigPassord, is(equalTo(false)));
-	}*/
 
 }

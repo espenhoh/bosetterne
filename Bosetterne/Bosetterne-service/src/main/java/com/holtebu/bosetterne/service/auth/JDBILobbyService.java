@@ -20,9 +20,12 @@ import com.google.inject.Inject;
 import com.google.inject.name.Named;
 import io.dropwizard.auth.basic.BasicCredentials;
 
+/**
+ * Denne implementasjonen kan hente spiller fra database via cache.
+ * */
 public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCredentials> {
 	
-	private final static Logger logger = LoggerFactory.getLogger("JDBILobbyService.class");
+	private final static Logger logger = LoggerFactory.getLogger(JDBILobbyService.class);
 	
 	private final LoadingCache<String, Optional<Spiller>> spillerCache;
 	
@@ -32,48 +35,53 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	}
 
 	/**
-	 * Denne implementasjonen kan hente spiller fra database eller cache.
+	 * Finner spiller fra database eller cache basert på <code>BasicCredentials</code>
+	 * Metoden returnerer Optional.absent når:
+	 * <ul>
+	 * <li> Spilleren ikke finnes </li>
+	 * <li> Passord er feil </li>
+	 * <li> Cache kaster ExecutionException.</li>
+	 * <ul>
+	 * 
+	 * @param leg Brukernavn og passord til spilleren.
+	 * 
+	 * @return spilleren, dersom denne er registrert i databasen.
+	 * 
 	 */
 	@Override
 	public Optional<Spiller> getSpiller(BasicCredentials leg) {
-		Optional<Spiller> spiller = Optional.absent();
+		Optional<Spiller> spiller = null;
 		
 		try {
-			spiller = spillerCache.get(leg.getUsername());
+			spiller = hentSpillerFraCache(leg);
 		} catch (ExecutionException e) {
-			e.printStackTrace();
+			spiller = Optional.absent();
+			logger.error("Feil ved henting av spiller",e);
 		}
 		
 		return spiller;
 	}
 	
-	
+	private Optional<Spiller> hentSpillerFraCache(BasicCredentials leg) throws ExecutionException {
+		Optional<Spiller> spiller = spillerCache.get(leg.getUsername());
+		
+		if(!rettLegitimasjon(spiller, leg)){
+			spiller = Optional.absent();
+		}
+		
+		return spiller;
+	}
 
-	/*
-	@Override
-	public Optional<Spiller> getSpiller(BasicCredentials cred) {
-		Optional<Spiller> hentetSpiller = hentSpillerFraCache(cred);
-		
-		if(hentetSpiller.isPresent() && !riktigPassord(hentetSpiller.get(), cred)) {
-			hentetSpiller = Optional.absent();
+	private boolean rettLegitimasjon(Optional<Spiller> spiller,
+			BasicCredentials leg) {
+		boolean rettPassord;
+		if (spiller.isPresent()){
+			rettPassord = spiller.get().getPassord() == leg.getPassword();
+		} else {
+			rettPassord = false;
 		}
-		
-		return hentetSpiller;
+		return rettPassord;
 	}
-	
-	Optional<Spiller> hentSpillerFraCache(BasicCredentials cred) {
-		try {
-			return spillere.get(cred.getUsername());
-		} catch (ExecutionException e) {
-			e.printStackTrace();
-			logger.error(e.getCause().getMessage());
-			return Optional.absent();
-		}
-	}
-	
-	boolean riktigPassord(Spiller spiller, BasicCredentials credentials) {
-		return credentials.getPassword().equals(spiller.getPassord());
-	}*/
 }
 
 

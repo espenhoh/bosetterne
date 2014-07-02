@@ -43,6 +43,11 @@ public class BosetterneModule extends AbstractModule {
 	private final DBI jdbi;
 	
 	private final String basePath = "/WebContent/";
+	
+	public BosetterneModule() {
+		//Kun for enhetstesting
+		this(null,(DBI) null);
+	}
     
 	public BosetterneModule(final BosetterneConfiguration configuration, Environment environment) {
 		this.configuration = configuration;
@@ -78,7 +83,7 @@ public class BosetterneModule extends AbstractModule {
     }
     
 	/**
-	 * @return the singel JDBI instance required
+	 * @return the single JDBI instance required
 	 */
     private DBI getJDBI(Environment environment){
     	final DBIFactory factory = new DBIFactory();
