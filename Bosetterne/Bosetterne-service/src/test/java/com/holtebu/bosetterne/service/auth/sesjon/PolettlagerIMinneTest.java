@@ -11,6 +11,7 @@ import java.util.UUID;
 
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
 
 import com.holtebu.bosetterne.api.Spiller;
@@ -26,6 +27,7 @@ import org.hamcrest.core.IsNull;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.internal.runners.statements.Fail;
+import org.junit.rules.ExpectedException;
 import org.mockito.Matchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -39,6 +41,7 @@ import static org.hamcrest.core.IsNull.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.fail;
 
 import com.google.common.base.Optional;
 
@@ -65,7 +68,7 @@ public class PolettlagerIMinneTest {
 
 
 	@Test
-	public void storeAccessTokenFeilerIkke() {
+	public void storeAccessTokenFeilerIkke() throws Exception{
 		Spiller spiller = lagTestspiller();
 		Legitimasjon leg = new Legitimasjon().setClientId(oAuth2Verdier.getClientId()).setSecret(oAuth2Verdier.getClientSecret()).setSpiller(spiller);
 		
@@ -74,19 +77,25 @@ public class PolettlagerIMinneTest {
 		assertThat("Spiller skal være lagt i map", accessTokens.get(token.getAccess_token()),is(spiller));
 	}
 	
+	
 	@Test
-	public void storeAccessTokenClientIdFeiler() {
+	public void storeAccessTokenClientIdFeiler(){
 		Spiller spiller = lagTestspiller();
 		Legitimasjon leg = new Legitimasjon().setClientId("feiler").setSecret(oAuth2Verdier.getClientSecret()).setSpiller(spiller);
 		
-		AccessToken token = polettLager.storeAccessToken(leg);
-		
-		assertThat("accessToken skal være null", token, is(nullValue()));
-		assertThat("Map skal være tomt", accessTokens.isEmpty(),is(equalTo(true)));
+		AccessToken token = null;
+		try {
+			token = polettLager.storeAccessToken(leg);
+		} catch (AutorisasjonsUnntak e) {
+			assertThat("accessToken skal være null", token, is(nullValue()));
+			assertThat("Map skal være tomt", accessTokens.isEmpty(),is(equalTo(true)));
+			return;
+		}
+		fail("Skal kaste AutorisajonsException");
 	}
 	
 	@Test
-	public void storeAccessTokenSecretFeiler() {
+	public void storeAccessTokenSecretFeiler() throws Exception {
 		Spiller spiller = lagTestspiller();
 		Legitimasjon leg = new Legitimasjon().setClientId(oAuth2Verdier.getClientId()).setSecret("feiler").setSpiller(spiller);
 		
@@ -97,8 +106,8 @@ public class PolettlagerIMinneTest {
 	}
 
 
-	@Test
-	public void storeAccessTokenLegNull() {
+	@Test(expected=AutorisasjonsUnntak.class)
+	public void storeAccessTokenLegNull() throws Exception {
 		AccessToken token = polettLager.storeAccessToken(null);
 		
 		assertThat("accessToken skal være null", token, is(nullValue()));
@@ -153,44 +162,10 @@ public class PolettlagerIMinneTest {
 	}
 	
 	@Test
-	public void verifyClientIdOK() throws Exception {
-		Legitimasjon leg = new Legitimasjon().setClientId(oAuth2Verdier.getClientId());
-		
-		boolean clientIdOK = polettLager.verifyClientId(leg);
-		
-		assertThat("ClientId skal ha samme verdi som fra json", clientIdOK, is(true));
-	}
-	
-	@Test
-	public void verifyClientIdFeil() throws Exception {
-		Legitimasjon leg = new Legitimasjon().setClientId("Noe annet");
-		
-		boolean clientIdOK = polettLager.verifyClientId(leg);
-		
-		assertThat("ClientId skal ha forskjellig verdi som json og dermed være false", clientIdOK, is(false));
-	}
-	
-	@Test
-	public void verifyClientIdNull() throws Exception {
-		Legitimasjon leg = new Legitimasjon();
-		
-		boolean clientIdOK = polettLager.verifyClientId(leg);
-		
-		assertThat("Client secret skal være null og dermed verifisert false", clientIdOK, is(false));
-	}
-	
-	@Test
 	public void verifyClientSecretLegNull() throws Exception {
 		boolean clientSecretOK = polettLager.verifyClientSecret(null);
 		
 		assertThat("Legitimasjon skal være null og dermed verifisert false", clientSecretOK, is(false));
-	}
-	
-	@Test
-	public void verifyClientIdLegNull() throws Exception {
-		boolean clientIdOK = polettLager.verifyClientId(null);
-		
-		assertThat("Legitimasjon skal være null og dermed verifisert false", clientIdOK, is(false));
 	}
 
 	@Test
@@ -222,19 +197,19 @@ public class PolettlagerIMinneTest {
 		assertThat("Legitimasjon skal være lagt i map", codes.get(code),is(leg));
 	}
 	
-	@Test
-	public void testStoreAuthorizationCodeClientIdFeiler() {
+	@Test(expected=AutorisasjonsUnntak.class)
+	public void testStoreAuthorizationCodeClientIdFeiler() throws Exception {
 		Spiller spiller = lagTestspiller();
 		Legitimasjon leg = new Legitimasjon().setClientId("feiler").setSecret(oAuth2Verdier.getClientSecret()).setSpiller(spiller);
 		
 		String code = polettLager.storeAuthorizationCode(leg);
 		
-		assertThat("AuthorizationCode skal være null", code, is(nullValue()));
-		assertThat("Map skal være tomt", codes.isEmpty(),is(equalTo(true)));
+		//assertThat("AuthorizationCode skal være null", code, is(nullValue()));
+		//assertThat("Map skal være tomt", codes.isEmpty(),is(equalTo(true)));
 	}
 
-	@Test
-	public void testStoreAuthorizationCodeLegNull() {
+	@Test(expected=AutorisasjonsUnntak.class)
+	public void testStoreAuthorizationCodeLegNull() throws Exception {
 		String code = polettLager.storeAuthorizationCode(null);
 		
 		assertThat("AuthorizationCode skal være null", code, is(nullValue()));

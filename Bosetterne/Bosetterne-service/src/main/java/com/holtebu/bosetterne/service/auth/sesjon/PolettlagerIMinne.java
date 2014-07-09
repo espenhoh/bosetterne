@@ -56,10 +56,13 @@ public class PolettlagerIMinne implements
 
 
 	@Override
-	public AccessToken storeAccessToken(Legitimasjon leg) {
+	public AccessToken storeAccessToken(Legitimasjon leg) throws AutorisasjonsUnntak {
+		verifyClientId(leg);
+		
 		AccessToken accessToken = null;
+		
 
-		if(verifyClientId(leg) && verifyClientSecret(leg)) {
+		if(verifyClientSecret(leg)) {
 			accessToken = new AccessToken(UUID.randomUUID().toString(),	Long.MAX_VALUE);
 			accessTokens.put(accessToken.getAccess_token(), leg.getSpiller());
 		}
@@ -74,15 +77,13 @@ public class PolettlagerIMinne implements
 	}
 
 	@Override
-	public String storeAuthorizationCode(Legitimasjon leg) {
-		if(verifyClientId(leg)) {
-			String code = UUID.randomUUID().toString();
-			leg.setCode(code);
-			codes.put(code, leg);
-			return code;
-		}
-
-		return null;
+	public String storeAuthorizationCode(Legitimasjon leg) throws AutorisasjonsUnntak {
+		verifyClientId(leg);
+		
+		String code = UUID.randomUUID().toString();
+		leg.setCode(code);
+		codes.put(code, leg);
+		return code;
 	}
 
 	@Override
@@ -104,12 +105,23 @@ public class PolettlagerIMinne implements
 		}
 	}
 
-	boolean verifyClientId(Legitimasjon leg) {
-		if (leg == null) {
-			return false;
-		} else {
-			return oAuth2Verdier.getClientId().equals(leg.getClientId());
+	/**
+	 * Verfiserer at OAuth 2.0 client id stemmer overens med dets som er konfigurert på serverK
+	 * <p> 
+	 * @param leg
+	 * @throws AutorisasjonsUnntak når leg er null, eller client id ikke stemmer.
+	 */
+	private void verifyClientId(Legitimasjon leg) throws AutorisasjonsUnntak {
+		boolean verified = false;
+		if (leg != null) {
+			verified = oAuth2Verdier.getClientId().equals(leg.getClientId());
 		}
+		
+		if (!verified) {
+			throw new AutorisasjonsUnntak("Client_id mismatch. Legitimasjon var" + leg);
+		}
+		
+		return;
 	}
 
 }

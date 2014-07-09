@@ -22,6 +22,7 @@ import com.google.inject.Inject;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.auth.LobbyService;
+import com.holtebu.bosetterne.service.auth.sesjon.AutorisasjonsUnntak;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
@@ -86,7 +87,13 @@ public class OAuthAuthorizeResource {
 				setScope("read").
 				setState(state);
 		
-		String authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
+		String authorizationCode;
+		try {
+			authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
+		} catch (AutorisasjonsUnntak e) {
+			// TODO Auto-generated catch block
+			return Response.status(Response.Status.UNAUTHORIZED).build();
+		}
 
 		boolean autorisert = autorisert(spiller, authorizationCode);
 		

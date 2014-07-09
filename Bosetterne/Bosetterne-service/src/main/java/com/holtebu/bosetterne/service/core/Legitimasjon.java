@@ -75,6 +75,13 @@ public class Legitimasjon {
 		this.secret = secret;
 		return this;
 	}
+	
+	
+	@Override
+	public String toString() {
+		// TODO Auto-generated method stub
+		return "Client id: " + clientId;
+	}
 
 
 

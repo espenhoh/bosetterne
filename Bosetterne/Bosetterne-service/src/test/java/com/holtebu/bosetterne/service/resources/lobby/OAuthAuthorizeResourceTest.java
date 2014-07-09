@@ -102,16 +102,28 @@ public class OAuthAuthorizeResourceTest {
 
 	@Test
 	public void spillerAutorisert() throws Exception {
-		
 		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, STD_REDIRECT, STD_CLIENTID, STD_STATE);
 		
-		
-		
+		assertThat("Spiller autentisert.",respons.getStatus(), is(equalTo(Response.Status.ACCEPTED.getStatusCode())));
 	}
 	
 	/** Given/When/Then syntax*/
 	@Test
 	public void narSpilletIkkeKjennerBrukernavnSkalResponsenHaStatusUNAUTHORIZED(){
+		String brukernavn = "Ikke kjent brukernavn";
+		String passord = "galtPassord";
+		
+		Optional<Spiller> ukjentSpiller = Optional.absent();
+		when(lobbyService.getSpiller(isA(BasicCredentials.class))).thenReturn(ukjentSpiller);
+		
+		Response respons = authResource.login(brukernavn, passord, STD_REDIRECT, STD_CLIENTID, STD_STATE);
+		
+		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.UNAUTHORIZED.getStatusCode())));
+	}
+	
+	/** Given/When/Then syntax*/
+	@Test
+	public void narSpilletIkkeKjennerBrukernavnSkalResponsenHaSgtatusUNAUTHORIZED(){
 		String brukernavn = "Ikke kjent brukernavn";
 		String passord = "galtPassord";
 		
