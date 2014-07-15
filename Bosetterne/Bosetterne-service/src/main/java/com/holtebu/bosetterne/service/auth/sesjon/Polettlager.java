@@ -23,7 +23,7 @@ public interface Polettlager<T, I, L, C> {
 	 *            legitimasjon som inneholder en spiller.
 	 * @return accessToken som kan brukes for å få tilgang til resources.
 	 */
-	T storeAccessToken(L leg) throws AutorisasjonsUnntak;
+	T storeAccessToken(L leg) throws AutorisasjonsException;
 
 	Optional<I> getSpillerByAccessToken(String accessToken);
 
@@ -31,9 +31,9 @@ public interface Polettlager<T, I, L, C> {
 	 * Dersom client_Id på <code>legitimasjon</code> stemmer med med client_Id på serveren genereres og lagres en ny autorisasjonskode.
 	 * @param legitimasjon
 	 * @return autorisasjonskode
-	 * @throws AutorisasjonsUnntak
+	 * @throws AutorisasjonsException
 	 */
-	C storeAuthorizationCode(L legitimasjon) throws AutorisasjonsUnntak;
+	C storeAuthorizationCode(L legitimasjon) throws AutorisasjonsException;
 
 	Optional<I> getSpillerByAuthorizationCode(C code);
 

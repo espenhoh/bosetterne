@@ -86,7 +86,7 @@ public class PolettlagerIMinneTest {
 		AccessToken token = null;
 		try {
 			token = polettLager.storeAccessToken(leg);
-		} catch (AutorisasjonsUnntak e) {
+		} catch (AutorisasjonsException e) {
 			assertThat("accessToken skal være null", token, is(nullValue()));
 			assertThat("Map skal være tomt", accessTokens.isEmpty(),is(equalTo(true)));
 			return;
@@ -106,7 +106,7 @@ public class PolettlagerIMinneTest {
 	}
 
 
-	@Test(expected=AutorisasjonsUnntak.class)
+	@Test(expected=AutorisasjonsException.class)
 	public void storeAccessTokenLegNull() throws Exception {
 		AccessToken token = polettLager.storeAccessToken(null);
 		
@@ -197,7 +197,7 @@ public class PolettlagerIMinneTest {
 		assertThat("Legitimasjon skal være lagt i map", codes.get(code),is(leg));
 	}
 	
-	@Test(expected=AutorisasjonsUnntak.class)
+	@Test(expected=AutorisasjonsException.class)
 	public void testStoreAuthorizationCodeClientIdFeiler() throws Exception {
 		Spiller spiller = lagTestspiller();
 		Legitimasjon leg = new Legitimasjon().setClientId("feiler").setSecret(oAuth2Verdier.getClientSecret()).setSpiller(spiller);
@@ -208,7 +208,7 @@ public class PolettlagerIMinneTest {
 		//assertThat("Map skal være tomt", codes.isEmpty(),is(equalTo(true)));
 	}
 
-	@Test(expected=AutorisasjonsUnntak.class)
+	@Test(expected=AutorisasjonsException.class)
 	public void testStoreAuthorizationCodeLegNull() throws Exception {
 		String code = polettLager.storeAuthorizationCode(null);
 		

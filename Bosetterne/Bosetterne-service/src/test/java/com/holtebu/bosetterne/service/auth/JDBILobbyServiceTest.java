@@ -3,45 +3,27 @@ package com.holtebu.bosetterne.service.auth;
 //import static org.junit.Assert.*;
 
 
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-
-import org.hamcrest.core.IsNull;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.skife.jdbi.v2.DBI;
-import org.slf4j.LoggerFactory;
-
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.isA;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.eq;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
+import io.dropwizard.auth.basic.BasicCredentials;
+
+import java.util.concurrent.ExecutionException;
+
+import org.junit.Before;
+import org.junit.Test;
 
 import com.google.common.base.Optional;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.api.SpillerBuilder;
-import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.BosetterneModule;
-import com.holtebu.bosetterne.service.auth.JDBILobbyService;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
-
-import io.dropwizard.auth.basic.BasicCredentials;
 
 public class JDBILobbyServiceTest {
 	

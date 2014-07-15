@@ -2,9 +2,9 @@ package com.holtebu.bosetterne.service.auth.sesjon;
 
 
 @SuppressWarnings("serial")
-public class AutorisasjonsUnntak extends Exception {
+public class AutorisasjonsException extends Exception {
 
-  public AutorisasjonsUnntak(String message) {
+  public AutorisasjonsException(String message) {
     super(message);
   }
 

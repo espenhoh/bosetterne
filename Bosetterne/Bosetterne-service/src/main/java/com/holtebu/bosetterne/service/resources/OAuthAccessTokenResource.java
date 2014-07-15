@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.auth.LobbyService;
+import com.holtebu.bosetterne.service.auth.sesjon.AutorisasjonsException;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
@@ -79,7 +80,12 @@ public class OAuthAccessTokenResource {
 			Spiller clientDetails = opt.get();
 			// LOG.debug("Handing out access token for client {} with secret {}",
 			// clientId, secret);
-			return tokenStore.storeAccessToken(new Legitimasjon());
+			try {
+				return tokenStore.storeAccessToken(new Legitimasjon());
+			} catch (AutorisasjonsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		throw new WebApplicationException(Response
 				.status(Response.Status.UNAUTHORIZED)
@@ -141,7 +147,13 @@ public class OAuthAccessTokenResource {
 		// String authorizationCode =
 		// tokenStore.storeAuthorizationCode(legitimasjon);
 
-		AccessToken token = tokenStore.storeAccessToken(legitimasjon);
+		AccessToken token = null;
+		try {
+			token = tokenStore.storeAccessToken(legitimasjon);
+		} catch (AutorisasjonsException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		// Response result = tryRedirect(redirectUri).header("Set-Cookie",
 		// token.getAccess_token()).build();

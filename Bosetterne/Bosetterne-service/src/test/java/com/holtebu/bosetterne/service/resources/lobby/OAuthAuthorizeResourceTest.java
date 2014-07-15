@@ -1,36 +1,30 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
-import java.util.HashMap;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.when;
+import io.dropwizard.auth.basic.BasicCredentials;
 
-import javax.ws.rs.FormParam;
+import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import javax.ws.rs.core.Response;
 
-import org.eclipse.jetty.util.security.Credential;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Matchers;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.isA;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.eq;
-import static org.hamcrest.core.IsNull.nullValue;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.fail;
-
 import com.google.common.base.Optional;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
+import com.google.common.base.Splitter;
 import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.SpillerBuilder;
+import com.holtebu.bosetterne.service.BosetterneModule;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.auth.JDBILobbyService;
 import com.holtebu.bosetterne.service.auth.LobbyService;
@@ -39,16 +33,10 @@ import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
-import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
-import com.holtebu.bosetterne.api.Spiller;
-
-import io.dropwizard.auth.basic.BasicCredentials;
 
 public class OAuthAuthorizeResourceTest {
 	
-	private static final String CLIENT_ID = "OAuth2TestID";
-	
-	private static final String CLIENT_SECRET = "OAuth2TestSecret";
+	private static final String STD_CLIENT_SECRET = "OAuth2TestSecret";
 	
 	private static final String STD_BRUKERNAVN = "brukernavn";
 	private static final String STD_PASSORD = "passord";
@@ -57,43 +45,33 @@ public class OAuthAuthorizeResourceTest {
 	private static final String STD_STATE = "state";
 	private static final String STD_AUTHCODE = UUID.randomUUID().toString();
 
-	private OAuthAuthorizeResource authResource;
+	
+	@Mock
+	private LobbyDAO daoMock;
 	
 	private OAuth2Cred auth2Cred;
 	
-	/*private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
-	
-	private Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;
-	
-	@Mock
-	private LobbyDAO daoMock;*/
-	@Mock
 	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
-	@Mock
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;
+	
+	Map<String, Spiller> accessTokens;
+	Map<String, Legitimasjon> codes;
+	
+	private OAuthAuthorizeResource authResource;
 	
 	@Before
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		
-		auth2Cred = new OAuth2Cred(CLIENT_ID, CLIENT_SECRET);
+		lobbyService = new JDBILobbyService(new BosetterneModule().provideSpillerCache(daoMock));
+		auth2Cred = new OAuth2Cred(STD_CLIENTID, STD_CLIENT_SECRET);
+		accessTokens = new HashMap<>();
+		codes = new HashMap<>();
+		tokenStore = new PolettlagerIMinne(accessTokens, codes, auth2Cred);
+		
+		
 		
 		authResource = new OAuthAuthorizeResource(tokenStore, lobbyService, auth2Cred);
-		
-		/*CacheLoader<String, Optional<Spiller>> loader = new CacheLoader<String, Optional<Spiller>> () {
-			  public Optional<Spiller> load(String key) throws Exception {
-				  return Optional.fromNullable(daoMock.finnSpillerVedNavn(key));
-			  }
-		};
-
-		lobbyService = new JDBILobbyService(
-			CacheBuilder.newBuilder()
-				.maximumSize(1000)
-				.expireAfterWrite(10, TimeUnit.MINUTES)
-				.build(loader)
-			);
-		tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(),new HashMap<String, Legitimasjon>(),new OAuth2Cred("id","secret"));*/
-		
 	}
 
 	@After
@@ -102,38 +80,77 @@ public class OAuthAuthorizeResourceTest {
 
 	@Test
 	public void spillerAutorisert() throws Exception {
+		returnerStdSpiller();
+		
 		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, STD_REDIRECT, STD_CLIENTID, STD_STATE);
 		
-		assertThat("Spiller autentisert.",respons.getStatus(), is(equalTo(Response.Status.ACCEPTED.getStatusCode())));
+		
+		
+		assertThat("Spiller skal være autorisert.",respons.getStatus(), is(equalTo(Response.Status.SEE_OTHER.getStatusCode())));
+		
+		URI loc = (URI) respons.getMetadata().getFirst("Location");
+		System.out.println(loc.getPath());
+		
+		assertThat("Path skal være " + STD_REDIRECT,loc.getPath(), is(equalTo(STD_REDIRECT)));
+		
+		Map<String, String> query = Splitter.on('&').trimResults().withKeyValueSeparator('=').split(loc.getQuery());
+		
+		assertThat("Autorisasjonskode" + query.get("code") + "skal finnes i hashmap",codes.containsKey(query.get("code")), is(true));
+		assertThat("State skal være " + STD_STATE,query.get("state"), is(equalTo(STD_STATE)));
 	}
+	
+	/** Given/When/Then syntax*/
+	@Test
+	public void narSpilletIkkeKjennerClientIdSkalResponsenHaStatusUNAUTHORIZED(){
+		returnerStdSpiller();
+		
+		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, STD_REDIRECT, "ukjent client_id", STD_STATE);
+		
+		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.UNAUTHORIZED.getStatusCode())));
+	}
+	
+	/** Given/When/Then syntax*/
+	@Test
+	public void narRedirectURIIkkeHarRettSyntaxSkalResponsenHaStatusUNAUTHORIZED(){
+		returnerStdSpiller();
+		
+		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, "feil£\"||Syntakssssæøå", STD_CLIENTID, STD_STATE);
+		
+		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.UNAUTHORIZED.getStatusCode())));
+	}
+
+
 	
 	/** Given/When/Then syntax*/
 	@Test
 	public void narSpilletIkkeKjennerBrukernavnSkalResponsenHaStatusUNAUTHORIZED(){
 		String brukernavn = "Ikke kjent brukernavn";
-		String passord = "galtPassord";
 		
-		Optional<Spiller> ukjentSpiller = Optional.absent();
-		when(lobbyService.getSpiller(isA(BasicCredentials.class))).thenReturn(ukjentSpiller);
+		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(null);
 		
-		Response respons = authResource.login(brukernavn, passord, STD_REDIRECT, STD_CLIENTID, STD_STATE);
+		Response respons = authResource.login(brukernavn, STD_PASSORD, STD_REDIRECT, STD_CLIENTID, STD_STATE);
 		
 		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.UNAUTHORIZED.getStatusCode())));
 	}
 	
 	/** Given/When/Then syntax*/
 	@Test
-	public void narSpilletIkkeKjennerBrukernavnSkalResponsenHaSgtatusUNAUTHORIZED(){
-		String brukernavn = "Ikke kjent brukernavn";
+	public void narSpilletIkkeKjennerPassordSkalResponsenHaStatusUNAUTHORIZED(){
 		String passord = "galtPassord";
 		
-		Optional<Spiller> ukjentSpiller = Optional.absent();
-		when(lobbyService.getSpiller(isA(BasicCredentials.class))).thenReturn(ukjentSpiller);
+		Spiller spiller = returnerStdSpiller();
 		
-		Response respons = authResource.login(brukernavn, passord, STD_REDIRECT, STD_CLIENTID, STD_STATE);
+		Response respons = authResource.login(STD_BRUKERNAVN, passord, STD_REDIRECT, STD_CLIENTID, STD_STATE);
 		
 		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.UNAUTHORIZED.getStatusCode())));
 	}
 
+	private Spiller returnerStdSpiller() {
+		Spiller spiller = new SpillerBuilder().withBrukernavn(STD_BRUKERNAVN).withPassord(STD_PASSORD).build();
+		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(spiller);
+		
+
+		return spiller;
+	}
 
 }

@@ -19,19 +19,15 @@ package com.holtebu.bosetterne.service.auth.sesjon;
  * under the License.
  */
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+import com.google.common.base.Optional;
+import com.google.inject.Inject;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
-import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
-import com.google.common.base.Optional;
-import com.google.common.cache.LoadingCache;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 /**
  * Token store
@@ -56,7 +52,7 @@ public class PolettlagerIMinne implements
 
 
 	@Override
-	public AccessToken storeAccessToken(Legitimasjon leg) throws AutorisasjonsUnntak {
+	public AccessToken storeAccessToken(Legitimasjon leg) throws AutorisasjonsException {
 		verifyClientId(leg);
 		
 		AccessToken accessToken = null;
@@ -77,7 +73,7 @@ public class PolettlagerIMinne implements
 	}
 
 	@Override
-	public String storeAuthorizationCode(Legitimasjon leg) throws AutorisasjonsUnntak {
+	public String storeAuthorizationCode(Legitimasjon leg) throws AutorisasjonsException {
 		verifyClientId(leg);
 		
 		String code = UUID.randomUUID().toString();
@@ -109,16 +105,16 @@ public class PolettlagerIMinne implements
 	 * Verfiserer at OAuth 2.0 client id stemmer overens med dets som er konfigurert på serverK
 	 * <p> 
 	 * @param leg
-	 * @throws AutorisasjonsUnntak når leg er null, eller client id ikke stemmer.
+	 * @throws AutorisasjonsException når leg er null, eller client id ikke stemmer.
 	 */
-	private void verifyClientId(Legitimasjon leg) throws AutorisasjonsUnntak {
+	private void verifyClientId(Legitimasjon leg) throws AutorisasjonsException {
 		boolean verified = false;
 		if (leg != null) {
 			verified = oAuth2Verdier.getClientId().equals(leg.getClientId());
 		}
 		
 		if (!verified) {
-			throw new AutorisasjonsUnntak("Client_id mismatch. Legitimasjon var" + leg);
+			throw new AutorisasjonsException("Client_id mismatch. Legitimasjon var" + leg);
 		}
 		
 		return;
