@@ -52,7 +52,7 @@ public class BosetterneModule extends AbstractModule {
 	public BosetterneModule(final BosetterneConfiguration configuration, Environment environment) {
 		this.configuration = configuration;
 		//this.environment = environment;
-		this.jdbi = getJDBI(environment);
+		this.jdbi = getJDBI(environment, new DBIFactory());
 	}
 	
 	public BosetterneModule(final BosetterneConfiguration configuration, DBI dbi) {
@@ -85,14 +85,13 @@ public class BosetterneModule extends AbstractModule {
 	/**
 	 * @return the single JDBI instance required
 	 */
-    private DBI getJDBI(Environment environment){
-    	final DBIFactory factory = new DBIFactory();
+    DBI getJDBI(Environment environment, final DBIFactory factory){
     	DBI jdbi = null;
         try {
         	jdbi = factory.build(environment, configuration.getDataSourceFactory(), "mySQL");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
-			System.exit(1);
+			throw new RuntimeException("Kunne ikke starte opp databasen!");
 		}
         return jdbi;
     }

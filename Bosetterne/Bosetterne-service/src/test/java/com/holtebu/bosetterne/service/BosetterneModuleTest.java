@@ -6,7 +6,11 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import io.dropwizard.Configuration;
 import io.dropwizard.auth.Authenticator;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.setup.Environment;
 
 import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
@@ -31,7 +35,9 @@ import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
+import com.holtebu.bosetterne.service.resources.lobby.LoggInnResource;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
+import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 
@@ -127,12 +133,47 @@ public class BosetterneModuleTest {
 
 	@Test
 	public void testConfigure() throws Exception {
-		throw new RuntimeException("not yet implemented");
+        //Authentication
+        InjectableOAuthProvider iop = bosetterneInjector.getInstance(InjectableOAuthProvider.class);
+        OAuthAccessTokenResource oaatr = bosetterneInjector.getInstance(OAuthAccessTokenResource.class);
+        OAuthAuthorizeResource oaar = bosetterneInjector.getInstance(OAuthAuthorizeResource.class);
+        //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));        
+        
+        //Resources
+        LobbyResource instance = bosetterneInjector.getInstance(LobbyResource.class);
+        RegistrerResource instance2 = bosetterneInjector.getInstance(RegistrerResource.class);
+        LoggInnResource instance3 = bosetterneInjector.getInstance(LoggInnResource.class);
+        HelloWorldResource instance4 = bosetterneInjector.getInstance(HelloWorldResource.class);
+        BosetterneResource instance5 = bosetterneInjector.getInstance(BosetterneResource.class);
+        
+        //Health checks
+        TemplateHealthCheck instance6 = bosetterneInjector.getInstance(TemplateHealthCheck.class);
 	}
-
+	
 	@Test
-	public void testProvideSpillerDAO() throws Exception {
-		throw new RuntimeException("not yet implemented");
+	public void testJDBI() throws Exception {
+		Environment envMock = mock(Environment.class);
+		DBIFactory factory = mock(DBIFactory.class);
+		
+		DBI realDBI = new DBI("");
+		
+		when(factory.build(isA(Environment.class), isA(DataSourceFactory.class), isA(String.class))).thenReturn(realDBI);
+		
+		DBI jdbi = module.getJDBI(envMock, factory);
+		
+		assertThat("jdbi skal være identiske",jdbi, is(realDBI));
+	}
+	
+	@Test(expected=RuntimeException.class)
+	public void testJDBIExit() throws Exception {
+		Environment envMock = mock(Environment.class);
+		DBIFactory factory = mock(DBIFactory.class);
+		
+		DBI realDBI = new DBI("");
+		
+		when(factory.build(isA(Environment.class), isA(DataSourceFactory.class), isA(String.class))).thenThrow(ClassNotFoundException.class);
+		
+		DBI jdbi = module.getJDBI(envMock, factory);
 	}
 
 	/**
