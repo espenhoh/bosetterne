@@ -116,7 +116,7 @@ public class BosetterneModule extends AbstractModule {
 
 		return CacheBuilder.newBuilder()
 	       .maximumSize(1000)
-	       .expireAfterWrite(10, TimeUnit.MINUTES)
+	       .expireAfterWrite(1, TimeUnit.HOURS)
 	       .build(loader);
 	}
 }

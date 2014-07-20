@@ -16,9 +16,4 @@ public class OAuthAccessTokenResourceTest extends JerseyTest {
 	public void tearDown() throws Exception {
 	}
 
-	@Test
-	public void testLoginImplicit() throws Exception {
-		throw new RuntimeException("not yet implemented");
-	}
-
 }
