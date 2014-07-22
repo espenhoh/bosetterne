@@ -34,14 +34,20 @@ import org.slf4j.LoggerFactory;
 public class BosetterneService extends Application<BosetterneConfiguration> {
 	
     private final static Logger logger = LoggerFactory.getLogger("BosetterneService.class");
+    private final BosetterneModule bosetterneModule;
+    private final Injector bosetterneInjector;
 
-	private BosetterneService () {
-		
-	}
 	
+	public BosetterneService(Injector bosetterneInjector, BosetterneModule bosetterneModule) {
+		this.bosetterneModule = bosetterneModule;
+		this.bosetterneInjector = bosetterneInjector;
+	}
+
+
 	public static void main(String[] args) throws Exception {
-		
-        new BosetterneService().run(args);
+		BosetterneModule bosetterneModule = new BosetterneModule();
+		Injector bosetterneInjector = Guice.createInjector(bosetterneModule);
+        new BosetterneService(bosetterneInjector, bosetterneModule).run(args);
     }
 
 
@@ -54,7 +60,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     
     @Override
     public String getName() {
-        return "Bosetterne - yay";
+        return "Bosetterne - yay!";
     }
     
     //void initializeAtmosphere(BosetterneConfiguration configuration, Environment environment) {
@@ -70,14 +76,12 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
 
     @Override
     public void run(BosetterneConfiguration configuration, Environment environment) {
-    	
-    	
+
     	//Dependency injectors
     	logger.info("1/5 Setter opp Guice injector");
-        Injector bosetterneInjector = Guice.createInjector(new BosetterneModule(configuration, environment));
-        
+    	bosetterneModule.setConfiguration(configuration);
+    	bosetterneModule.setJDBI(environment);
 
-        
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
         environment.jersey().register(bosetterneInjector.getInstance(InjectableOAuthProvider.class));
@@ -95,7 +99,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         
         //Health checks
         logger.info("4/5 Legger til HealthChecks");
-        environment.healthChecks().register("template", bosetterneInjector.getInstance(TemplateHealthCheck.class));
+        //environment.healthChecks().register("template", bosetterneInjector.getInstance(TemplateHealthCheck.class));
         
         //Filter
         //environment.addFilter(bosetterneInjector.getInstance(Sikkerhetsfilter.class), "/myapp/*");

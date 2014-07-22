@@ -37,17 +37,14 @@ import io.dropwizard.jdbi.DBIFactory;
 public class BosetterneModule extends AbstractModule {
 	final String REALM = "protected-resources";
 	
-	private final BosetterneConfiguration configuration;
+	private BosetterneConfiguration configuration;
 	//private final Environment environment;
 	private final Integer INIT_ANTALL_SPILL = 20;
-	private final DBI jdbi;
+	private DBI jdbi;
 	
 	private final String basePath = "/WebContent/";
 	
-	public BosetterneModule() {
-		//Kun for enhetstesting
-		this(null,(DBI) null);
-	}
+	public BosetterneModule() {}
     
 	public BosetterneModule(final BosetterneConfiguration configuration, Environment environment) {
 		this.configuration = configuration;
@@ -58,6 +55,14 @@ public class BosetterneModule extends AbstractModule {
 	public BosetterneModule(final BosetterneConfiguration configuration, DBI dbi) {
 		this.configuration = configuration;
 		this.jdbi = dbi;
+	}
+	
+	public void setConfiguration(BosetterneConfiguration configuration){
+		this.configuration = configuration;
+	}
+	
+	public void setJDBI(Environment environment){
+		this.jdbi = getJDBI(environment, new DBIFactory());
 	}
 	
 	@Override

@@ -52,9 +52,17 @@ public class OAuthAccessTokenResource {
 		this.oAuth2Verdier = oAuth2Verdier;
 	}
 
+	/**
+	client_id 	Required. The client application's id.
+	client_secret 	Required. The client application's client secret .
+	grant_type 	Required. Must be set to authorization_code .
+	code 	Required. The authorization code received by the authorization server.
+	redirect_uri 	Required, if the request URI was included in the authorization request. Must be identical then.*/
 	@POST
 	public AccessToken accessToken(
 			@HeaderParam("Authorization") String authorization,
+			@FormParam("client_id") String clientID,
+			@FormParam("client_secret") String clientSecret,
 			@FormParam("grant_type") String grantType,
 			@FormParam("code") String code,
 			@FormParam("redirect_uri") String redirectUri) {

@@ -40,9 +40,11 @@ public class OAuthAuthorizeResourceTest {
 	
 	private static final String STD_BRUKERNAVN = "brukernavn";
 	private static final String STD_PASSORD = "passord";
+	private static final String STD_RESPONSE_TYPE = "code";
 	private static final String STD_REDIRECT = "redirectUri";
 	private static final String STD_CLIENTID = "clientId";
 	private static final String STD_STATE = "state";
+	private static final String STD_SCOPE = "bosetterne";
 	private static final String STD_AUTHCODE = UUID.randomUUID().toString();
 
 	
@@ -82,7 +84,7 @@ public class OAuthAuthorizeResourceTest {
 	public void spillerAutorisert() throws Exception {
 		returnerStdSpiller();
 		
-		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, STD_REDIRECT, STD_CLIENTID, STD_STATE);
+		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, STD_RESPONSE_TYPE, STD_REDIRECT, STD_CLIENTID, STD_SCOPE, STD_STATE);
 		
 		
 		
@@ -104,7 +106,7 @@ public class OAuthAuthorizeResourceTest {
 	public void narSpilletIkkeKjennerClientIdSkalResponsenHaStatusUNAUTHORIZED(){
 		returnerStdSpiller();
 		
-		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, STD_REDIRECT, "ukjent client_id", STD_STATE);
+		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, STD_RESPONSE_TYPE, STD_REDIRECT, "ukjent client_id", STD_SCOPE, STD_STATE);
 		
 		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.UNAUTHORIZED.getStatusCode())));
 	}
@@ -114,7 +116,7 @@ public class OAuthAuthorizeResourceTest {
 	public void narRedirectURIIkkeHarRettSyntaxSkalResponsenHaStatusUNAUTHORIZED(){
 		returnerStdSpiller();
 		
-		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, "feil£\"||Syntakssssæøå", STD_CLIENTID, STD_STATE);
+		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD, STD_RESPONSE_TYPE, "feil£\"||Syntakssssæøå", STD_CLIENTID, STD_SCOPE, STD_STATE);
 		
 		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.UNAUTHORIZED.getStatusCode())));
 	}
@@ -123,26 +125,44 @@ public class OAuthAuthorizeResourceTest {
 	
 	/** Given/When/Then syntax*/
 	@Test
-	public void narSpilletIkkeKjennerBrukernavnSkalResponsenHaStatusUNAUTHORIZED(){
+	public void narSpilletIkkeKjennerBrukernavnSkalResponsenHaStatusNOT_FOUND(){
 		String brukernavn = "Ikke kjent brukernavn";
 		
 		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(null);
 		
-		Response respons = authResource.login(brukernavn, STD_PASSORD, STD_REDIRECT, STD_CLIENTID, STD_STATE);
+		Response respons = authResource.login(brukernavn, STD_PASSORD, STD_RESPONSE_TYPE, STD_REDIRECT, STD_CLIENTID, STD_SCOPE, STD_STATE);
 		
-		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.UNAUTHORIZED.getStatusCode())));
+		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.NOT_FOUND.getStatusCode())));
 	}
 	
 	/** Given/When/Then syntax*/
 	@Test
-	public void narSpilletIkkeKjennerPassordSkalResponsenHaStatusUNAUTHORIZED(){
+	public void narSpilletIkkeKjennerPassordSkalResponsenHaStatusNOT_FOUND(){
 		String passord = "galtPassord";
 		
 		Spiller spiller = returnerStdSpiller();
 		
-		Response respons = authResource.login(STD_BRUKERNAVN, passord, STD_REDIRECT, STD_CLIENTID, STD_STATE);
+		Response respons = authResource.login(STD_BRUKERNAVN, passord, STD_RESPONSE_TYPE, STD_REDIRECT, STD_CLIENTID, STD_SCOPE, STD_STATE);
 		
-		assertThat("Responsen skal ha status UNAUTHORIZED", respons.getStatus(), is(equalTo(Response.Status.UNAUTHORIZED.getStatusCode())));
+		assertThat("Responsen skal ha status NOT_FOUND", respons.getStatus(), is(equalTo(Response.Status.NOT_FOUND.getStatusCode())));
+	}
+	
+	@Test
+	public void hvisResponstypeIkkeErCodeSkalResponsenHaStatusBAD_REQUEST(){
+		returnerStdSpiller();
+		
+		Response respons = authResource.login(STD_BRUKERNAVN,STD_PASSORD, "RESPONSE_TYPE ikke code", STD_REDIRECT, STD_CLIENTID, STD_SCOPE, STD_STATE);
+		
+		assertThat("Responsen skal ha status BAD REQUEST", respons.getStatus(), is(equalTo(Response.Status.BAD_REQUEST.getStatusCode())));
+	}
+	
+	@Test
+	public void hvisScopeIkkeErImplementerteSpillSkalResponsenHaStatusBAD_REQUEST(){
+		returnerStdSpiller();
+		
+		Response respons = authResource.login(STD_BRUKERNAVN,STD_PASSORD, STD_RESPONSE_TYPE, STD_REDIRECT, STD_CLIENTID, "Ikke " + STD_SCOPE, STD_STATE);
+		
+		assertThat("Responsen skal ha status BAD REQUEST", respons.getStatus(), is(equalTo(Response.Status.BAD_REQUEST.getStatusCode())));
 	}
 
 	private Spiller returnerStdSpiller() {
@@ -152,5 +172,7 @@ public class OAuthAuthorizeResourceTest {
 
 		return spiller;
 	}
+	
+	
 
 }

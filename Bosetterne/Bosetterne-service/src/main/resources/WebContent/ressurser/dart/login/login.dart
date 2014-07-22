@@ -1,6 +1,14 @@
 
 import 'dart:html';
 
+InputElement spiller = querySelector('#txtBrukerNavn');
+InputElement passord = querySelector('#pass');
+InputElement redirect_uri = querySelector('#redirect_uri');
+InputElement client_id = querySelector('#client_id');
+InputElement scope = querySelector('#sel_scope');
+InputElement reponse_type = querySelector('#reponse_type');
+FormElement loginForm = querySelector('form#frmLogin');
+
 class BasicCred {
   String username;
   String password;
@@ -21,14 +29,6 @@ void main() {
 void onSubmit(Event e) {
   e.preventDefault();
 
-  InputElement spiller = querySelector('#txtKalleNavn');
-  InputElement passord = querySelector('#pass');
-  InputElement redirect_uri = querySelector('#redirect_uri');
-  InputElement client_id = querySelector('#client_id');
-  InputElement scope = querySelector('#sel_scope');
-  InputElement reponse_type = querySelector('#reponse_type');
-  FormElement loginForm = querySelector('form#frmLogin');
-
   Map data = new Map();
   data['redirect_uri'] = redirect_uri.value;
   data['client_id'] = client_id.value;
@@ -38,6 +38,11 @@ void onSubmit(Event e) {
   BasicCred creds = new BasicCred(spiller.value,passord.value);
 
   Map reqHdr = {'Authorization': creds.toString()};
+
+  HttpRequest.postFormData("/authorize", data, withCredentials: false, requestHeaders: reqHdr)
+  .then((HttpRequest resp){
+    print(resp.responseText);
+  });
 
   HttpRequest.postFormData("/token/implicit", data, withCredentials: true, requestHeaders: reqHdr)
   .then((HttpRequest resp){

@@ -63,45 +63,52 @@ public class OAuthAuthorizeResource {
 	public Response login(
 			@FormParam("username") String brukernavn,
 			@FormParam("password") String passord,
+			@FormParam("response_type") String responseType,
 			@FormParam("redirect_uri") String redirectUri,
 			@FormParam("client_id") String clientId,
+			@FormParam("scope") String scope,
 			@FormParam("state") String state) {
 		/*
 		 * Hook for implementing consent screen (which we currently don't have)
 		 */
 
-		/*
-		 * From the OAuth spec:
-		 * 
-		 * HTTP/1.1 302 Found Location:
-		 * https://client.example.com/cb?code=SplxlOBeZQQYbYS6WxSbIA &state=xyz
-		 */
-		
+		if("code".equals(responseType) && implementertSpill(scope)){		
+			return code(brukernavn, passord, redirectUri, clientId, state);
+		} else {
+			return Response.status(Response.Status.BAD_REQUEST).build();
+		}
+	}
+
+	private boolean implementertSpill(String scope) {
+		return "bosetterne".equals(scope);
+	}
+
+	private Response code(String brukernavn, String passord,
+			String redirectUri, String clientId, String state) {
 		BasicCredentials credentials = new BasicCredentials(brukernavn, passord);
 		Optional<Spiller> spiller = lobbyService.getSpiller(credentials);
 		
-		if(!spiller.isPresent()){
-			return Response.status(Response.Status.UNAUTHORIZED).build();
+		if(spiller.isPresent()){
+			Legitimasjon legitimasjon = new Legitimasjon().
+					setClientId(clientId).
+					setResponseType("code").
+					setRedirectUri(redirectUri).
+					setScope("read").
+					setState(state).setSpiller(spiller.get());
+			
+			String authorizationCode;
+			try {
+				authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
+			} catch (AutorisasjonsException e) {
+				logger.warn("Exeption ved autorisasjon ", e);
+				return Response.status(Response.Status.UNAUTHORIZED).build();
+			}
+			
+			redirectUri = authorizationCodeRedirectURI(redirectUri, state, authorizationCode);
+			return tryRedirect(redirectUri).build();
+		} else {
+			return Response.status(Response.Status.NOT_FOUND).build();
 		}
-		
-		Legitimasjon legitimasjon = new Legitimasjon().
-				setClientId(clientId).
-				setResponseType("code").
-				setRedirectUri(redirectUri).
-				setScope("read").
-				setState(state).setSpiller(spiller.get());
-		
-		String authorizationCode;
-		try {
-			authorizationCode = tokenStore.storeAuthorizationCode(legitimasjon);
-		} catch (AutorisasjonsException e) {
-			logger.warn("Exeption ved autorisasjon ", e);
-			// TODO Auto-generated catch block
-			return Response.status(Response.Status.UNAUTHORIZED).build();
-		}
-		
-		redirectUri = authorizationCodeRedirectURI(redirectUri, state, authorizationCode);
-		return tryRedirect(redirectUri).build();
 	}
 	
 	private String authorizationCodeRedirectURI(String redirectUri, String state, String authorizationCode) {

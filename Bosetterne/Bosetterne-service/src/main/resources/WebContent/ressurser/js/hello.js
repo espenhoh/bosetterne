@@ -15,7 +15,7 @@ jQuery(document).ready(
 				jQuery("#SayHello").click(
 						function() {
 							alert('Hello clicked!');
-							var kallenavn = jQuery("#txtKalleNavn").val();
+							var kallenavn = jQuery("#txtBrukerNavn").val();
 							var serviceURL = "http://localhost:8080/service/hello-world";
 							if (kallenavn.length > 0) {
 								serviceURL = serviceURL + "?name=" + kallenavn;
