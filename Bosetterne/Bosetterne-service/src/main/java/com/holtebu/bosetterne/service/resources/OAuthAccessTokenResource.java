@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.service.resources;
 
 import io.dropwizard.auth.basic.BasicCredentials;
 
+import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.HeaderParam;
@@ -11,6 +12,9 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.OAuth2Cred;
@@ -31,8 +35,10 @@ import com.sun.jersey.core.util.Base64;
  */
 @Path("/token")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.MULTIPART_FORM_DATA)
+@Singleton
 public class OAuthAccessTokenResource {
+	
+	private final static Logger logger = LoggerFactory.getLogger("OAuthAccessTokenResource.class");
 
 	private final Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;
 	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
@@ -85,11 +91,17 @@ public class OAuthAccessTokenResource {
 		String secret = values[1];
 		Optional<Spiller> opt = tokenStore.getSpillerByAuthorizationCode(code);
 		if (opt.isPresent()) {
-			Spiller clientDetails = opt.get();
-			// LOG.debug("Handing out access token for client {} with secret {}",
-			// clientId, secret);
+			Spiller spiller = opt.get();
+			
+			Legitimasjon leg = new Legitimasjon();
+			leg.setClientId(clientID);
+			leg.setSecret(clientSecret);
+			leg.setCode(code);
+			leg.setRedirectUri(redirectUri);
+			leg.setSpiller(spiller);
+			logger.debug("Handing out access token for client {} with secret {}", clientId, secret);
 			try {
-				return tokenStore.storeAccessToken(new Legitimasjon());
+				return tokenStore.storeAccessToken(leg);
 			} catch (AutorisasjonsException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

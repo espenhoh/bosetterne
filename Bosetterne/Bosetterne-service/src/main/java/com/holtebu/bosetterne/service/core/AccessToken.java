@@ -64,4 +64,10 @@ public class AccessToken {
 	public String getScope() {
 		return scope;
 	}
+
+	@Override
+	public String toString() {
+		return "AccessToken [access_token=" + access_token + ", expires_in="
+				+ expires_in + ", scope=" + scope + "]";
+	}
 }

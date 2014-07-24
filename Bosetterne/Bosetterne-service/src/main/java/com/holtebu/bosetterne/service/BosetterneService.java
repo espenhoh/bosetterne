@@ -35,19 +35,17 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
 	
     private final static Logger logger = LoggerFactory.getLogger("BosetterneService.class");
     private final BosetterneModule bosetterneModule;
-    private final Injector bosetterneInjector;
+    private Injector bosetterneInjector;
 
 	
-	public BosetterneService(Injector bosetterneInjector, BosetterneModule bosetterneModule) {
+	public BosetterneService(BosetterneModule bosetterneModule) {
 		this.bosetterneModule = bosetterneModule;
-		this.bosetterneInjector = bosetterneInjector;
 	}
 
 
 	public static void main(String[] args) throws Exception {
 		BosetterneModule bosetterneModule = new BosetterneModule();
-		Injector bosetterneInjector = Guice.createInjector(bosetterneModule);
-        new BosetterneService(bosetterneInjector, bosetterneModule).run(args);
+        new BosetterneService(bosetterneModule).run(args);
     }
 
 
@@ -81,7 +79,8 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     	logger.info("1/5 Setter opp Guice injector");
     	bosetterneModule.setConfiguration(configuration);
     	bosetterneModule.setJDBI(environment);
-
+    	bosetterneInjector = Guice.createInjector(bosetterneModule);
+    	
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
         environment.jersey().register(bosetterneInjector.getInstance(InjectableOAuthProvider.class));

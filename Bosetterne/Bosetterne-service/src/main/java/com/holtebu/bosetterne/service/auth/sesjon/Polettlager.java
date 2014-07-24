@@ -35,6 +35,12 @@ public interface Polettlager<T, I, L, C> {
 	 */
 	C storeAuthorizationCode(L legitimasjon) throws AutorisasjonsException;
 
+	/**
+	 * Henter en spiller med aktuell autoriseringskode. Hvis spiller ikke finnes, returneres absent.
+	 *  <p>
+	 * @param code Autoriseringskode.
+	 * @return Spilleren som tilsvarer autosriesingskoden.
+	 */
 	Optional<I> getSpillerByAuthorizationCode(C code);
 
 }

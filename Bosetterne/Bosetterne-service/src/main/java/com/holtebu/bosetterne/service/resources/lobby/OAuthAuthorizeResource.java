@@ -68,10 +68,10 @@ public class OAuthAuthorizeResource {
 			@FormParam("client_id") String clientId,
 			@FormParam("scope") String scope,
 			@FormParam("state") String state) {
-		/*
-		 * Hook for implementing consent screen (which we currently don't have)
-		 */
+		
+		logger.info("{} {} {} {} {} {} {}", brukernavn, passord, responseType, redirectUri, clientId, scope, state);
 
+		
 		if("code".equals(responseType) && implementertSpill(scope)){		
 			return code(brukernavn, passord, redirectUri, clientId, state);
 		} else {

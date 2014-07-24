@@ -50,7 +50,7 @@ public class BosetterneServiceTest {
     	MockitoAnnotations.initMocks(this);
     	
     	bosetterneModule = spy(new BosetterneModule()); 
-    	application = new BosetterneService(bosetterneInjector, bosetterneModule);
+    	application = new BosetterneService(bosetterneModule);
     	
     	config = ConfigurationStub.getConf();
         when(environment.jersey()).thenReturn(jersey);

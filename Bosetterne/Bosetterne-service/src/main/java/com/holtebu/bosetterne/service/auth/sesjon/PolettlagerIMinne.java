@@ -114,7 +114,7 @@ public class PolettlagerIMinne implements
 		}
 		
 		if (!verified) {
-			throw new AutorisasjonsException("Client_id mismatch. Legitimasjon var" + leg);
+			throw new AutorisasjonsException("Client_id mismatch. Legitimasjon var " + leg);
 		}
 		
 		return;
