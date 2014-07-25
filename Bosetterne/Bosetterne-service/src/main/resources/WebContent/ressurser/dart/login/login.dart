@@ -6,7 +6,7 @@ InputElement passord = querySelector('#pass');
 InputElement redirect_uri = querySelector('#redirect_uri');
 InputElement client_id = querySelector('#client_id');
 InputElement scope = querySelector('#sel_scope');
-InputElement reponse_type = querySelector('#response_type');
+InputElement response_type = querySelector('#response_type');
 FormElement loginForm = querySelector('form#frmLogin');
 
 class BasicCred {
@@ -35,23 +35,23 @@ void onSubmit(Event e) {
   data['redirect_uri'] = redirect_uri.value;
   data['client_id'] = client_id.value;
   data['scope'] = scope.value;
-  data['reponse_type'] = reponse_type.value;
+  data['response_type'] = response_type.value;
   data['state'] = 'beta';
-
-  print(data['response_type']);
-  print(data['client_id']);
 
   BasicCred creds = new BasicCred(spiller.value,passord.value);
 
   Map reqHdr = {'Authorization': creds.toString()};
 
-  HttpRequest.postFormData("/authorize", data, withCredentials: false, requestHeaders: reqHdr)
+  HttpRequest.postFormData("/authorize/authcode", data, withCredentials: false)
   .then((HttpRequest resp){
+
+    Map data2 = {'client_id':client_id.value,'client_secret':'secret','code':resp.responseText,'grant_type':'token','redirect_uri':redirect_uri.value};
+      HttpRequest.postFormData("/token", data2, withCredentials: true, requestHeaders: reqHdr)
+      .then((HttpRequest resp){
+        print(resp.responseText);
+      });
     print(resp.responseText);
   });
 /*
-  HttpRequest.postFormData("/token/implicit", data, withCredentials: true, requestHeaders: reqHdr)
-  .then((HttpRequest resp){
-    print(resp.responseText);
-  });*/
+  */
 }

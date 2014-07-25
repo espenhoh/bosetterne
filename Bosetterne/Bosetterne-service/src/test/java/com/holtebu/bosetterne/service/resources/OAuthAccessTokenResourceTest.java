@@ -6,6 +6,8 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.dropwizard.auth.basic.BasicCredentials;
 
@@ -18,6 +20,7 @@ import javax.ws.rs.WebApplicationException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -72,7 +75,7 @@ public class OAuthAccessTokenResourceTest{
 		auth2Cred = new OAuth2Cred(STD_CLIENTID, STD_CLIENT_SECRET);
 		accessTokens = new HashMap<>();
 		codes = new HashMap<>();
-		tokenStore = new PolettlagerIMinne(accessTokens, codes, auth2Cred);
+		tokenStore = spy(new PolettlagerIMinne(accessTokens, codes, auth2Cred));
 		
 		authResource = new OAuthAccessTokenResource(tokenStore, null, auth2Cred);
 	}
@@ -100,6 +103,10 @@ public class OAuthAccessTokenResourceTest{
 		Legitimasjon leg = new Legitimasjon().setClientId(STD_CLIENTID).setSecret(STD_CLIENT_SECRET).setCode(STD_CODE).setRedirectUri(STD_REDIRECT).setResponseType("token").setSpiller(spiller);
 		
 		AccessToken stdToken = authResource.accessToken(STD_AUTHENTICATION, STD_CLIENTID, STD_CLIENT_SECRET, STD_GRANT_TYPE, STD_CODE, STD_REDIRECT);
+		
+		ArgumentCaptor<Legitimasjon> argument = ArgumentCaptor.forClass(Legitimasjon.class);
+		verify(tokenStore).storeAccessToken(argument.capture());
+		assertThat("Spiller skal sendes til tokenStore", argument.getValue().getSpiller(), is(equalTo(spiller)));
 		
 		assertThat("Token skal ikke være null", stdToken, not(nullValue()));
 		assertThat("Scope skal være bosetterne", stdToken.getScope(), is(equalTo("bosetterne")));

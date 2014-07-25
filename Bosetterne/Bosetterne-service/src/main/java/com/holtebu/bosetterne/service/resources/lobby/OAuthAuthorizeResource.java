@@ -36,6 +36,8 @@ import com.holtebu.bosetterne.service.core.Legitimasjon;
 public class OAuthAuthorizeResource {
 	
 	private final static Logger logger = LoggerFactory.getLogger("OAuthAuthorizeResource.class");
+	private static final String STD_SCOPE = "BOSETTERNE";
+	private static final String STD_RESPONSE_TYPE = "code";
 
 	private Polettlager<AccessToken, Spiller ,Legitimasjon, String> tokenStore;
 	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
@@ -72,15 +74,52 @@ public class OAuthAuthorizeResource {
 		logger.info("{} {} {} {} {} {} {}", brukernavn, passord, responseType, redirectUri, clientId, scope, state);
 
 		
-		if("code".equals(responseType) && implementertSpill(scope)){		
+		if(STD_RESPONSE_TYPE.equals(responseType) && implementertSpill(scope)){		
 			return code(brukernavn, passord, redirectUri, clientId, state);
 		} else {
 			return Response.status(Response.Status.BAD_REQUEST).build();
 		}
 	}
+	
+	@POST
+	@Path("/authcode")
+	@Produces(MediaType.TEXT_HTML)
+	public String authCode(
+			@FormParam("username") String brukernavn,
+			@FormParam("password") String passord,
+			@FormParam("response_type") String responseType,
+			@FormParam("redirect_uri") String redirectUri,
+			@FormParam("client_id") String clientId,
+			@FormParam("scope") String scope,
+			@FormParam("state") String state){
+		
+		String authCode = null;
+		
+		if(STD_RESPONSE_TYPE.equals(responseType) && implementertSpill(scope)){		
+			BasicCredentials credentials = new BasicCredentials(brukernavn, passord);
+			Optional<Spiller> spiller = lobbyService.getSpiller(credentials);
+			
+			if(spiller.isPresent()){
+				Legitimasjon legitimasjon = new Legitimasjon().
+						setClientId(clientId).
+						setResponseType("code").
+						setRedirectUri(redirectUri).
+						setScope("read").
+						setState(state).setSpiller(spiller.get());
+				
+				try {
+					authCode = tokenStore.storeAuthorizationCode(legitimasjon);
+				} catch (AutorisasjonsException e) {
+					logger.warn("Exeption ved autorisasjon ", e);
+				}
+			} 
+		}
+		
+		return authCode;
+	}
 
 	private boolean implementertSpill(String scope) {
-		return "bosetterne".equals(scope);
+		return STD_SCOPE.equals(scope);
 	}
 
 	private Response code(String brukernavn, String passord,

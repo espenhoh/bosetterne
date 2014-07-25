@@ -131,7 +131,7 @@ public class OAuthAccessTokenResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	@Path("/implicit")
+	//@Path("/implicit")
 	public AccessToken loginImplicit(
 			@HeaderParam("Authorization") String authorization,
 			@FormParam("redirect_uri") String redirectUri,

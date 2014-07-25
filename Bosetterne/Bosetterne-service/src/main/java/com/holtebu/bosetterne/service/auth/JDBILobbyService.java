@@ -76,7 +76,7 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 			BasicCredentials leg) {
 		boolean rettPassord;
 		if (spiller.isPresent()){
-			rettPassord = spiller.get().getPassord() == leg.getPassword();
+			rettPassord = spiller.get().getPassord().equals(leg.getPassword());
 		} else {
 			rettPassord = false;
 		}
