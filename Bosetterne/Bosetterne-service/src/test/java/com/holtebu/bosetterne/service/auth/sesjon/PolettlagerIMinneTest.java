@@ -74,7 +74,7 @@ public class PolettlagerIMinneTest {
 		
 		AccessToken token = polettLager.storeAccessToken(leg);
 		
-		assertThat("Spiller skal være lagt i map", accessTokens.get(token.getAccess_token()),is(spiller));
+		assertThat("Spiller skal være lagt i map", accessTokens.get(token.getAccessToken()),is(spiller));
 	}
 	
 	

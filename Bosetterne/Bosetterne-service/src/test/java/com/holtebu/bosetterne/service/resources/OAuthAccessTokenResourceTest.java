@@ -37,15 +37,13 @@ import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
-import com.sun.jersey.core.util.Base64;
-import com.sun.jersey.test.framework.JerseyTest;
 
 public class OAuthAccessTokenResourceTest{
 	
 	
 	private static final String STD_BRUKERNAVN = "brukernavn";
 	private static final String STD_PASSORD = "passord";
-	private static final String STD_AUTHENTICATION = "Basic " + new String(Base64.encode(STD_BRUKERNAVN + ":" + STD_PASSORD));
+	private static final String STD_AUTHENTICATION = "Basic " + new String(org.glassfish.jersey.internal.util.Base64.encode((STD_BRUKERNAVN + ":" + STD_PASSORD).getBytes()));
 	private static final String STD_GRANT_TYPE = "code";
 	private static final String STD_REDIRECT = "redirectUri";
 	private static final String STD_CLIENTID = "clientId";

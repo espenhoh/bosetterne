@@ -45,7 +45,7 @@ public class BosetterneAuthenticatorTest {
 		Legitimasjon leg = new Legitimasjon().setClientId(oAuth2Verdier.getClientId()).setSecret(oAuth2Verdier.getClientSecret()).setSpiller(spiller);
 		AccessToken token = tokenStore.storeAccessToken(leg);
 		
-		Optional<Spiller> hentetSpiller = authenticator.authenticate(token.getAccess_token());
+		Optional<Spiller> hentetSpiller = authenticator.authenticate(token.getAccessToken());
 		
 		assertThat("Spiller skal eksistere", hentetSpiller.isPresent(),is(true));
 		assertThat("Spiller skal være samme", hentetSpiller.get(),is(spiller));

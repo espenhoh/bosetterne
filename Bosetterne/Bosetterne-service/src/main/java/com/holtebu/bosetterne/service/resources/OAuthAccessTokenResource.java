@@ -13,6 +13,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.internal.util.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +26,6 @@ import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.google.common.base.Optional;
 import com.google.inject.Inject;
-import com.sun.jersey.core.util.Base64;
 
 //import com.yammer.dropwizard.logging.Log;
 
@@ -85,8 +85,11 @@ public class OAuthAccessTokenResource {
 							.entity("Base64 encoded authorization header is required when obtaining an access token")
 							.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		String[] values = new String(Base64.decode(authorization
-				.substring("Basic ".length()))).split(":");
+		String[] values = new String(
+					Base64.decode(
+						authorization.substring("Basic ".length()).getBytes()
+					)
+				).split(":");
 		String clientId = values[0];
 		String secret = values[1];
 		Optional<Spiller> opt = tokenStore.getSpillerByAuthorizationCode(code);
@@ -131,7 +134,7 @@ public class OAuthAccessTokenResource {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-	//@Path("/implicit")
+	@Path("/implicit")
 	public AccessToken loginImplicit(
 			@HeaderParam("Authorization") String authorization,
 			@FormParam("redirect_uri") String redirectUri,
@@ -145,7 +148,11 @@ public class OAuthAccessTokenResource {
 							.entity("Base64 encoded authorization header is required when obtaining an access token")
 							.type(MediaType.TEXT_PLAIN_TYPE).build());
 		}
-		String[] values = new String(Base64.decode(authorization.substring("Basic ".length()))).split(":");
+		String[] values = new String(
+				Base64.decode(
+					authorization.substring("Basic ".length()).getBytes()
+				)
+			).split(":");
 		
 		BasicCredentials credentials = new BasicCredentials(values[0], values[1]);
 		Optional<Spiller> spiller = lobbyService.getSpiller(credentials);

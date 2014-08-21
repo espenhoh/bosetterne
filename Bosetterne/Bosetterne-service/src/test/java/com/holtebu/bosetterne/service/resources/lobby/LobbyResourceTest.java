@@ -26,8 +26,6 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import com.google.common.base.Optional;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
-import com.sun.jersey.test.framework.AppDescriptor;
-import com.sun.jersey.test.framework.JerseyTest;
 import io.dropwizard.auth.basic.BasicCredentials;
 
 public class LobbyResourceTest { // extends JerseyTest {
@@ -56,9 +54,6 @@ public class LobbyResourceTest { // extends JerseyTest {
 		
 	}
 	
-	protected AppDescriptor configure() {
-        return null;
-    }
 
 
 

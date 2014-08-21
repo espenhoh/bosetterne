@@ -60,7 +60,7 @@ public class PolettlagerIMinne implements
 
 		if(verifyClientSecret(leg)) {
 			accessToken = new AccessToken(UUID.randomUUID().toString(),	Long.MAX_VALUE);
-			accessTokens.put(accessToken.getAccess_token(), leg.getSpiller());
+			accessTokens.put(accessToken.getAccessToken(), leg.getSpiller());
 		}
 
 		return accessToken;

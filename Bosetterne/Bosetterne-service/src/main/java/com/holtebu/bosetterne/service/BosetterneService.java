@@ -5,6 +5,8 @@ import io.dropwizard.Application;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
+import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
@@ -16,6 +18,7 @@ import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
 
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.auth.oauth.OAuthFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
@@ -83,7 +86,8 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     	
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
-        environment.jersey().register(bosetterneInjector.getInstance(InjectableOAuthProvider.class));
+        //environment.jersey().register(bosetterneInjector.getInstance(InjectableOAuthProvider.class));
+        environment.jersey().register(new OAuthFactory<Spiller>(bosetterneInjector.getInstance(BosetterneAuthenticator.class), "protected-resources", Spiller.class));
         environment.jersey().register(bosetterneInjector.getInstance(OAuthAccessTokenResource.class));
         environment.jersey().register(bosetterneInjector.getInstance(OAuthAuthorizeResource.class));
         //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));        
