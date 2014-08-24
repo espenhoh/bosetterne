@@ -11,8 +11,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.Bosetterne;
 import com.holtebu.bosetterne.api.Spiller;
  
@@ -26,8 +24,7 @@ public class BosetterneResource {
 	
 	private String getit;
 	
-	@Inject
-	public BosetterneResource(Bosetterne bosetterne, @Named("getit") String getit){
+	public BosetterneResource(Bosetterne bosetterne,  String getit){
 		this.bosetterne = bosetterne;
 		this.getit = getit;
 	}

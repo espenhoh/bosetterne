@@ -26,7 +26,6 @@ import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.api.SpillerBuilder;
-import com.holtebu.bosetterne.service.BosetterneModule;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.auth.JDBILobbyService;
 import com.holtebu.bosetterne.service.auth.LobbyService;
@@ -66,8 +65,7 @@ public class OAuthAuthorizeResourceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		lobbyService = new JDBILobbyService(
-				new BosetterneModule().provideSpillerCache(daoMock));
+		lobbyService = new JDBILobbyService(com.holtebu.bosetterne.service.auth.JDBILobbyServiceTest.provideSpillerCache(daoMock));
 		auth2Cred = new OAuth2Cred(STD_CLIENTID, STD_CLIENT_SECRET);
 		accessTokens = new HashMap<>();
 		codes = new HashMap<>();

@@ -18,7 +18,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.auth.LobbyService;
@@ -42,8 +41,7 @@ public class OAuthAuthorizeResource {
 	private Polettlager<AccessToken, Spiller ,Legitimasjon, String> tokenStore;
 	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
 	OAuth2Cred oAuth2Verdier;
-	
-	@Inject
+
 	public OAuthAuthorizeResource(
 			Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore,
 			LobbyService<Optional<Spiller>, BasicCredentials> lobbyService,

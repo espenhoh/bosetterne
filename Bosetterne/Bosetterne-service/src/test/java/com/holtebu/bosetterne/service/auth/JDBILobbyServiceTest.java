@@ -14,15 +14,17 @@ import static org.mockito.Mockito.when;
 import io.dropwizard.auth.basic.BasicCredentials;
 
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import com.google.common.base.Optional;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.api.SpillerBuilder;
-import com.holtebu.bosetterne.service.BosetterneModule;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 
 public class JDBILobbyServiceTest {
@@ -41,9 +43,8 @@ public class JDBILobbyServiceTest {
 	public void setUp(){
 		daoMock = mock(LobbyDAO.class);
 		
-		BosetterneModule testModule = new BosetterneModule();
 		
-		spillerCache = spy(testModule.provideSpillerCache(daoMock));
+		spillerCache = spy(com.holtebu.bosetterne.service.auth.JDBILobbyServiceTest.provideSpillerCache(daoMock));
 		
 		lobbyService = new JDBILobbyService(spillerCache);
 		
@@ -109,6 +110,19 @@ public class JDBILobbyServiceTest {
 				withBrukernavn(brukernavn).
 				withKallenavn(brukernavn).
 				withPassord(passord).build();
+	}
+	
+	public static LoadingCache<String, Optional<Spiller>> provideSpillerCache( final LobbyDAO dao){
+		CacheLoader<String, Optional<Spiller>> loader = new CacheLoader<String, Optional<Spiller>> () {
+			  public Optional<Spiller> load(String key) throws Exception {
+				  return Optional.fromNullable(dao.finnSpillerVedNavn(key));
+			  }
+		};
+
+		return CacheBuilder.newBuilder()
+	       .maximumSize(1000)
+	       .expireAfterWrite(1, TimeUnit.HOURS)
+	       .build(loader);
 	}
 
 }

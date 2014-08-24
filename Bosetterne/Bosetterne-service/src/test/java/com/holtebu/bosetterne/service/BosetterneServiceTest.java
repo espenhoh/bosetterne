@@ -22,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.skife.jdbi.v2.DBI;
 
-import com.google.inject.Injector;
 import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.resources.BosetterneResource;
@@ -38,10 +37,13 @@ public class BosetterneServiceTest {
 	private Environment environment;
 	@Mock
     private JerseyEnvironment jersey;
+	//@Mock
+	//private Injector bosetterneInjector;
 	@Mock
-	private Injector bosetterneInjector;
+	private DBI dBIMock;
+	@Mock
+	private LobbyDAO daoMock;
 	
-    private BosetterneModule bosetterneModule;
     private BosetterneService application;
     private BosetterneConfiguration config;
 
@@ -49,37 +51,18 @@ public class BosetterneServiceTest {
     public void setup() throws Exception {
     	MockitoAnnotations.initMocks(this);
     	
-    	bosetterneModule = spy(new BosetterneModule()); 
-    	application = new BosetterneService(bosetterneModule);
-    	
     	config = ConfigurationStub.getConf();
+    	
+    	
+    	application = new BosetterneService();
+    	
+    	
         when(environment.jersey()).thenReturn(jersey);
     }
 
     @Test
     public void buildsResources() throws Exception {
-    	doReturn(mock(DBI.class)).when(bosetterneModule).getJDBI(eq(environment), isA(DBIFactory.class));
-
-    	when(bosetterneInjector.getInstance(eq(InjectableOAuthProvider.class))).thenReturn(new InjectableOAuthProvider<>(null, ""));
-    	when(bosetterneInjector.getInstance(eq(OAuthAuthorizeResource.class))).thenReturn(new OAuthAuthorizeResource(null, null, null));
-    	when(bosetterneInjector.getInstance(eq(OAuthAccessTokenResource.class))).thenReturn(new OAuthAccessTokenResource(null, null, null));
-    	when(bosetterneInjector.getInstance(eq(LobbyResource.class))).thenReturn(new LobbyResource(null));
-    	when(bosetterneInjector.getInstance(eq(RegistrerResource.class))).thenReturn(new RegistrerResource(null));
-    	when(bosetterneInjector.getInstance(eq(LoggInnResource.class))).thenReturn(new LoggInnResource());
-    	when(bosetterneInjector.getInstance(eq(HelloWorldResource.class))).thenReturn(new HelloWorldResource(config, null));
-    	when(bosetterneInjector.getInstance(eq(BosetterneResource.class))).thenReturn(new BosetterneResource(null,null));
-
     	
-        application.run(config, environment);
-
-        verify(jersey).register(isA(InjectableOAuthProvider.class));
-        verify(jersey).register(isA(OAuthAccessTokenResource.class));
-        verify(jersey).register(isA(OAuthAuthorizeResource.class));
-        verify(jersey).register(isA(LobbyResource.class));
-        verify(jersey).register(isA(RegistrerResource.class));
-        verify(jersey).register(isA(LoggInnResource.class));
-        verify(jersey).register(isA(HelloWorldResource.class));
-        verify(jersey).register(isA(BosetterneResource.class));
     }
     
     @Test

@@ -23,7 +23,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.core.AccessToken;
@@ -40,7 +39,7 @@ public class PolettlagerIMinne implements
 	private final Map<String, Legitimasjon> codes;
 	private final OAuth2Cred oAuth2Verdier;
 
-	@Inject
+
 	public PolettlagerIMinne(
 			Map<String, Spiller> accessTokens,
 			Map<String, Legitimasjon> codes,

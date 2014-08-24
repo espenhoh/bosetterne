@@ -20,8 +20,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.Bosetterne;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
@@ -42,7 +40,6 @@ public class LobbyResource {
 	
 	private final LobbyDAO dao;
 	
-	@Inject
 	public LobbyResource(LobbyDAO dao){
 		this.dao = dao;
 	}

@@ -1,13 +1,11 @@
 package com.holtebu.bosetterne.service.health;
 
-import com.google.inject.Inject;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.codahale.metrics.health.HealthCheck;
 
 public class TemplateHealthCheck extends HealthCheck {
     private final String template;
 
-    @Inject
     public TemplateHealthCheck(BosetterneConfiguration configuration) {
         this.template = configuration.getTemplate();
     }

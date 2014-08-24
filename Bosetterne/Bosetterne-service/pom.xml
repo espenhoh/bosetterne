@@ -58,10 +58,12 @@
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-views-mustache</artifactId>
 		</dependency>
-		<!-- <dependency>
-			<groupId>org.glassfish.jersey.test-framework.providers</groupId>
-			<artifactId>jersey-test-framework-provider-jetty</artifactId>
-		</dependency> -->
+		<!-- <dependency> -->
+		<!-- <groupId>org.glassfish.hk2</groupId> -->
+		<!-- <artifactId>guice-bridge</artifactId> -->
+		<!-- </dependency> -->
+		<!-- <dependency> <groupId>org.glassfish.jersey.test-framework.providers</groupId> 
+			<artifactId>jersey-test-framework-provider-jetty</artifactId> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
@@ -100,10 +102,6 @@
 		<!-- <artifactId>javascript</artifactId> -->
 		<!-- <type>war</type> -->
 		<!-- </dependency> -->
-		<dependency>
-			<groupId>com.google.inject</groupId>
-			<artifactId>guice</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>jdbcdriver</artifactId>
@@ -154,7 +152,7 @@
 			<plugin>
 				<groupId>com.ning.maven.plugins</groupId>
 				<artifactId>maven-duplicate-finder-plugin</artifactId>
-				<version>1.0.6</version>
+				<version>1.0.7</version>
 				<configuration>
 					<ignoredDependencies>
 						<dependency>
@@ -167,7 +165,7 @@
 						<ignoredResource>META-INF.*</ignoredResource>
 						<ignoredResource>about\.html</ignoredResource>
 					</ignoredResources>
-					<failBuildInCaseOfConflict>false</failBuildInCaseOfConflict>
+					<failBuildInCaseOfConflict>true</failBuildInCaseOfConflict>
 					<exceptions>
 						<exception>
 							<conflictingDependencies>
@@ -189,9 +187,45 @@
 						<exception>
 							<conflictingDependencies>
 								<dependency>
+									<groupId>org.glassfish.jersey.core</groupId>
+									<artifactId>jersey-common</artifactId>
+									<version>2.9</version>
+								</dependency>
+								<dependency>
+									<groupId>org.glassfish.jersey.ext</groupId>
+									<artifactId>jersey-metainf-services</artifactId>
+									<version>2.9</version>
+								</dependency>
+							</conflictingDependencies>
+							<packages>
+								<package>org.glassfish.jersey.message.internal</package>
+							</packages>
+						</exception>
+						<exception>
+							<conflictingDependencies>
+								<dependency>
+									<groupId>aopalliance</groupId>
+									<artifactId>aopalliance</artifactId>
+									<version>1.0</version>
+								</dependency>
+								<dependency>
+									<groupId>org.glassfish.hk2.external</groupId>
+									<artifactId>aopalliance-repackaged</artifactId>
+									<version>2.3.0-b05</version>
+								</dependency>
+							</conflictingDependencies>
+							<packages>
+								<package>org.aopalliance.aop</package>
+								<package>org.aopalliance.intercept</package>
+							</packages>
+						</exception>
+
+						<exception>
+							<conflictingDependencies>
+								<dependency>
 									<groupId>com.google.code.findbugs</groupId>
 									<artifactId>annotations</artifactId>
-									<version>2.0.2</version>
+									<version>2.0.3</version>
 								</dependency>
 								<dependency>
 									<groupId>com.google.code.findbugs</groupId>
@@ -202,9 +236,39 @@
 							<packages>
 								<package>javax.annotation</package>
 							</packages>
-							<resourcePatterns>
-								<resourcePattern>javax/annotation/*</resourcePattern>
-							</resourcePatterns>
+							<resources>
+								<resource>javax/annotation/CheckForNull.java</resource>
+								<resource>javax/annotation/CheckForSigned.java</resource>
+								<resource>javax/annotation/CheckReturnValue.java</resource>
+								<resource>javax/annotation/Detainted.java</resource>
+								<resource>javax/annotation/MatchesPattern.java</resource>
+								<resource>javax/annotation/Nonnegative.java</resource>
+								<resource>javax/annotation/Nonnull.java</resource>
+								<resource>javax/annotation/Nullable.java</resource>
+								<resource>javax/annotation/OverridingMethodsMustInvokeSuper.java</resource>
+								<resource>javax/annotation/ParametersAreNonnullByDefault.java</resource>
+								<resource>javax/annotation/ParametersAreNullableByDefault.java</resource>
+								<resource>javax/annotation/PropertyKey.java</resource>
+								<resource>javax/annotation/RegEx.java</resource>
+								<resource>javax/annotation/Signed.java</resource>
+								<resource>javax/annotation/Syntax.java</resource>
+								<resource>javax/annotation/Tainted.java</resource>
+								<resource>javax/annotation/Untainted.java</resource>
+								<resource>javax/annotation/WillClose.java</resource>
+								<resource>javax/annotation/WillCloseWhenClosed.java</resource>
+								<resource>javax/annotation/WillNotClose.java</resource>
+								<resource>javax/annotation/concurrent/GuardedBy.java</resource>
+								<resource>javax/annotation/concurrent/Immutable.java</resource>
+								<resource>javax/annotation/concurrent/NotThreadSafe.java</resource>
+								<resource>javax/annotation/concurrent/ThreadSafe.java</resource>
+								<resource>javax/annotation/meta/Exclusive.java</resource>
+								<resource>javax/annotation/meta/Exhaustive.java</resource>
+								<resource>javax/annotation/meta/TypeQualifier.java</resource>
+								<resource>javax/annotation/meta/TypeQualifierDefault.java</resource>
+								<resource>javax/annotation/meta/TypeQualifierNickname.java</resource>
+								<resource>javax/annotation/meta/TypeQualifierValidator.java</resource>
+								<resource>javax/annotation/meta/When.java</resource>
+							</resources>
 						</exception>
 						<exception>
 							<conflictingDependencies>

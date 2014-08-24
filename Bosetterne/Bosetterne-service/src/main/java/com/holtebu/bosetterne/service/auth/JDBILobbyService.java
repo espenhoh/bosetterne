@@ -16,8 +16,6 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalListeners;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import io.dropwizard.auth.basic.BasicCredentials;
 
 /**
@@ -29,8 +27,8 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	
 	private final LoadingCache<String, Optional<Spiller>> spillerCache;
 	
-	@Inject
-	public JDBILobbyService(@Named("spillerCache") LoadingCache<String, Optional<Spiller>> spillerCache) {
+
+	public JDBILobbyService(LoadingCache<String, Optional<Spiller>> spillerCache) {
 		this.spillerCache = spillerCache;
 	}
 

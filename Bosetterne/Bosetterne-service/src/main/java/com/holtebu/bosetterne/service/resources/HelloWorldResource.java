@@ -1,8 +1,6 @@
 package com.holtebu.bosetterne.service.resources;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 import com.holtebu.bosetterne.api.helloworld.Saying;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.codahale.metrics.annotation.Timed;
@@ -22,7 +20,6 @@ public class HelloWorldResource {
     private final String defaultName;
     private final AtomicLong counter;
 
-    @Inject
     public HelloWorldResource(BosetterneConfiguration configuration, AtomicLong counter) {
         this.template = configuration.getTemplate();
         this.defaultName = configuration.getDefaultName();

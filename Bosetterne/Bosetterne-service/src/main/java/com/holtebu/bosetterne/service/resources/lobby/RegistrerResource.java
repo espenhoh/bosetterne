@@ -16,7 +16,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
-import com.google.inject.Inject;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.views.RegistrerView;
@@ -33,7 +32,7 @@ public class RegistrerResource {
 
 	private LobbyDAO dao;
 
-	@Inject
+
 	public RegistrerResource(LobbyDAO dao){
 		this.dao = dao;
 	}
