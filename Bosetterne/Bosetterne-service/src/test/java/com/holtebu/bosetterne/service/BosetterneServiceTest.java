@@ -24,6 +24,7 @@ import org.skife.jdbi.v2.DBI;
 
 import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+import com.holtebu.bosetterne.service.inject.BosetterneServiceBinder;
 import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
@@ -54,7 +55,7 @@ public class BosetterneServiceTest {
     	config = ConfigurationStub.getConf();
     	
     	
-    	application = new BosetterneService();
+    	application = new BosetterneService(new BosetterneServiceBinder(new DBIFactory()));
     	
     	
         when(environment.jersey()).thenReturn(jersey);

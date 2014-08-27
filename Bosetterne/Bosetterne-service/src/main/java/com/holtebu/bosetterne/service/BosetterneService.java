@@ -1,12 +1,20 @@
 package com.holtebu.bosetterne.service;
 
 
+import java.util.HashMap;
+import java.util.concurrent.atomic.AtomicLong;
+
 import io.dropwizard.Application;
 
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
+import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
+import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
+import com.holtebu.bosetterne.service.core.AccessToken;
+import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
+import com.holtebu.bosetterne.service.inject.BosetterneServiceBinder;
 import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
@@ -20,8 +28,11 @@ import io.dropwizard.auth.oauth.OAuthFactory;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
 
+import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -35,15 +46,16 @@ import org.slf4j.LoggerFactory;
 public class BosetterneService extends Application<BosetterneConfiguration> {
 	
     private final static Logger logger = LoggerFactory.getLogger("BosetterneService.class");
-    
+    private final BosetterneServiceBinder binder;
 
 	
-	public BosetterneService() {
+	public BosetterneService(BosetterneServiceBinder binder) {
+		this.binder = binder;
 	}
 
-
 	public static void main(String[] args) throws Exception {
-        new BosetterneService().run(args);
+		BosetterneServiceBinder binder = new BosetterneServiceBinder(new DBIFactory());
+        new BosetterneService(binder).run(args);
     }
 
 
@@ -72,36 +84,38 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
 
     @Override
     public void run(BosetterneConfiguration configuration, Environment environment) {
-
-    	//Dependency injectors
-    	//logger.info("1/5 Setter opp Guice injector");
-    	//bosetterneModule.setConfiguration(configuration);
-    	//bosetterneModule.setJDBI(environment);
-    	//environment.getApplicationContext().getH
+    	logger.info("0/5 Henter opp Jersey");
+    	JerseyEnvironment jersey = environment.jersey();
     	
-    	//bosetterneInjector = Guice.createInjector(bosetterneModule);
+    	//Dependency injectors
+    	logger.info("1/5 Setter opp hk2 injector");
+    	binder.setUpEnv(configuration, environment);
+    	binder.setUpDao(binder.buildJDBI());
+    	jersey.register(binder);
     	
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
-        
+        //Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
+        //jersey.register(new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources", Spiller.class));
+        //jersey.register(new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources", Spiller.class));
         //environment.jersey().register(bosetterneInjector.getInstance(InjectableOAuthProvider.class));
-        //environment.jersey().register(new OAuthFactory<Spiller>(bosetterneInjector.getInstance(BosetterneAuthenticator.class), "protected-resources", Spiller.class));
+        //
         //environment.jersey().register(bosetterneInjector.getInstance(OAuthAccessTokenResource.class));
         //environment.jersey().register(bosetterneInjector.getInstance(OAuthAuthorizeResource.class));
         //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));        
         
         //Resources
         logger.info("3/5 Legger til standard resources");
-        environment.jersey().register(LobbyResource.class);
+        //environment.jersey().register(LobbyResource.class);
         //environment.jersey().register(bosetterneInjector.getInstance(LobbyResource.class));
         //environment.jersey().register(bosetterneInjector.getInstance(RegistrerResource.class));
         //environment.jersey().register(bosetterneInjector.getInstance(LoggInnResource.class));
-        //environment.jersey().register(bosetterneInjector.getInstance(HelloWorldResource.class));
+        jersey.register(HelloWorldResource.class);
         //environment.jersey().register(bosetterneInjector.getInstance(BosetterneResource.class));
         
         //Health checks
         logger.info("4/5 Legger til HealthChecks");
-        //environment.healthChecks().register("template", bosetterneInjector.getInstance(TemplateHealthCheck.class));
+        environment.healthChecks().register("template", new TemplateHealthCheck(configuration));
         
         //Filter
         //environment.addFilter(bosetterneInjector.getInstance(Sikkerhetsfilter.class), "/myapp/*");
@@ -110,6 +124,8 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         logger.info("5/5 TODO: Atmosphere resources");
         //initializeAtmosphere(configuration, environment);
     }
+    
+
 }
 /*
 

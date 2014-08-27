@@ -5,8 +5,9 @@ import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.oauth.OAuthFactory;
 //import io.dropwizard.auth.oauth.OAuthProvider;
 
-public class InjectableOAuthProvider<T> {
+public class InjectableOAuthProvider extends OAuthFactory {
 	
+	OAuthFactory<Spiller>
 
 	public InjectableOAuthProvider(
 			Authenticator<String, T> authenticator,

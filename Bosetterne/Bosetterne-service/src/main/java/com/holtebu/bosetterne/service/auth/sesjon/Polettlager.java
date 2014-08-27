@@ -1,5 +1,7 @@
 package com.holtebu.bosetterne.service.auth.sesjon;
 
+import org.jvnet.hk2.annotations.Contract;
+
 import com.google.common.base.Optional;
 
 /**
@@ -14,6 +16,7 @@ import com.google.common.base.Optional;
  *            the type of the OAuth2.0 authorization code to use
  * 
  */
+@Contract
 public interface Polettlager<T, I, L, C> {
 
 	/**

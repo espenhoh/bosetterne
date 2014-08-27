@@ -22,6 +22,13 @@ package com.holtebu.bosetterne.service.auth.sesjon;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Singleton;
+
+import org.jvnet.hk2.annotations.Contract;
+import org.jvnet.hk2.annotations.Service;
+
 import com.google.common.base.Optional;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.OAuth2Cred;
@@ -32,6 +39,8 @@ import com.holtebu.bosetterne.service.core.Legitimasjon;
  * Token store
  * 
  */
+@Service
+@Singleton
 public class PolettlagerIMinne implements
 		Polettlager<AccessToken, Spiller, Legitimasjon, String> {
 
@@ -39,10 +48,10 @@ public class PolettlagerIMinne implements
 	private final Map<String, Legitimasjon> codes;
 	private final OAuth2Cred oAuth2Verdier;
 
-
+	@Inject
 	public PolettlagerIMinne(
-			Map<String, Spiller> accessTokens,
-			Map<String, Legitimasjon> codes,
+			@Named("tokens") Map<String, Spiller> accessTokens,
+			@Named("codes") Map<String, Legitimasjon> codes,
 			OAuth2Cred oAuth2Verdier) {
 		this.accessTokens = accessTokens;
 		this.codes = codes;
@@ -101,7 +110,7 @@ public class PolettlagerIMinne implements
 	}
 
 	/**
-	 * Verfiserer at OAuth 2.0 client id stemmer overens med dets som er konfigurert på serverK
+	 * Verfiserer at OAuth 2.0 client id stemmer overens med dets som er konfigurert på server
 	 * <p> 
 	 * @param leg
 	 * @throws AutorisasjonsException når leg er null, eller client id ikke stemmer.
