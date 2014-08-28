@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.service.resources;
 
 import io.dropwizard.auth.basic.BasicCredentials;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -14,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.internal.util.Base64;
+import org.jvnet.hk2.annotations.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,6 +36,7 @@ import com.google.common.base.Optional;
  */
 @Path("/token")
 @Produces(MediaType.APPLICATION_JSON)
+//@Service
 @Singleton
 public class OAuthAccessTokenResource {
 	
@@ -46,6 +49,7 @@ public class OAuthAccessTokenResource {
 	// private static final Log LOG =
 	// Log.forClass(OAuthAccessTokenResource.class);
 
+	@Inject
 	public OAuthAccessTokenResource(
 			Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore,
 			LobbyService<Optional<Spiller>, BasicCredentials> lobbyService,

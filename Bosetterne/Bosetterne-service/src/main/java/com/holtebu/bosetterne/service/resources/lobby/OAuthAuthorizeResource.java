@@ -5,6 +5,7 @@ import io.dropwizard.auth.basic.BasicCredentials;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.POST;
@@ -42,6 +43,7 @@ public class OAuthAuthorizeResource {
 	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
 	OAuth2Cred oAuth2Verdier;
 
+	@Inject
 	public OAuthAuthorizeResource(
 			Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore,
 			LobbyService<Optional<Spiller>, BasicCredentials> lobbyService,

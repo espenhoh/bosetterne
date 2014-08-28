@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.when;
 import io.dropwizard.auth.oauth.OAuthFactory;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Environment;
@@ -29,7 +31,11 @@ import com.google.common.base.Optional;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.ConfigurationStub;
+import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
+import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
+import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
+import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 
 public class BosetterneServiceBinderTest {
 	private BosetterneServiceBinder binder;
@@ -40,7 +46,10 @@ public class BosetterneServiceBinderTest {
 	private Environment environmentMock;
 	
 	@Mock
-	private static DBI dbiMock;
+	private DBI dbiMock;
+	
+	@Mock
+	private LobbyDAO lobbyDAOMock;
 	
 	@Mock
 	private DBIFactory dbiFactoryMock;
@@ -60,6 +69,8 @@ public class BosetterneServiceBinderTest {
 		binder.setUpEnv(config, environmentMock);
 		binder.setUpDao(dbiMock);
 		
+		when(dbiMock.onDemand(LobbyDAO.class)).thenReturn(lobbyDAOMock);
+		
 		locator = ServiceLocatorUtilities.bind(NAME, binder);
 	}
 	
@@ -77,6 +88,30 @@ public class BosetterneServiceBinderTest {
 		OAuthFactory factory = locator.getService(OAuthFactory.class);
     	
     	assertThat("OauthFactory skal eksistere", factory, is(not(nullValue())));
+    }
+	
+	@Test
+    public void buildsOAuthAccessTokenResource() throws Exception {
+		OAuthAccessTokenResource oaatr = locator.getService(OAuthAccessTokenResource.class);
+		OAuthAccessTokenResource oaatr2 = locator.getService(OAuthAccessTokenResource.class);
+		assertThat("OAuthAccessTokenResource skal eksistere", oaatr, is(not(nullValue())));
+    	assertThat("OAuthAccessTokenResource skal være like", oaatr, is(oaatr2));
+    }
+	
+	@Test
+    public void buildsOAuthAuthorizeResource() throws Exception {
+		OAuthAuthorizeResource oaar = locator.getService(OAuthAuthorizeResource.class);
+		OAuthAuthorizeResource oaar2 = locator.getService(OAuthAuthorizeResource.class);
+		assertThat("OAuthAuthorizeResource skal eksistere", oaar, is(not(nullValue())));
+    	assertThat("OAuthAuthorizeResource skal være like", oaar, is(oaar2));
+    }
+	
+	@Test
+    public void buildsLobbyResource() throws Exception {
+		LobbyResource lr = locator.getService(LobbyResource.class);
+		LobbyResource lr2 = locator.getService(LobbyResource.class);
+		assertThat("OAuthAuthorizeResource skal eksistere", lr, is(not(nullValue())));
+    	assertThat("OAuthAuthorizeResource skal være like", lr, is(lr2));
     }
 	
 	

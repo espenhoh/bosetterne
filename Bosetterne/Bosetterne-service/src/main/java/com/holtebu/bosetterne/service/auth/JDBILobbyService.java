@@ -4,6 +4,9 @@ package com.holtebu.bosetterne.service.auth;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
+import org.jvnet.hk2.annotations.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -16,11 +19,13 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalListeners;
+
 import io.dropwizard.auth.basic.BasicCredentials;
 
 /**
  * Denne implementasjonen kan hente spiller fra database via cache.
  * */
+@Service
 public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCredentials> {
 	
 	private final static Logger logger = LoggerFactory.getLogger(JDBILobbyService.class);
@@ -28,6 +33,7 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	private final LoadingCache<String, Optional<Spiller>> spillerCache;
 	
 
+	@Inject
 	public JDBILobbyService(LoadingCache<String, Optional<Spiller>> spillerCache) {
 		this.spillerCache = spillerCache;
 	}

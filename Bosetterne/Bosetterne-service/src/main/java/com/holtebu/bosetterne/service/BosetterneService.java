@@ -8,7 +8,6 @@ import io.dropwizard.Application;
 
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
-import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
@@ -95,18 +94,13 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     	
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
-        //Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
-        //jersey.register(new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources", Spiller.class));
-        //jersey.register(new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected-resources", Spiller.class));
-        //environment.jersey().register(bosetterneInjector.getInstance(InjectableOAuthProvider.class));
-        //
-        //environment.jersey().register(bosetterneInjector.getInstance(OAuthAccessTokenResource.class));
-        //environment.jersey().register(bosetterneInjector.getInstance(OAuthAuthorizeResource.class));
-        //environment.addProvider(new OAuthProvider<Spiller>(new BosetterneAuthenticator(), "SUPER SECRET STUFF"));        
+        jersey.register(OAuthFactory.class);
+        jersey.register(OAuthAccessTokenResource.class);
+        jersey.register(OAuthAuthorizeResource.class);      
         
         //Resources
         logger.info("3/5 Legger til standard resources");
-        //environment.jersey().register(LobbyResource.class);
+        jersey.register(LobbyResource.class);
         //environment.jersey().register(bosetterneInjector.getInstance(LobbyResource.class));
         //environment.jersey().register(bosetterneInjector.getInstance(RegistrerResource.class));
         //environment.jersey().register(bosetterneInjector.getInstance(LoggInnResource.class));

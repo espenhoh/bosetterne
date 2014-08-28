@@ -15,8 +15,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import org.jvnet.hk2.annotations.Service;
+
 @Path("/hello-world")
 @Produces(MediaType.APPLICATION_JSON)
+@Service
 @Singleton
 public class HelloWorldResource {
 	private final String template;

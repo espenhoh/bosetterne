@@ -1,6 +1,7 @@
 package com.holtebu.bosetterne.service.inject;
 
 import io.dropwizard.auth.Authenticator;
+import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.auth.oauth.OAuthFactory;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Environment;
@@ -10,6 +11,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 import javax.inject.Singleton;
@@ -26,15 +28,25 @@ import org.glassfish.hk2.api.TypeLiteral;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.skife.jdbi.v2.DBI;
 
+import com.google.common.base.Optional;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.CacheLoader;
+import com.google.common.cache.LoadingCache;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
+import com.holtebu.bosetterne.service.auth.JDBILobbyService;
+import com.holtebu.bosetterne.service.auth.LobbyService;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
+import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
+import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
+import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
+import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 
 public class BosetterneServiceBinder extends AbstractBinder{
 	private final DBIFactory dbiFactory;
@@ -42,6 +54,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 	private BosetterneConfiguration configuration;
 	private Environment environment;
 	private DBI jdbi;
+	private DAOFactory daoFactory;
 
 	public BosetterneServiceBinder(final DBIFactory factory) {
 		dbiFactory = factory;
@@ -58,9 +71,18 @@ public class BosetterneServiceBinder extends AbstractBinder{
 
 	@Override
 	protected void configure() {
-		bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);
-		
+		bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);		
 		bindFactory(OAuthFactoryFactory.class).to(OAuthFactory.class);//.in(Singleton.class);
+		bind(OAuthAccessTokenResource.class).to(OAuthAccessTokenResource.class).in(Singleton.class);
+		bind(OAuthAuthorizeResource.class).to(OAuthAuthorizeResource.class).in(Singleton.class);
+		bind(LobbyResource.class).to(LobbyResource.class).in(Singleton.class);
+		
+		
+		//DAO binding
+		bind(jdbi).to(DBI.class);
+		bindFactory(DAOFactory.LobbyDAOFactory.class).to(LobbyDAO.class);
+		
+		
 		bind("protected-resources").to(String.class).named("realm");
 		bind(BosetterneAuthenticator.class).to(new TypeLiteral<Authenticator<String,Spiller>>() {});
 		
@@ -73,9 +95,11 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(HashMap.class).to(new TypeLiteral<Map<String, Legitimasjon>>(){}).named("codes");
 		
 		bind(configuration.getOauth2()).to(OAuth2Cred.class);
-		bind(PolettlagerIMinne.class).to(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){});
+		bind(PolettlagerIMinne.class).to(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){}).in(Singleton.class);;
 		
-		
+		//Cache til JDBILobbyservice
+		bindFactory(LobbyCacheFactory.class).to(new TypeLiteral<LoadingCache<String, Optional<Spiller>>>(){});
+		bind(JDBILobbyService.class).to(new TypeLiteral<LobbyService<Optional<Spiller>, BasicCredentials>>(){}).in(Singleton.class);
 		
         bind("ingenting").to(String.class).named("getit");
         
@@ -106,7 +130,6 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		}
         return jdbi;
     }
-
 	
 
 }

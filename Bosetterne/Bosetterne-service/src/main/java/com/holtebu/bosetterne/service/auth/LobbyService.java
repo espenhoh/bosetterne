@@ -1,5 +1,7 @@
 package com.holtebu.bosetterne.service.auth;
 
+import org.jvnet.hk2.annotations.Contract;
+
 /**
  * Hjelpemetode for utentisering
  * 
@@ -8,6 +10,7 @@ package com.holtebu.bosetterne.service.auth;
  * @param <S> En form for spiller
  * @param <L> En form for legitimasjon
  */
+@Contract
 public interface LobbyService<S, L> {
 	/**
 	* Hent spilleren som identifiseres med brukernavn og passord funnet i leg.
