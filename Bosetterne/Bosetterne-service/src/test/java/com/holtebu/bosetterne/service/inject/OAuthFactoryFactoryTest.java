@@ -29,7 +29,7 @@ public class OAuthFactoryFactoryTest {
 				// TODO Auto-generated method stub
 				return null;
 			}
-		}, "realm", Spiller.class);
+		}, "realm");
 	}
 
 	@After

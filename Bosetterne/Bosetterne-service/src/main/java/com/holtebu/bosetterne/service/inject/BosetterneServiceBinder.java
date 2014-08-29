@@ -33,6 +33,7 @@ import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.holtebu.bosetterne.api.Bosetterne;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.OAuth2Cred;
@@ -85,6 +86,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(RegistrerResource.class).to(RegistrerResource.class).in(Singleton.class);
 		bind(LoggInnResource.class).to(LoggInnResource.class).in(Singleton.class);
 		bind(BosetterneResource.class).to(BosetterneResource.class).in(Singleton.class);
+		bind(Bosetterne.class).to(Bosetterne.class).in(Singleton.class);
 		
 		
 		

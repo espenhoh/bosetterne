@@ -22,7 +22,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.skife.jdbi.v2.DBI;
 
-import com.holtebu.bosetterne.service.auth.InjectableOAuthProvider;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.inject.BosetterneServiceBinder;
 import com.holtebu.bosetterne.service.resources.BosetterneResource;
