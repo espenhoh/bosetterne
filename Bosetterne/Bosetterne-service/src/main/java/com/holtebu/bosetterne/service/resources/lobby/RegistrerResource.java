@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.service.resources.lobby;
 
 import java.sql.Date;
 
+import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.FormParam;
@@ -33,6 +34,7 @@ public class RegistrerResource {
 	private LobbyDAO dao;
 
 
+	@Inject
 	public RegistrerResource(LobbyDAO dao){
 		this.dao = dao;
 	}

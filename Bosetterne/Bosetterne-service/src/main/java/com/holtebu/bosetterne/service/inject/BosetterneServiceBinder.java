@@ -11,6 +11,7 @@ import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -43,13 +44,17 @@ import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
+import com.holtebu.bosetterne.service.resources.lobby.LoggInnResource;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
+import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
 
 public class BosetterneServiceBinder extends AbstractBinder{
 	private final DBIFactory dbiFactory;
+	private final Integer INIT_ANTALL_SPILL = 20;
 	
 	private BosetterneConfiguration configuration;
 	private Environment environment;
@@ -67,6 +72,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 	
 	public void setUpDao(DBI jdbi){
 		this.jdbi = jdbi;
+		daoFactory = new DAOFactory(jdbi);
 	}
 
 	@Override
@@ -76,12 +82,14 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(OAuthAccessTokenResource.class).to(OAuthAccessTokenResource.class).in(Singleton.class);
 		bind(OAuthAuthorizeResource.class).to(OAuthAuthorizeResource.class).in(Singleton.class);
 		bind(LobbyResource.class).to(LobbyResource.class).in(Singleton.class);
+		bind(RegistrerResource.class).to(RegistrerResource.class).in(Singleton.class);
+		bind(LoggInnResource.class).to(LoggInnResource.class).in(Singleton.class);
+		bind(BosetterneResource.class).to(BosetterneResource.class).in(Singleton.class);
+		
 		
 		
 		//DAO binding
-		bind(jdbi).to(DBI.class);
-		bindFactory(DAOFactory.LobbyDAOFactory.class).to(LobbyDAO.class);
-		
+		bindFactory(daoFactory.lobbyDAOFactory()).to(LobbyDAO.class);
 		
 		bind("protected-resources").to(String.class).named("realm");
 		bind(BosetterneAuthenticator.class).to(new TypeLiteral<Authenticator<String,Spiller>>() {});
@@ -103,18 +111,14 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		
         bind("ingenting").to(String.class).named("getit");
         
-        //bind(Integer.class).annotatedWith(Names.named("antallSpill")).toInstance(INIT_ANTALL_SPILL);
-        //bind(String.class).annotatedWith(Realm.class).toInstance(REALM);
-        //bind(DBI.class).toInstance(jdbi); //Trengs denne?
+        //Bosetterne binding
+        bind(Random.class).to(Random.class);
+        bind(INIT_ANTALL_SPILL).to(Integer.class).named("antallSpill");
         
         //Bindtemplates
         //bind(String.class).annotatedWith(LoggInnTemplate.class).toInstance("/WebContent/lobby/login.mustache");
         //bind(String.class).annotatedWith(HjemTemplate.class).toInstance("/WebContent/lobby/hjem.mustache");
-        
-        //bind(InjectableOAuthProvider.class).to(new TypeLiteral<InjectableOAuthProvider<Spiller>>(){});
-        //bind(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){}).to(PolettlagerIMinne.class).in(Scopes.SINGLETON);
-        //bind(new TypeLiteral<LobbyService<Optional<Spiller>, BasicCredentials>>(){}).to(JDBILobbyService.class).in(Scopes.SINGLETON);
-        //bind(new TypeLiteral<Authenticator<String, Spiller>>(){}).to(BosetterneAuthenticator.class).in(Scopes.SINGLETON);
+
 	}
 	
 	/**

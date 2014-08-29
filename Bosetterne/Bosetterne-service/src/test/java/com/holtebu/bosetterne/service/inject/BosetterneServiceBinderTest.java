@@ -32,10 +32,13 @@ import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.ConfigurationStub;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
+import com.holtebu.bosetterne.service.resources.lobby.LoggInnResource;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
+import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
 
 public class BosetterneServiceBinderTest {
 	private BosetterneServiceBinder binder;
@@ -112,6 +115,30 @@ public class BosetterneServiceBinderTest {
 		LobbyResource lr2 = locator.getService(LobbyResource.class);
 		assertThat("OAuthAuthorizeResource skal eksistere", lr, is(not(nullValue())));
     	assertThat("OAuthAuthorizeResource skal være like", lr, is(lr2));
+    }
+	
+	@Test
+    public void buildsRegistrerResource() throws Exception {
+		RegistrerResource lr = locator.getService(RegistrerResource.class);
+		RegistrerResource lr2 = locator.getService(RegistrerResource.class);
+		assertThat("RegistrerResource skal eksistere", lr, is(not(nullValue())));
+    	assertThat("RegistrerResource skal være like", lr, is(lr2));
+    }
+	
+	@Test
+    public void buildsLoggInnResource() throws Exception {
+		LoggInnResource lr = locator.getService(LoggInnResource.class);
+		LoggInnResource lr2 = locator.getService(LoggInnResource.class);
+		assertThat("LoggInnResource skal eksistere", lr, is(not(nullValue())));
+    	assertThat("LoggInnResource skal være like", lr, is(lr2));
+    }
+	
+	@Test
+    public void buildsBosetterneResource() throws Exception {
+		BosetterneResource lr = locator.getService(BosetterneResource.class);
+		BosetterneResource lr2 = locator.getService(BosetterneResource.class);
+		assertThat("BosetterneResource skal eksistere", lr, is(not(nullValue())));
+    	assertThat("BosetterneResource skal være like", lr, is(lr2));
     }
 	
 	

@@ -9,22 +9,31 @@ import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 
 public class DAOFactory {
 	
-	public static class LobbyDAOFactory implements Factory<LobbyDAO> {
+	private DBI jdbi;
+	
+	public DAOFactory(DBI jdbi){
+		this.jdbi = jdbi;
+	}
+	
+	public DAOFactories<LobbyDAO> lobbyDAOFactory() {
+		return new DAOFactories<LobbyDAO>(LobbyDAO.class);
+	}
+	
+	public class DAOFactories<T> implements Factory<T> {
 
-		private DBI jdbi;
-		
-		@Inject
-		public LobbyDAOFactory(DBI jdbi){
-			this.jdbi = jdbi;
+		private Class<T> clazz;
+
+		public DAOFactories(Class<T> clazz){
+			this.clazz = clazz;
 		}
 		
 		@Override
-		public LobbyDAO provide() {
-			return jdbi.onDemand(LobbyDAO.class);
+		public T provide() {
+			return jdbi.onDemand(clazz);
 		}
 
 		@Override
-		public void dispose(LobbyDAO instance) {
+		public void dispose(T instance) {
 			
 		}
 		

@@ -101,11 +101,10 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         //Resources
         logger.info("3/5 Legger til standard resources");
         jersey.register(LobbyResource.class);
-        //environment.jersey().register(bosetterneInjector.getInstance(LobbyResource.class));
-        //environment.jersey().register(bosetterneInjector.getInstance(RegistrerResource.class));
-        //environment.jersey().register(bosetterneInjector.getInstance(LoggInnResource.class));
+        jersey.register(RegistrerResource.class);
+        jersey.register(LoggInnResource.class);
         jersey.register(HelloWorldResource.class);
-        //environment.jersey().register(bosetterneInjector.getInstance(BosetterneResource.class));
+        jersey.register(BosetterneResource.class);
         
         //Health checks
         logger.info("4/5 Legger til HealthChecks");

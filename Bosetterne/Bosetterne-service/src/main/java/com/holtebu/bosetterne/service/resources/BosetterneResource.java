@@ -3,6 +3,7 @@ package com.holtebu.bosetterne.service.resources;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
@@ -24,6 +25,7 @@ public class BosetterneResource {
 	
 	private String getit;
 	
+	@Inject
 	public BosetterneResource(Bosetterne bosetterne,  String getit){
 		this.bosetterne = bosetterne;
 		this.getit = getit;
