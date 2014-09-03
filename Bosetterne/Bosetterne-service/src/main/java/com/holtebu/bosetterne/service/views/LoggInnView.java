@@ -12,7 +12,6 @@ public class LoggInnView extends View {
 
 	public LoggInnView( String template) {
 		super(template);
-        //super("/WebContent/lobby/login.mustache");
     }
 
 	public boolean isLoggedIn() {
