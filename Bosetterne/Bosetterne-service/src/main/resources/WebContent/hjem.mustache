@@ -1,11 +1,5 @@
-{{<ramme.mustache}}
-{{=article}}
+{{< ramme}}
+{{$ article}}
 <h1 id="null">Velkommen til Bosetterne</h1>
-            {{#loggedIn}}
-                <h1 id="null">Velkommen til Bosetterne</h1>
-            {{/loggedIn}}
-            {{^loggedIn}}
-                <h1 id="null">Logg inn for å se hva som skjuler seg!/</h1>
-            {{/loggedIn}}
-{{/article}}
-{{/ramme.mustache}}
+{{/ article}}
+{{/ ramme}}
