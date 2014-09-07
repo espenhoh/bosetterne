@@ -6,7 +6,7 @@ package com.holtebu.bosetterne.service.views;
 import io.dropwizard.server.ServerFactory;
 import io.dropwizard.views.View;
 
-public class HjemView extends View {
+public class HjemView extends LobbyView {
 
 	private boolean loggedIn = true;
 

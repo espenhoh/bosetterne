@@ -33,8 +33,11 @@ public class LobbyResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public HjemView hjem(@Context HttpServletRequest request) {
-		return new HjemView(HJEM_TEMPLATE);
+	public HjemView hjem(@Auth Spiller spiller) {
+		//public HjemView hjem(@Context HttpServletRequest request) {
+		HjemView hjemView = new HjemView(HJEM_TEMPLATE);
+		hjemView.setSpiller(spiller);
+		return hjemView;
 	}
 	
 	

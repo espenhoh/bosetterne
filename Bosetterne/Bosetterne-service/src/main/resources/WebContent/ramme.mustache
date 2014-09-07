@@ -21,12 +21,15 @@
     <p class="meny"><span>Meny</span><p>
     <ul class="menyliste">
         <li class="meny"><a class="meny" href="/">Hjem</a></li>
-        <li class="meny"><a class="meny" href="registrer">Registrer</a></li>
-        <li class="meny"><a class="meny" href="logg_inn">Logg inn</a></li>
-        {{#loggedIn}}
+        {{^innlogget}}
+            <li class="meny"><a class="meny" href="registrer">Registrer</a></li>
+            <li class="meny"><a class="meny" href="logg_inn">Logg inn</a></li>
+        {{/innlogget}}
+        {{#innlogget}}
             <li class="meny" v><a class="meny" href="bosetterne">Bosetterne</a></li>
             <li class="meny"><a class="meny" href="ressurser/chat.html">Chat</a></li>
-        {{/loggedIn}}
+            <li class="meny"><a class="meny" href="logg_ut">Logg ut</a></li>
+        {{/innlogget}}
     </ul>
 </nav>
 <article>
