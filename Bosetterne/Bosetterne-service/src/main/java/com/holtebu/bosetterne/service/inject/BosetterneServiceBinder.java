@@ -79,7 +79,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 	@Override
 	protected void configure() {
 		bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);		
-		bindFactory(OAuthFactoryFactory.class).to(OAuthFactory.class);//.in(Singleton.class);
+		//bindFactory(OAuthFactoryFactory.class).to(OAuthFactory.class);//.in(Singleton.class);
 		bind(OAuthAccessTokenResource.class).to(OAuthAccessTokenResource.class).in(Singleton.class);
 		bind(OAuthAuthorizeResource.class).to(OAuthAuthorizeResource.class).in(Singleton.class);
 		bind(LobbyResource.class).to(LobbyResource.class).in(Singleton.class);
