@@ -87,13 +87,6 @@ public class BosetterneServiceBinderTest {
     }
 	
 	@Test
-    public void buildsOauthFactory() throws Exception {
-		OAuthFactory factory = locator.getService(OAuthFactory.class);
-    	
-    	assertThat("OauthFactory skal eksistere", factory, is(not(nullValue())));
-    }
-	
-	@Test
     public void buildsOAuthAccessTokenResource() throws Exception {
 		OAuthAccessTokenResource oaatr = locator.getService(OAuthAccessTokenResource.class);
 		OAuthAccessTokenResource oaatr2 = locator.getService(OAuthAccessTokenResource.class);

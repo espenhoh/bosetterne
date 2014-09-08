@@ -3,6 +3,7 @@ package com.holtebu.bosetterne.service.resources.lobby;
 import io.dropwizard.auth.Auth;
 
 import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -33,11 +34,16 @@ public class LobbyResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public HjemView hjem(@Auth Spiller spiller) {
+	public HjemView hjem(@Auth(required = false) Spiller spiller) {
 		//public HjemView hjem(@Context HttpServletRequest request) {
 		HjemView hjemView = new HjemView(HJEM_TEMPLATE);
 		hjemView.setSpiller(spiller);
 		return hjemView;
+	}
+	
+	@Path("logg_inn")
+	public LoggInnResource loggInnResource(){
+		return new LoggInnResource();
 	}
 	
 	

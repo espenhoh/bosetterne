@@ -32,6 +32,7 @@ import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 
+import org.glassfish.hk2.utilities.Binder;
 import org.skife.jdbi.v2.DBI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,11 +97,11 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
         
-        Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
-        
-        OAuthFactory<Spiller> authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
-        
-        jersey.register(AuthFactory.binder(authFactory));
+        //Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
+        //OAuthFactory<Spiller> authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
+        //jersey.register(AuthFactory.binder(authFactory));
+        //Litt kjip hack :( bedre forslag?
+        jersey.register(binder.getAuthFactoryBinder());
         
         jersey.register(OAuthAccessTokenResource.class);
         jersey.register(OAuthAuthorizeResource.class);      
@@ -109,7 +110,6 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         logger.info("3/5 Legger til standard resources");
         jersey.register(LobbyResource.class);
         jersey.register(RegistrerResource.class);
-        jersey.register(LoggInnResource.class);
         jersey.register(HelloWorldResource.class);
         jersey.register(BosetterneResource.class);
         

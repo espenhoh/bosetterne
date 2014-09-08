@@ -1,5 +1,6 @@
 package com.holtebu.bosetterne.service.inject;
 
+import io.dropwizard.auth.AuthFactory;
 import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.auth.oauth.OAuthFactory;
@@ -15,6 +16,7 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import org.glassfish.hk2.api.ActiveDescriptor;
@@ -26,6 +28,7 @@ import org.glassfish.hk2.api.ServiceHandle;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.api.ServiceLocatorState;
 import org.glassfish.hk2.api.TypeLiteral;
+import org.glassfish.hk2.utilities.Binder;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.skife.jdbi.v2.DBI;
 
@@ -61,6 +64,8 @@ public class BosetterneServiceBinder extends AbstractBinder{
 	private Environment environment;
 	private DBI jdbi;
 	private DAOFactory daoFactory;
+	private Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;
+	private OAuthFactory<Spiller> authFactory;
 
 	public BosetterneServiceBinder(final DBIFactory factory) {
 		dbiFactory = factory;
@@ -69,6 +74,8 @@ public class BosetterneServiceBinder extends AbstractBinder{
 	public void setUpEnv(BosetterneConfiguration configuration, Environment environment) {
 		this.configuration = configuration;
 		this.environment = environment;
+		tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
+		authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
 	}
 	
 	public void setUpDao(DBI jdbi){
@@ -84,9 +91,10 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(OAuthAuthorizeResource.class).to(OAuthAuthorizeResource.class).in(Singleton.class);
 		bind(LobbyResource.class).to(LobbyResource.class).in(Singleton.class);
 		bind(RegistrerResource.class).to(RegistrerResource.class).in(Singleton.class);
-		bind(LoggInnResource.class).to(LoggInnResource.class).in(Singleton.class);
 		bind(BosetterneResource.class).to(BosetterneResource.class).in(Singleton.class);
 		bind(Bosetterne.class).to(Bosetterne.class).in(Singleton.class);
+		
+		//bindResourceProviders();
 		
 		
 		
@@ -94,7 +102,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bindFactory(daoFactory.lobbyDAOFactory()).to(LobbyDAO.class);
 		
 		bind("protected-resources").to(String.class).named("realm");
-		bind(BosetterneAuthenticator.class).to(new TypeLiteral<Authenticator<String,Spiller>>() {});
+		//bind(BosetterneAuthenticator.class).to(new TypeLiteral<Authenticator<String,Spiller>>() {});
 		
 		bind(configuration).to(BosetterneConfiguration.class);
 		bind(environment).to(Environment.class);
@@ -105,7 +113,11 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(HashMap.class).to(new TypeLiteral<Map<String, Legitimasjon>>(){}).named("codes");
 		
 		bind(configuration.getOauth2()).to(OAuth2Cred.class);
-		bind(PolettlagerIMinne.class).to(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){}).in(Singleton.class);;
+		
+		//Tokenstore
+		bind(tokenStore).to(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){});
+		
+		
 		
 		//Cache til JDBILobbyservice
 		bindFactory(LobbyCacheFactory.class).to(new TypeLiteral<LoadingCache<String, Optional<Spiller>>>(){});
@@ -121,6 +133,21 @@ public class BosetterneServiceBinder extends AbstractBinder{
         //bind(String.class).annotatedWith(LoggInnTemplate.class).toInstance("/WebContent/lobby/login.mustache");
         //bind(String.class).annotatedWith(HjemTemplate.class).toInstance("/WebContent/lobby/hjem.mustache");
 
+	}
+	
+	private void bindResourceProviders() {
+		bind(new Provider<LoggInnResource>() {
+
+			@Override
+			public LoggInnResource get() {
+				return new LoggInnResource();
+			}
+		}).to(new TypeLiteral<Provider<LoggInnResource>>(){});
+		
+	}
+
+	public Binder getAuthFactoryBinder(){
+		return AuthFactory.binder(authFactory);
 	}
 	
 	/**
