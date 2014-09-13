@@ -1,5 +1,5 @@
 {{< ramme}}
-        {{$article}}
+    {{$article}}
             <h1 id="loginForAASpille"></h1>
 
             <form id="frmLogin"
@@ -29,11 +29,7 @@
                 <input type="hidden" id="client_id" name="client_id" value="Bosetterne"/>
                 <input type="hidden" id="response_type" name="response_type" value="code"/>
                 <input type="submit" id="logg_inn" value="Logg inn">
-
             </form>
     {{/article}}
-    {{$scripts}}
-        <script type="application/dart" src="/ressurser/dart/login/login.dart"></script>
-        <script src="/ressurser/packages/browser/dart.js"></script>
-    {{/scripts}}
+    {{$scripts}}<script type="application/dart" src="/ressurser/dart/login.dart"></script>{{/scripts}}
 {{/ ramme}}

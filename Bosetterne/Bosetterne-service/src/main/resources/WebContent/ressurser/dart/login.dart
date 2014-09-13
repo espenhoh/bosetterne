@@ -1,11 +1,13 @@
 
 import 'dart:html';
+import 'dart:convert';
+import 'login/login_token.dart' as token;
 
 InputElement spiller = querySelector('#txtBrukerNavn');
 InputElement passord = querySelector('#pass');
 InputElement redirect_uri = querySelector('#redirect_uri');
 InputElement client_id = querySelector('#client_id');
-InputElement scope = querySelector('#sel_scope');
+SelectElement scope = querySelector('#sel_scope');
 InputElement response_type = querySelector('#response_type');
 FormElement loginForm = querySelector('form#frmLogin');
 
@@ -20,11 +22,24 @@ class BasicCred {
   }
 }
 
+void assertCheckMode() {
+
+  try {
+    int i = '';
+    throw new Exception("Check Mode is disabled!");
+  } on TypeError {
+  }
+
+}
 
 void main() {
+  assertCheckMode();
+  new token.Login_token().menyLenker();
   InputElement submit = querySelector('#logg_inn');
   submit.onClick.listen( onSubmit );
 }
+
+
 
 void onSubmit(Event e) {
   e.preventDefault();
@@ -48,7 +63,8 @@ void onSubmit(Event e) {
     Map data2 = {'client_id':client_id.value,'client_secret':'secret','code':resp.responseText,'grant_type':'token','redirect_uri':redirect_uri.value};
       HttpRequest.postFormData("/token", data2, withCredentials: true, requestHeaders: reqHdr)
       .then((HttpRequest resp){
-        print(resp.responseText);
+        window.localStorage["bosetterne_token"] = resp.responseText;
+        print("Token stored in local storage");
       });
     print(resp.responseText);
   });

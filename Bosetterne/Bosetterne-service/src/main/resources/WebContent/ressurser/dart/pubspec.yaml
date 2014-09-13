@@ -5,3 +5,4 @@ author: Espen Holtebu <espenhoh@gmail.com>
 homepage: http://localhost:8080/
 dependencies:
   browser: any
+  html5lib: any

@@ -119,14 +119,6 @@ public class BosetterneServiceBinderTest {
     }
 	
 	@Test
-    public void buildsLoggInnResource() throws Exception {
-		LoggInnResource lr = locator.getService(LoggInnResource.class);
-		LoggInnResource lr2 = locator.getService(LoggInnResource.class);
-		assertThat("LoggInnResource skal eksistere", lr, is(not(nullValue())));
-    	assertThat("LoggInnResource skal være like", lr, is(lr2));
-    }
-	
-	@Test
     public void buildsBosetterneResource() throws Exception {
 		BosetterneResource lr = locator.getService(BosetterneResource.class);
 		BosetterneResource lr2 = locator.getService(BosetterneResource.class);

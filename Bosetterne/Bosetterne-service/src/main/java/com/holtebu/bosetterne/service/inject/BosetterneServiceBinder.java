@@ -137,7 +137,6 @@ public class BosetterneServiceBinder extends AbstractBinder{
 	
 	private void bindResourceProviders() {
 		bind(new Provider<LoggInnResource>() {
-
 			@Override
 			public LoggInnResource get() {
 				return new LoggInnResource();
