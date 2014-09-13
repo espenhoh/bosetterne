@@ -26,7 +26,7 @@ class Login_token {
    */
   void menyLenker() {
     if(_access_token != null) {
-      _menyLinker = querySelectorAll('a');
+      _menyLinker = querySelectorAll('a.meny');
       _menyLinker.forEach((a) => _setToken(a));
     }
   }
