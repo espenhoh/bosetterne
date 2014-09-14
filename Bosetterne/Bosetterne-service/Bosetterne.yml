@@ -24,20 +24,20 @@ server:
       # The number of worker threads dedicated to sending and receiving data.
       selectorThreads: 4
       # https to be implemented
-      # - type: https
-      # port: 8443
-      # keyStorePath: example.keystore
-      # keyStorePassword: example
-      # validateCerts: false
+      - type: https
+      port: 8443
+      keyStorePath: keystore.jks
+      keyStorePassword: donald
+      validateCerts: false
   adminConnectors:
     - type: http
       # The port on which the HTTP server listens for administrative requests.
       port: 8081
-      #- type: https
-      #port: 8444
-      #keyStorePath: example.keystore
-      #keyStorePassword: example
-      #validateCerts: false
+      - type: https
+      port: 8444
+      keyStorePath: keystore.jks
+      keyStorePassword: donald
+      validateCerts: false
 
 
 #http:
