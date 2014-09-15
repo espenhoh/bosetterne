@@ -63,8 +63,9 @@ void onSubmit(Event e) {
     Map data2 = {'client_id':client_id.value,'client_secret':'secret','code':resp.responseText,'grant_type':'token','redirect_uri':redirect_uri.value};
       HttpRequest.postFormData("/token", data2, withCredentials: true, requestHeaders: reqHdr)
       .then((HttpRequest resp){
-        window.localStorage["bosetterne_token"] = resp.responseText;
+        window.sessionStorage["bosetterne_token"] = resp.responseText;
         print("Token stored in local storage");
+        new token.Login_token().menyLenker();
       });
     print(resp.responseText);
   });

@@ -1,8 +1,6 @@
 
 import 'dart:html';
 import 'dart:convert';
-import 'package:html5lib/parser.dart' show parse;
-import 'package:html5lib/dom.dart';
 
 
 class Login_token {
@@ -11,8 +9,8 @@ class Login_token {
   Oauth2Cred _autorisering;
 
   Login_token() {
-    if(window.localStorage["bosetterne_token"] != null) {
-      Map token = JSON.decode(window.localStorage["bosetterne_token"]);
+    if(window.sessionStorage["bosetterne_token"] != null) {
+      Map token = JSON.decode(window.sessionStorage["bosetterne_token"]);
       _access_token = token['access_token'];
       _autorisering = new Oauth2Cred(_access_token);
     }
@@ -28,15 +26,22 @@ class Login_token {
     if(_access_token != null) {
       _menyLinker = querySelectorAll('a.meny');
       _menyLinker.forEach((a) => _setToken(a));
+    } else {
+      print("Ikke innlogget");
     }
   }
 
   void _setToken(AnchorElement anchorElement) {
 
+    String link = anchorElement.getAttribute('href');
+    int queryPos = link.indexOf('?');
+    if (queryPos > -1) {
+      link = link.substring(0, queryPos);
+    }
     print(anchorElement.getAttribute('href'));
     StringBuffer tokenQuery = new StringBuffer();
-    tokenQuery.write(anchorElement.getAttribute('href'));
-    tokenQuery.write("?token=");
+    tokenQuery.write(link);
+    tokenQuery.write("?innlogget_token=");
     tokenQuery.write(_access_token);
 
     anchorElement.setAttribute('href',tokenQuery.toString());
