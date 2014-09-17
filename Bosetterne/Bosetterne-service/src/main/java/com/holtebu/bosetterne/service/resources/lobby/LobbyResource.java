@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.views.HjemView;
+import com.holtebu.bosetterne.service.views.LobbyView;
  
 /**
  * Lobby resource (exposed at "lobby" path)
@@ -41,10 +42,19 @@ public class LobbyResource {
 		return hjemView;
 	}
 	
+	@GET
+	@Path("test")
+	@Produces(MediaType.TEXT_HTML)
+	public LobbyView test() {
+		return new LobbyView("/WebContent/test.mustache");
+	}
+	
 	@Path("logg_inn")
 	public LoggInnResource loggInnResource(){
 		return new LoggInnResource();
 	}
+	
+	
 	
 	
 

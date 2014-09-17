@@ -1,30 +1,26 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
-import java.awt.peer.LightweightPeer;
-
 import io.dropwizard.auth.Auth;
 
-import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
-import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
-import org.jvnet.hk2.annotations.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.views.LoggInnView;
 
 public class LoggInnResource {
 	
+	private final static Logger logger = LoggerFactory.getLogger("LoggInnResource.class");
+	
 	static final String LOGG_INN_TEMPLATE = "/WebContent/login.mustache";
-	static final String LOGGET_INN_TEMPLATE = "/WebContent/logget_inn.mustache";
 
-	public LoggInnResource() {
-		// TODO Auto-generated constructor stub
-	}
+	public LoggInnResource() {}
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
@@ -32,13 +28,12 @@ public class LoggInnResource {
 //		Locale clientLocale = request.getLocale();
 //		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(KLOKKE_PATTERN, clientLocale);
 //		String now = simpleDateFormat.format(new Date());
+		
 		if (spiller == null) {
-			return new LoggInnView(LOGG_INN_TEMPLATE);
+			logger.info("Spiller ikke logget inn");
 		} else {
-			return new LoggInnView(LOGGET_INN_TEMPLATE);
+			logger.info("Spiller logget inn som {}",spiller.getBrukernavn());
 		}
+		return new LoggInnView(LOGG_INN_TEMPLATE, spiller);
 	}
-	
-	
-
 }

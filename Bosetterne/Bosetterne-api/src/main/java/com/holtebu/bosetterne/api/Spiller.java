@@ -134,6 +134,14 @@ public class Spiller {
 		}
 		return hashCode;
 	}
+	
+	/**
+	 * Brukernavnet representerer Objektet, siden det er unikt.
+	 */
+	@Override
+	public String toString(){
+		return getBrukernavn();
+	}
     
 }
 

@@ -3,9 +3,13 @@ package com.holtebu.bosetterne.service.filter;
 import java.io.IOException;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
+import javax.ws.rs.container.PreMatching;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MultivaluedMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,13 +21,13 @@ import org.slf4j.LoggerFactory;
  * @author espen
  *
  */
+@PreMatching
 public class PolettFilter implements ContainerRequestFilter {
 	
 	private final static Logger logger = LoggerFactory.getLogger("PolettFilter.class");
 
 	@Inject
-	public PolettFilter() {
-	}
+	public PolettFilter() {}
 
 	@Override
 	/**
@@ -40,7 +44,9 @@ public class PolettFilter implements ContainerRequestFilter {
 			return;
 		}
 		
-		String token = crc.getUriInfo().getQueryParameters().getFirst("innlogget_token");
+		MultivaluedMap<String, String> queryParameters = crc.getUriInfo().getQueryParameters();
+		
+		String token = queryParameters.getFirst("innlogget_token");
 		if (token == null || token.equals("")) {
 			logger.info("Spiller ikke logget inn");
 			return;
@@ -49,8 +55,6 @@ public class PolettFilter implements ContainerRequestFilter {
 		logger.info("Putter token i header");
 		String auth = "Bearer " + token;
 		crc.getHeaders().add(HttpHeaders.AUTHORIZATION, auth);
-		
-			
 	}
 
 }

@@ -1,5 +1,9 @@
 {{< ramme}}
     {{$article}}
+        {{#innlogget}}
+            <h1 id="loginForAASpille">Logget inn som {{spiller}}</h1>
+        {{/innlogget}}
+        {{^innlogget}}
             <h1 id="loginForAASpille"></h1>
 
             <form id="frmLogin"
@@ -30,6 +34,7 @@
                 <input type="hidden" id="response_type" name="response_type" value="code"/>
                 <input type="submit" id="logg_inn" value="Logg inn">
             </form>
+        {{/innlogget}}
     {{/article}}
     {{$scripts}}<script type="application/dart" src="/ressurser/dart/login.dart"></script>{{/scripts}}
 {{/ ramme}}
