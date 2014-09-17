@@ -1,9 +1,18 @@
 /* 
-    Document   : text
+    Document   : text.css
     Created on : 29.sep.2013, 21:29:28
-    Author     : espen-pc
+    Author     : espenhoh
     Description:
-        Purpose of the stylesheet follows.
+        Definerer all tekst.
+    SELECTORS cheat sheet:
+    *{} match all
+    h1, h2, h3 {} type selector
+    (element).class.(class2) {} klassen(e) (til evt. en type element).
+    #id {} id selector
+    td>b {} direct child selector
+    table b {} decendant selector. Also non direct.
+
+
 */
 
 root { 
@@ -19,6 +28,16 @@ h1 {
     font-size: 175%;
     font-weight: bold;
     text-align: left;
+}
+
+.right {
+    float: right;
+    font-size : 50%;
+}
+
+.brukernavn {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size : 150%;
 }
 
 .meny {

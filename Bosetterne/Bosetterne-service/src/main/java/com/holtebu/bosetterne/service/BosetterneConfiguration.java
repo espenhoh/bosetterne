@@ -23,19 +23,31 @@ public class BosetterneConfiguration extends Configuration {
     @NotNull
     @JsonProperty
     private OAuth2Cred oauth2 = new OAuth2Cred();
-
+    
     @Valid
+    @NotNull
+    @JsonProperty
+    private MustacheTemplates mustacheTemplates = new MustacheTemplates();
+
+
+	@Valid
     @NotNull
     @JsonProperty
     private DataSourceFactory database = new DataSourceFactory();
 
-    public DataSourceFactory getDataSourceFactory() {
-        return database;
-    }
+
 	
     public OAuth2Cred getOauth2() {
 		return oauth2;
 	}
+
+    public MustacheTemplates getMustacheTemplates() {
+		return mustacheTemplates;
+	}
+    
+    public DataSourceFactory getDataSourceFactory() {
+        return database;
+    }
 
     public String getTemplate() {
         return template;

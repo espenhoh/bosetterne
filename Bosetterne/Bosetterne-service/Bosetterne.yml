@@ -1,6 +1,11 @@
 template: Hello, %s!
 defaultName: Stranger
 
+mustacheTemplates:
+  baseMappe: /WebContent/
+  hjemTemplate: hjem.mustache
+  loginTemplate: login.mustache
+
 oauth2:
   clientId: Bosetterne
   clientSecret: secret

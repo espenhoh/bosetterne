@@ -3,16 +3,15 @@ package com.holtebu.bosetterne.service.resources.lobby;
 import io.dropwizard.auth.Auth;
 
 import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
 import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.service.BosetterneConfiguration;
+import com.holtebu.bosetterne.service.MustacheTemplates;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.views.HjemView;
 import com.holtebu.bosetterne.service.views.LobbyView;
@@ -23,22 +22,21 @@ import com.holtebu.bosetterne.service.views.LobbyView;
 @Path("/")
 public class LobbyResource {
 	static final String KLOKKE_PATTERN = "HH:mm:ss";
-	static final String HJEM_TEMPLATE = "/WebContent/hjem.mustache";
 	
 	
 	private final LobbyDAO dao;
+	private MustacheTemplates templates;
 	
 	@Inject
-	public LobbyResource(LobbyDAO dao){
+	public LobbyResource(LobbyDAO dao, BosetterneConfiguration conf){
 		this.dao = dao;
+		this.templates = conf.getMustacheTemplates();
 	}
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public HjemView hjem(@Auth(required = false) Spiller spiller) {
-		//public HjemView hjem(@Context HttpServletRequest request) {
-		HjemView hjemView = new HjemView(HJEM_TEMPLATE);
-		hjemView.setSpiller(spiller);
+		HjemView hjemView = new HjemView(templates.getHjemTemplate(), spiller);
 		return hjemView;
 	}
 	
@@ -51,20 +49,8 @@ public class LobbyResource {
 	
 	@Path("logg_inn")
 	public LoggInnResource loggInnResource(){
-		return new LoggInnResource();
+		return new LoggInnResource(templates.getLoginTemplate());
 	}
-	
-	
-	
-	
-
-	/*
-	@GET
-	@Produces(MediaType.APPLICATION_JSON)
-    @Path("/logg_inn")
-    public Spiller loggInn(@Auth Spiller Spiller) {
-        return Spiller;
-    }*/
 	
     
     @GET

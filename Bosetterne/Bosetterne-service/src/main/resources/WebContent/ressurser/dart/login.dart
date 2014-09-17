@@ -66,6 +66,7 @@ void onSubmit(Event e) {
         window.sessionStorage["bosetterne_token"] = resp.responseText;
         print("Token stored in local storage");
         new token.Login_token().menyLenker();
+        querySelector("#logginn").click();
       });
     print(resp.responseText);
   });

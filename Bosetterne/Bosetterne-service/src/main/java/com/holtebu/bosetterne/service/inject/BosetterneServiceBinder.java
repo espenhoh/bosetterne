@@ -105,6 +105,8 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		//bind(BosetterneAuthenticator.class).to(new TypeLiteral<Authenticator<String,Spiller>>() {});
 		
 		bind(configuration).to(BosetterneConfiguration.class);
+		bind(configuration.getOauth2()).to(OAuth2Cred.class);
+		
 		bind(environment).to(Environment.class);
 		
 		bind(AtomicLong.class).to(AtomicLong.class);
@@ -112,7 +114,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(HashMap.class).to(new TypeLiteral<Map<String, Spiller>>(){}).named("tokens");
 		bind(HashMap.class).to(new TypeLiteral<Map<String, Legitimasjon>>(){}).named("codes");
 		
-		bind(configuration.getOauth2()).to(OAuth2Cred.class);
+		
 		
 		//Tokenstore
 		bind(tokenStore).to(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){});
@@ -139,7 +141,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(new Provider<LoggInnResource>() {
 			@Override
 			public LoggInnResource get() {
-				return new LoggInnResource();
+				return new LoggInnResource(configuration.getMustacheTemplates().getLoginTemplate());
 			}
 		}).to(new TypeLiteral<Provider<LoggInnResource>>(){});
 		

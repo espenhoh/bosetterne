@@ -18,9 +18,11 @@ public class LoggInnResource {
 	
 	private final static Logger logger = LoggerFactory.getLogger("LoggInnResource.class");
 	
-	static final String LOGG_INN_TEMPLATE = "/WebContent/login.mustache";
+	final String template;
 
-	public LoggInnResource() {}
+	public LoggInnResource(String template) {
+		this.template = template;
+	}
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
@@ -34,6 +36,6 @@ public class LoggInnResource {
 		} else {
 			logger.info("Spiller logget inn som {}",spiller.getBrukernavn());
 		}
-		return new LoggInnView(LOGG_INN_TEMPLATE, spiller);
+		return new LoggInnView(template, spiller);
 	}
 }

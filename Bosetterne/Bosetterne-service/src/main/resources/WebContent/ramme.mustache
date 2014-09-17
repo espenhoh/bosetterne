@@ -14,10 +14,7 @@
 <body>
 <header>
     <hgroup>
-        <h1>Spill</h1>
-{{#innlogget}}
-        <h2 align="right">Innlogget som {{spiller.brukernavn}}</h2>
-{{/innlogget}}
+        <h1>Spill{{#innlogget}}<span class="right">Innlogget som <span class="brukernavn">{{spiller.brukernavn}}</span></span> {{/innlogget}}</h1>
     </hgroup>
 </header>
 <nav>
@@ -26,7 +23,7 @@
         <li class="meny"><a class="meny" href="/">Hjem</a></li>
         {{^innlogget}}
             <li class="meny"><a class="meny" href="registrer">Registrer</a></li>
-            <li class="meny"><a class="meny" href="logg_inn">Logg inn</a></li>
+            <li class="meny"><a class="meny" id="logginn" href="logg_inn">Logg inn</a></li>
         {{/innlogget}}
         {{#innlogget}}
             <li class="meny"><a class="meny" href="bosetterne">Bosetterne</a></li>

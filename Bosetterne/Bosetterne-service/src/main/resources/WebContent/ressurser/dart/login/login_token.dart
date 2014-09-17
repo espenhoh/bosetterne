@@ -38,14 +38,13 @@ class Login_token {
     if (queryPos > -1) {
       link = link.substring(0, queryPos);
     }
-    print(anchorElement.getAttribute('href'));
+
     StringBuffer tokenQuery = new StringBuffer();
     tokenQuery.write(link);
     tokenQuery.write("?innlogget_token=");
     tokenQuery.write(_access_token);
 
     anchorElement.setAttribute('href',tokenQuery.toString());
-    print(anchorElement.getAttribute('href'));
   }
 }
 
