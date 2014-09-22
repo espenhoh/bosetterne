@@ -16,14 +16,26 @@ public class MustacheTemplates {
     
     @NotEmpty
     @JsonProperty
+    private String loggUtTemplate;
+    
+    @NotEmpty
+    @JsonProperty
     private String loginTemplate;
 
 	public String getHjemTemplate() {
-		return baseMappe + hjemTemplate;
+		return fullPath(hjemTemplate);
 	}
 
 	public String getLoginTemplate() {
-		return baseMappe + loginTemplate;
+		return fullPath(loginTemplate);
+	}
+
+	public String getLoggUtTemplate() {
+		return fullPath(loggUtTemplate);
+	}
+	
+	private String fullPath(String template) {
+		return baseMappe + template;
 	}
 
 }

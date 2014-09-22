@@ -20,8 +20,6 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
  *
  */
 public class ConfigurationStub {
-
-	private static ConfigurationStub stub;
 	
 	BosetterneConfiguration config;
 	
@@ -43,13 +41,11 @@ public class ConfigurationStub {
 	}
 	
 	public static BosetterneConfiguration getConf() throws JsonProcessingException, IOException {
-		if (stub == null) {
-			stub = new ConfigurationStub();
-		}
-		return stub.config;
+		return new ConfigurationStub().config;
 	}
 	
 	public static void main(String[] args) throws JsonProcessingException, IOException{
 		ConfigurationStub stub = new ConfigurationStub();
+		System.out.println("Alt ok!");
 	}
 }

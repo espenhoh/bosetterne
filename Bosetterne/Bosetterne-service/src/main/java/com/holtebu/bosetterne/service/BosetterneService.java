@@ -1,6 +1,8 @@
 package com.holtebu.bosetterne.service;
 
 
+import java.util.ResourceBundle;
+
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.jdbi.DBIFactory;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.holtebu.bosetterne.service.filter.PolettFilter;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.inject.BosetterneServiceBinder;
+import com.holtebu.bosetterne.service.inject.ResourceBundleResolver;
 import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
@@ -79,6 +82,8 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     	binder.setUpEnv(configuration, environment);
     	binder.setUpDao(binder.buildJDBI());
     	jersey.register(binder);
+    	jersey.register(new ResourceBundleResolver.Binder());
+    	
     	
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");

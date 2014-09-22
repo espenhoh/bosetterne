@@ -5,6 +5,7 @@ mustacheTemplates:
   baseMappe: /WebContent/
   hjemTemplate: hjem.mustache
   loginTemplate: login.mustache
+  loggUtTemplate: logg_ut.mustache
 
 oauth2:
   clientId: Bosetterne

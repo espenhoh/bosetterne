@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.when;
+import static com.holtebu.bosetterne.TestConst.*;
 import io.dropwizard.auth.basic.BasicCredentials;
 
 import java.net.URI;
@@ -24,6 +25,7 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
+import com.holtebu.bosetterne.TestConst;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.api.SpillerBuilder;
 import com.holtebu.bosetterne.service.OAuth2Cred;
@@ -37,13 +39,12 @@ import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 
 public class OAuthAuthorizeResourceTest {
 
-	private static final String STD_CLIENT_SECRET = "OAuth2TestSecret";
+	
 
 	private static final String STD_BRUKERNAVN = "brukernavn";
 	private static final String STD_PASSORD = "passord";
 	private static final String STD_RESPONSE_TYPE = "code";
 	private static final String STD_REDIRECT = "redirectUri";
-	private static final String STD_CLIENTID = "clientId";
 	private static final String STD_STATE = "state";
 	private static final String STD_SCOPE = "BOSETTERNE";
 	private static final String STD_AUTHCODE = UUID.randomUUID().toString();
@@ -66,7 +67,7 @@ public class OAuthAuthorizeResourceTest {
 		MockitoAnnotations.initMocks(this);
 
 		lobbyService = new JDBILobbyService(com.holtebu.bosetterne.service.auth.JDBILobbyServiceTest.provideSpillerCache(daoMock));
-		auth2Cred = new OAuth2Cred(STD_CLIENTID, STD_CLIENT_SECRET);
+		auth2Cred = new OAuth2Cred(TestConst.STD_CLIENTID, TestConst.STD_CLIENT_SECRET);
 		accessTokens = new HashMap<>();
 		codes = new HashMap<>();
 		tokenStore = new PolettlagerIMinne(accessTokens, codes, auth2Cred);
@@ -84,7 +85,7 @@ public class OAuthAuthorizeResourceTest {
 		returnerStdSpiller();
 
 		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD,
-				STD_RESPONSE_TYPE, STD_REDIRECT, STD_CLIENTID, STD_SCOPE,
+				STD_RESPONSE_TYPE, STD_REDIRECT, TestConst.STD_CLIENTID, STD_SCOPE,
 				STD_STATE);
 
 		assertThat("Spiller skal være autorisert.", respons.getStatus(),
@@ -126,7 +127,7 @@ public class OAuthAuthorizeResourceTest {
 		returnerStdSpiller();
 
 		Response respons = authResource.login(STD_BRUKERNAVN, STD_PASSORD,
-				STD_RESPONSE_TYPE, "feil£\"||Syntakssssæøå", STD_CLIENTID,
+				STD_RESPONSE_TYPE, "feil£\"||Syntakssssæøå", TestConst.STD_CLIENTID,
 				STD_SCOPE, STD_STATE);
 
 		assertThat("Responsen skal ha status UNAUTHORIZED",
@@ -142,7 +143,7 @@ public class OAuthAuthorizeResourceTest {
 		when(daoMock.finnSpillerVedNavn(isA(String.class))).thenReturn(null);
 
 		Response respons = authResource.login(brukernavn, STD_PASSORD,
-				STD_RESPONSE_TYPE, STD_REDIRECT, STD_CLIENTID, STD_SCOPE,
+				STD_RESPONSE_TYPE, STD_REDIRECT, TestConst.STD_CLIENTID, STD_SCOPE,
 				STD_STATE);
 
 		assertThat("Responsen skal ha status NOT FOUND", respons.getStatus(),

@@ -11,8 +11,10 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
+import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -95,7 +97,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(Bosetterne.class).to(Bosetterne.class).in(Singleton.class);
 		
 		//bindResourceProviders();
-		
+		bind(ResourceBundle.getBundle("bosetterne")).to(ResourceBundle.class);
 		
 		
 		//DAO binding
@@ -135,6 +137,12 @@ public class BosetterneServiceBinder extends AbstractBinder{
         //bind(String.class).annotatedWith(LoggInnTemplate.class).toInstance("/WebContent/lobby/login.mustache");
         //bind(String.class).annotatedWith(HjemTemplate.class).toInstance("/WebContent/lobby/hjem.mustache");
 
+	}
+	
+	private ResourceBundle getBosetterneText() {
+		Locale locale = new Locale("nb", "NO");
+		ResourceBundle bosetterneText = ResourceBundle.getBundle("bosetterne", locale);
+		return bosetterneText;
 	}
 	
 	private void bindResourceProviders() {

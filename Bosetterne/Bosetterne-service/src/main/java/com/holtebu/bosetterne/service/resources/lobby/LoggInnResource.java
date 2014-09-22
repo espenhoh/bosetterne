@@ -1,5 +1,7 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
+import java.util.ResourceBundle;
+
 import io.dropwizard.auth.Auth;
 
 import javax.servlet.http.HttpServletRequest;
@@ -12,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.service.inject.Message;
 import com.holtebu.bosetterne.service.views.LoggInnView;
 
 public class LoggInnResource {
@@ -26,7 +29,7 @@ public class LoggInnResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public LoggInnView logInn(@Auth(required = false) Spiller spiller, @Context HttpServletRequest request) {
+	public LoggInnView logInn(@Auth(required = false) Spiller spiller, @Context HttpServletRequest request, @Message ResourceBundle msg) {
 //		Locale clientLocale = request.getLocale();
 //		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(KLOKKE_PATTERN, clientLocale);
 //		String now = simpleDateFormat.format(new Date());
@@ -35,7 +38,8 @@ public class LoggInnResource {
 			logger.info("Spiller ikke logget inn");
 		} else {
 			logger.info("Spiller logget inn som {}",spiller.getBrukernavn());
+			spiller.setInnlogget(true);
 		}
-		return new LoggInnView(template, spiller);
+		return new LoggInnView(template, msg, spiller);
 	}
 }

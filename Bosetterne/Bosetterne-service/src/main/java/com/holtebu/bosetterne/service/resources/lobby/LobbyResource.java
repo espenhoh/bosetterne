@@ -1,5 +1,7 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
+import java.util.ResourceBundle;
+
 import io.dropwizard.auth.Auth;
 
 import javax.inject.Inject;
@@ -13,6 +15,7 @@ import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.MustacheTemplates;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+import com.holtebu.bosetterne.service.inject.Message;
 import com.holtebu.bosetterne.service.views.HjemView;
 import com.holtebu.bosetterne.service.views.LobbyView;
  
@@ -35,21 +38,26 @@ public class LobbyResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public HjemView hjem(@Auth(required = false) Spiller spiller) {
-		HjemView hjemView = new HjemView(templates.getHjemTemplate(), spiller);
+	public HjemView hjem(@Message ResourceBundle msg, @Auth(required = false) Spiller spiller) {
+		HjemView hjemView = new HjemView(templates.getHjemTemplate(), msg, spiller);
 		return hjemView;
 	}
 	
 	@GET
 	@Path("test")
 	@Produces(MediaType.TEXT_HTML)
-	public LobbyView test() {
-		return new LobbyView("/WebContent/test.mustache");
+	public LobbyView test(@Message ResourceBundle msg) {
+		return new LobbyView("/WebContent/test.mustache", msg);
 	}
 	
 	@Path("logg_inn")
 	public LoggInnResource loggInnResource(){
 		return new LoggInnResource(templates.getLoginTemplate());
+	}
+	
+	@Path("logg_ut")
+	public Class<LoggUtResource> loggUtResource(){
+		return LoggUtResource.class;
 	}
 	
     

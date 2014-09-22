@@ -2,6 +2,7 @@
 import 'dart:html';
 import 'dart:convert';
 import 'login/login_token.dart' as token;
+import 'Loggut.dart' as loggut;
 
 InputElement spiller = querySelector('#txtBrukerNavn');
 InputElement passord = querySelector('#pass');
@@ -37,6 +38,7 @@ void main() {
   new token.Login_token().menyLenker();
   InputElement submit = querySelector('#logg_inn');
   submit.onClick.listen( onSubmit );
+  new loggut.Loggut();
 }
 
 
@@ -64,7 +66,7 @@ void onSubmit(Event e) {
       HttpRequest.postFormData("/token", data2, withCredentials: true, requestHeaders: reqHdr)
       .then((HttpRequest resp){
         window.sessionStorage["bosetterne_token"] = resp.responseText;
-        print("Token stored in local storage");
+        print("Token stored in session storage");
         new token.Login_token().menyLenker();
         querySelector("#logginn").click();
       });

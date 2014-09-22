@@ -5,7 +5,7 @@
           href="/ressurser/favicon.ico.png" />
     <meta charset="utf-8">
     <script src="ressurser/js/CheckDart.js"></script>
-    <title>Bosetterne</title>
+    <title>{{bosetterne}}</title>
     <link rel="stylesheet" href="/ressurser/css/sections.css">
     <link rel="stylesheet" href="/ressurser/css/tables.css">
     <link rel="stylesheet" href="/ressurser/css/text.css">
@@ -14,21 +14,21 @@
 <body>
 <header>
     <hgroup>
-        <h1>Spill{{#innlogget}}<span class="right">Innlogget som <span class="brukernavn">{{spiller.brukernavn}}</span></span> {{/innlogget}}</h1>
+        <h1>Spill{{#innlogget}}<span class="right">{{loggedin}} <span class="brukernavn">{{spiller.brukernavn}}</span></span> {{/innlogget}}</h1>
     </hgroup>
 </header>
 <nav>
     <p class="meny"><span>Meny</span><p>
     <ul class="menyliste">
-        <li class="meny"><a class="meny" href="/">Hjem</a></li>
+        <li class="meny"><a class="meny" href="/">{{home}}</a></li>
         {{^innlogget}}
-            <li class="meny"><a class="meny" href="registrer">Registrer</a></li>
-            <li class="meny"><a class="meny" id="logginn" href="logg_inn">Logg inn</a></li>
+            <li class="meny"><a class="meny" href="registrer">{{register}}</a></li>
+            <li class="meny"><a class="meny" id="logginn" href="logg_inn">{{login}}</a></li>
         {{/innlogget}}
         {{#innlogget}}
-            <li class="meny"><a class="meny" href="bosetterne">Bosetterne</a></li>
-            <li class="meny"><a class="meny" href="ressurser/chat.html">Chat</a></li>
-            <li class="meny"><a class="meny" href="logg_ut">Logg ut</a></li>
+            <li class="meny"><a class="meny" href="bosetterne">{{bosetterne}}</a></li>
+            <li class="meny"><a class="meny" href="ressurser/chat.html">{{chat}}</a></li>
+            <li class="meny"><a class="meny" id="loggut" href="logg_ut">{{logout}}</a></li>
         {{/innlogget}}
     </ul>
 </nav>
@@ -36,7 +36,7 @@
 {{$article}}Default tekst{{/article}}
 </article>
 <footer>
-    All rights reserved © Espen
+    {{copyright}}
 </footer>
 {{$scripts}}...{{/scripts}}
 <script src="/ressurser/dart/packages/browser/dart.js"></script>
