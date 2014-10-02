@@ -70,11 +70,14 @@ public class PolettlagerIMinneTest {
 	@Test
 	public void storeAccessTokenFeilerIkke() throws Exception{
 		Spiller spiller = lagTestspiller();
+		spiller.setInnlogget(false);
+		
 		Legitimasjon leg = new Legitimasjon().setClientId(oAuth2Verdier.getClientId()).setSecret(oAuth2Verdier.getClientSecret()).setSpiller(spiller);
 		
 		AccessToken token = polettLager.storeAccessToken(leg);
 		
 		assertThat("Spiller skal være lagt i map", accessTokens.get(token.getAccessToken()),is(spiller));
+		assertThat("Spilleren skal være logget inn", spiller.isInnlogget(), is(true));
 	}
 	
 	
@@ -214,6 +217,49 @@ public class PolettlagerIMinneTest {
 		
 		assertThat("AuthorizationCode skal være null", code, is(nullValue()));
 		assertThat("Map skal være tomt", codes.isEmpty(),is(equalTo(true)));
+	}
+	
+	
+	@Test
+	public void whenAskedForAccessTokenRemoveAuthCode() throws AutorisasjonsException{
+		Spiller spiller = lagTestspiller();
+		Legitimasjon leg = new Legitimasjon().setClientId(oAuth2Verdier.getClientId()).setSecret(oAuth2Verdier.getClientSecret()).setSpiller(spiller);
+		
+		String code = polettLager.storeAuthorizationCode(leg);
+		polettLager.getSpillerByAuthorizationCode(code);
+		
+		assertThat("Spilleren skal ikke kunne hentes med autoriseringskode 2 ganger", polettLager.getSpillerByAuthorizationCode(code).isPresent(), is(false));
+	}
+	
+
+	
+	@Test
+	public void ifPlayerLoggedOutAccessTokenShouldNotWork() throws Exception {
+		Spiller spiller = lagTestspiller();
+		spiller.setInnlogget(true);
+		Legitimasjon leg = new Legitimasjon().setClientId(oAuth2Verdier.getClientId()).setSecret(oAuth2Verdier.getClientSecret()).setSpiller(spiller);
+		Spiller spiller2 = lagTestspiller();
+		spiller2.setBrukernavn("Brukernavn2");
+		Legitimasjon leg2 = new Legitimasjon().setClientId(oAuth2Verdier.getClientId()).setSecret(oAuth2Verdier.getClientSecret()).setSpiller(spiller2);
+
+		
+		String code = polettLager.storeAuthorizationCode(leg);
+		String code2 = polettLager.storeAuthorizationCode(leg2);
+		AccessToken token = polettLager.storeAccessToken(leg);
+		AccessToken token2 = polettLager.storeAccessToken(leg2);
+		polettLager.logOutSpiller(spiller);
+		
+		assertThat("Spilleren skal ikke kunne hentes med polett", polettLager.getSpillerByAccessToken(token.getAccessToken()).isPresent(), is(false));
+		assertThat("Spilleren skal være logget ut", spiller.isInnlogget(),is(false));
+		
+	}
+	
+	
+	@Test(expected=AutorisasjonsException.class)
+	public void hvisSpillerIkkeErLoggetInnKastesException() throws Exception {
+		Spiller spiller = lagTestspiller();
+		
+		polettLager.logOutSpiller(spiller);
 	}
 	
 	private Spiller lagTestspiller() {

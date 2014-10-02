@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.service.auth;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static com.holtebu.bosetterne.BosetterneConfigurationSuite.conf;
 
 import java.util.HashMap;
 
@@ -27,7 +28,7 @@ public class BosetterneAuthenticatorTest {
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-        oAuth2Verdier = ConfigurationStub.getConf().getOauth2();
+        oAuth2Verdier = conf.getOauth2();
 	}
 
 	@Before

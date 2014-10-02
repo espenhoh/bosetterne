@@ -17,6 +17,7 @@ import org.slf4j.LoggerFactory;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.MustacheTemplates;
+import com.holtebu.bosetterne.service.auth.sesjon.AutorisasjonsException;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
@@ -31,7 +32,7 @@ public class LoggUtResource {
 	
 	
 	@Inject
-	public LoggUtResource(Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLagerm,
+	public LoggUtResource(Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager,
 			BosetterneConfiguration conf,
 			ResourceBundle bundle){
 		this.polettLager = polettLager;
@@ -42,7 +43,23 @@ public class LoggUtResource {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public HjemView loggUt(@Auth(required = false) Spiller spiller) {
-		return null;
+		
+		HjemView view = new HjemView(mustacheTemplates.getHjemTemplate(), bundle, spiller);
+		
+		if(spiller == null) {
+			view.setBeskjed(bundle.getString("logout.userWasNotLoggedIn"));
+		} else {
+			//spiller.setInnlogget(false);
+			try {
+				polettLager.logOutSpiller(spiller);
+			} catch (AutorisasjonsException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			view.setBeskjed(bundle.getString("logout.userLoggedOut"));
+		}
+		
+		return view;
 	}
 
 }

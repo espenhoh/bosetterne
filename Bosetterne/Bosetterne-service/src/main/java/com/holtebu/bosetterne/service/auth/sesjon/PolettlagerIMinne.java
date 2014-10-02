@@ -1,7 +1,11 @@
 package com.holtebu.bosetterne.service.auth.sesjon;
 
 
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -50,6 +54,8 @@ public class PolettlagerIMinne implements
 
 		if(verifyClientSecret(leg)) {
 			accessToken = new AccessToken(UUID.randomUUID().toString(),	Long.MAX_VALUE);
+			Spiller spiller = leg.getSpiller();
+			spiller.setInnlogget(true);
 			accessTokens.put(accessToken.getAccessToken(), leg.getSpiller());
 		}
 
@@ -72,11 +78,15 @@ public class PolettlagerIMinne implements
 		return code;
 	}
 
+	/**
+	 * Hvis Spiller med autoriseringkode <code>code</code> finnes, returneres denne og spilleren fjernes fra hashmappet.
+	 *  
+	 */
 	@Override
 	public Optional<Spiller> getSpillerByAuthorizationCode(String code) {
 		Spiller spiller = null;
 		
-		Legitimasjon leg = codes.get(code);
+		Legitimasjon leg = codes.remove(code);
 		if (leg != null) {
 			spiller = leg.getSpiller();
 		}
@@ -108,6 +118,20 @@ public class PolettlagerIMinne implements
 		}
 		
 		return;
+	}
+
+
+	@Override
+	public void logOutSpiller(Spiller spiller) throws AutorisasjonsException {
+		Set<Entry<String,Spiller>> entrySet = accessTokens.entrySet();
+		
+		for(Entry<String,Spiller> entry: entrySet){
+			if(spiller.equals(entry.getValue())){
+				accessTokens.remove(entry.getKey());
+				spiller.setInnlogget(false);
+				break;
+			}
+		}
 	}
 
 }

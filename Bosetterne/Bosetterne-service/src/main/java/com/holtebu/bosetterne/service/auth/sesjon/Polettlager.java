@@ -29,6 +29,13 @@ public interface Polettlager<T, I, L, C> {
 	T storeAccessToken(L leg) throws AutorisasjonsException;
 
 	Optional<I> getSpillerByAccessToken(String accessToken);
+	
+	/**
+	 * Removes the player from the HashMap
+	 * @param player the player to remove
+	 * @throws AutorisasjonsException when player not found.
+	 */
+	void logOutSpiller(I player) throws AutorisasjonsException;
 
 	/**
 	 * Dersom client_Id på <code>legitimasjon</code> stemmer med med client_Id på serveren genereres og lagres en ny autorisasjonskode.

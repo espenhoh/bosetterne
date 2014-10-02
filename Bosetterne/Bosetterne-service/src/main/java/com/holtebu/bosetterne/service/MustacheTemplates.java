@@ -16,10 +16,6 @@ public class MustacheTemplates {
     
     @NotEmpty
     @JsonProperty
-    private String loggUtTemplate;
-    
-    @NotEmpty
-    @JsonProperty
     private String loginTemplate;
 
 	public String getHjemTemplate() {
@@ -28,10 +24,6 @@ public class MustacheTemplates {
 
 	public String getLoginTemplate() {
 		return fullPath(loginTemplate);
-	}
-
-	public String getLoggUtTemplate() {
-		return fullPath(loggUtTemplate);
 	}
 	
 	private String fullPath(String template) {

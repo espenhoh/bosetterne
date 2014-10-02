@@ -6,9 +6,13 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static com.holtebu.bosetterne.BosetterneConfigurationSuite.conf;
 
 import java.util.HashMap;
+import java.util.ResourceBundle;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -27,6 +31,7 @@ import com.holtebu.bosetterne.api.SpillerBuilder;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.ConfigurationStub;
 import com.holtebu.bosetterne.service.OAuth2Cred;
+import com.holtebu.bosetterne.service.auth.sesjon.AutorisasjonsException;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
@@ -39,6 +44,7 @@ public class LoggUtResourceTest {
 	
 	private LoggUtResource res;
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager;
+	private static ResourceBundle bundle;
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
@@ -46,7 +52,7 @@ public class LoggUtResourceTest {
 	
 	@BeforeClass
 	public static void setUpBf() throws Exception {
-		//conf = ConfigurationStub.getConf();
+		bundle = ResourceBundle.getBundle("bosetterne");
 	}
 	
 
@@ -54,7 +60,8 @@ public class LoggUtResourceTest {
 	public void setUp() throws Exception {
 		auth2Cred = new OAuth2Cred(STD_CLIENTID, STD_CLIENT_SECRET);
 		polettLager = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), auth2Cred);
-		res = new LoggUtResource(polettLager, conf);
+		polettLager = spy(polettLager);
+		res = new LoggUtResource(polettLager, conf, bundle);
 	}
 
 	@After
@@ -67,30 +74,28 @@ public class LoggUtResourceTest {
 	}
 	
 	@Test
-	public void ifPlayerNotLoggedInRedirectHome(){
+	public void ifPlayerNotLoggedInOrDoesNotExistRedirectHomeWithExceptionalMessage(){
 		
-		HjemView hjemview = res.loggUt(null);
+		HjemView hjemView = res.loggUt(null);
 		
-		assertThat("Beskjed skal være ", assertion);
+		String beskjed = bundle.getString("logout.userWasNotLoggedIn");
+		assertThat("Beskjed skal være " + beskjed, hjemView.getBeskjed(), is(equalTo(beskjed)));
 		
-	}
-
-	private void assertRedirectHome(Response response) {
-		assertThat("Requesten skal ha status \"SEE_OTHER\"",response.getStatus(),is(Response.Status.SEE_OTHER.getStatusCode()));
-		assertThat("Requesten skal redirecte hjem",response.getLocation().getPath(),is(equalTo("/")));
 	}
 
 	
 	@Test
-	public void ifPlayerLoggedInThenThePlayerMustBeRedirectedHome(){
+	public void ifPlayerLoggedInThenThePlayerMustBeLoggedOut() throws AutorisasjonsException {
 		
 		Spiller spiller = new SpillerBuilder().withBrukernavn("Testspiller").withPassord("passord").build();
 		spiller.setInnlogget(true);
 		
-		Response response = res.loggUt(spiller);
+		HjemView hjemview = res.loggUt(spiller);
+		
 		
 		assertThat("Spiller skal være logget ut", spiller.isInnlogget(),is(false));
-		assertRedirectHome(response);
+		verify(polettLager).logOutSpiller(isA(Spiller.class));
+		String beskjed = bundle.getString("logout.userLoggedOut");
+		assertThat("Beskjed skal være " + beskjed, hjemview.getBeskjed(), is(equalTo(beskjed)));
 	}
-
 }

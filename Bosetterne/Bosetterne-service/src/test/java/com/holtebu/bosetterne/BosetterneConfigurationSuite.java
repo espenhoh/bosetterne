@@ -8,10 +8,11 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.ConfigurationStub;
+import com.holtebu.bosetterne.service.auth.BosetterneAuthenticatorTest;
 import com.holtebu.bosetterne.service.resources.lobby.LoggUtResourceTest;
 
 @RunWith(Suite.class)
-@SuiteClasses({ LoggUtResourceTest.class })
+@SuiteClasses({ LoggUtResourceTest.class, BosetterneAuthenticatorTest.class })
 public class BosetterneConfigurationSuite {
 	
 	public static BosetterneConfiguration conf;
@@ -26,6 +27,7 @@ public class BosetterneConfigurationSuite {
 
 		@Override
 		protected void after() {
+			conf = null;
 			System.out.println("Finished working with BosetterneConfiguration");
 		}
 	};

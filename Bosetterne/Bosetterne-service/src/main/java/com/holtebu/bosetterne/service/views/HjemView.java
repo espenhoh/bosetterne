@@ -11,9 +11,10 @@ public class HjemView extends LobbyView {
 	public HjemView(String templateName, ResourceBundle msg, Spiller spiller) {
 		super(templateName, msg);
 		setSpiller(spiller);
+		setBeskjed(msg.getString("home.welcome"));
 	}
 	
-	void setBeskjed(String beskjed) {
+	public void setBeskjed(String beskjed) {
 		this.beskjed = beskjed;
 	}
 	public String getBeskjed() {
