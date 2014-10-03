@@ -31,11 +31,15 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	private final static Logger logger = LoggerFactory.getLogger(JDBILobbyService.class);
 	
 	private final LoadingCache<String, Optional<Spiller>> spillerCache;
+
+	private final LobbyDAO dao;
 	
 
 	@Inject
-	public JDBILobbyService(LoadingCache<String, Optional<Spiller>> spillerCache) {
+	public JDBILobbyService(LoadingCache<String, Optional<Spiller>> spillerCache
+			,LobbyDAO dao) {
 		this.spillerCache = spillerCache;
+		this.dao = dao;
 	}
 
 	/**
@@ -85,6 +89,13 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 			rettPassord = false;
 		}
 		return rettPassord;
+	}
+
+	@Override
+	public void lagreSpiller(Optional<Spiller> spiller) {
+		if (spiller.isPresent()){
+			dao.oppdaterSpiller(spiller.get());
+		}
 	}
 }
 

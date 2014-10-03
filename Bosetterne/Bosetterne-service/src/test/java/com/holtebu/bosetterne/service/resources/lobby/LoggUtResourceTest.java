@@ -6,6 +6,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
@@ -13,6 +14,7 @@ import static com.holtebu.bosetterne.BosetterneConfigurationSuite.conf;
 
 import java.util.HashMap;
 import java.util.ResourceBundle;
+import java.util.UUID;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -25,19 +27,31 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
+import com.google.common.base.Optional;
+import com.holtebu.bosetterne.BosetterneConfigurationSuite;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.api.SpillerBuilder;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.ConfigurationStub;
 import com.holtebu.bosetterne.service.OAuth2Cred;
+import com.holtebu.bosetterne.service.auth.LobbyService;
 import com.holtebu.bosetterne.service.auth.sesjon.AutorisasjonsException;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.views.HjemView;
+import com.sun.research.ws.wadl.Option;
 
+/**
+ * @see BosetterneConfigurationSuite
+ * 
+ * @author espen
+ *
+ */
 @RunWith(JUnit4.class)
 public class LoggUtResourceTest {
 	
@@ -45,6 +59,10 @@ public class LoggUtResourceTest {
 	private LoggUtResource res;
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager;
 	private static ResourceBundle bundle;
+	private HashMap<String, Spiller> tokens;
+	
+	@Mock
+	private LobbyService<Optional<Spiller>, Legitimasjon> lobbyService;
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
@@ -58,10 +76,12 @@ public class LoggUtResourceTest {
 
 	@Before
 	public void setUp() throws Exception {
+		MockitoAnnotations.initMocks(this);
 		auth2Cred = new OAuth2Cred(STD_CLIENTID, STD_CLIENT_SECRET);
-		polettLager = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), auth2Cred);
+		tokens = new HashMap<String, Spiller>();
+		polettLager = new PolettlagerIMinne(tokens, new HashMap<String, Legitimasjon>(), auth2Cred);
 		polettLager = spy(polettLager);
-		res = new LoggUtResource(polettLager, conf, bundle);
+		res = new LoggUtResource(lobbyService, polettLager, conf, bundle);
 	}
 
 	@After
@@ -89,12 +109,14 @@ public class LoggUtResourceTest {
 		
 		Spiller spiller = new SpillerBuilder().withBrukernavn("Testspiller").withPassord("passord").build();
 		spiller.setInnlogget(true);
+		tokens.put("Whatever", spiller);
 		
 		HjemView hjemview = res.loggUt(spiller);
 		
 		
 		assertThat("Spiller skal være logget ut", spiller.isInnlogget(),is(false));
 		verify(polettLager).logOutSpiller(isA(Spiller.class));
+		verify(lobbyService).lagreSpiller(isA(Optional.class));
 		String beskjed = bundle.getString("logout.userLoggedOut");
 		assertThat("Beskjed skal være " + beskjed, hjemview.getBeskjed(), is(equalTo(beskjed)));
 	}

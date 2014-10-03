@@ -22,4 +22,10 @@ public interface LobbyService<S, L> {
 	* @return Spiller
 	*/
 	S getSpiller(L leg);
+	
+	/**
+	 * 
+	 * @param spiller spilleren som skal logges ut/lagres
+	 */
+	void lagreSpiller(S spiller);
 }

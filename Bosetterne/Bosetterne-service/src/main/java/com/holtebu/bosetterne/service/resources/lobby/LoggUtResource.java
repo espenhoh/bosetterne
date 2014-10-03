@@ -14,9 +14,11 @@ import javax.ws.rs.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.base.Optional;
 import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.MustacheTemplates;
+import com.holtebu.bosetterne.service.auth.LobbyService;
 import com.holtebu.bosetterne.service.auth.sesjon.AutorisasjonsException;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
@@ -29,12 +31,16 @@ public class LoggUtResource {
 	private ResourceBundle bundle;
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager;
 	private MustacheTemplates mustacheTemplates;
+	private LobbyService<Optional<Spiller>, Legitimasjon> lobbyService;
 	
 	
 	@Inject
-	public LoggUtResource(Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager,
+	public LoggUtResource(
+			LobbyService<Optional<Spiller>, Legitimasjon> lobbyService,
+			Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager,
 			BosetterneConfiguration conf,
 			ResourceBundle bundle){
+		this.lobbyService = lobbyService;
 		this.polettLager = polettLager;
 		this.mustacheTemplates = conf.getMustacheTemplates();
 		this.bundle = bundle;
@@ -49,12 +55,11 @@ public class LoggUtResource {
 		if(spiller == null) {
 			view.setBeskjed(bundle.getString("logout.userWasNotLoggedIn"));
 		} else {
-			//spiller.setInnlogget(false);
 			try {
 				polettLager.logOutSpiller(spiller);
+				lobbyService.lagreSpiller(Optional.of(spiller));
 			} catch (AutorisasjonsException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.debug("{} ikke logget inn", spiller);
 			}
 			view.setBeskjed(bundle.getString("logout.userLoggedOut"));
 		}

@@ -104,11 +104,26 @@
 		<!-- </dependency> -->
 		<dependency>
 			<groupId>mysql</groupId>
-			<artifactId>jdbcdriver</artifactId>
+			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+
+		<!-- <dependency> -->
+		<!-- <groupId>mysql</groupId> -->
+		<!-- <artifactId>jdbcdriver</artifactId> -->
+		<!-- </dependency> -->
 	</dependencies>
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.10</version>
+				<configuration>
+					<includes>
+						<include>BosetterneConfigurationSuite.java</include>
+					</includes>
+				</configuration>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>

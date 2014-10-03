@@ -6,10 +6,14 @@ package com.holtebu.bosetterne.service.auth;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.isA;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.dropwizard.auth.basic.BasicCredentials;
 
@@ -46,7 +50,7 @@ public class JDBILobbyServiceTest {
 		
 		spillerCache = spy(com.holtebu.bosetterne.service.auth.JDBILobbyServiceTest.provideSpillerCache(daoMock));
 		
-		lobbyService = new JDBILobbyService(spillerCache);
+		lobbyService = new JDBILobbyService(spillerCache, daoMock);
 		
 		brukernavn = "test";
 		passord = "testPassord";
@@ -103,6 +107,24 @@ public class JDBILobbyServiceTest {
 		Optional<Spiller> spiller = lobbyService.getSpiller(cred);
 		
 		assertThat("Spiller skal være absent", spiller.isPresent(), is(equalTo(false)));
+	}
+	
+	@Test
+	public void lagreSpillerSkalkalleDAO(){
+		Optional<Spiller> spiller = Optional.of(testSpiller());
+		
+		lobbyService.lagreSpiller(spiller);
+		
+		verify(daoMock).oppdaterSpiller(eq(spiller.get()));
+	}
+	
+	@Test
+	public void lagreSpillerSkalIkkekalleDAO(){
+		Optional<Spiller> spiller = Optional.absent();
+		
+		lobbyService.lagreSpiller(spiller);
+		
+		verify(daoMock, never() ).oppdaterSpiller(any(Spiller.class));
 	}
 	
 	private Spiller testSpiller(){

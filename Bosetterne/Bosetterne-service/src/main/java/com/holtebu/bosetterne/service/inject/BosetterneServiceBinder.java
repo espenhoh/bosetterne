@@ -132,29 +132,8 @@ public class BosetterneServiceBinder extends AbstractBinder{
         //Bosetterne binding
         bind(Random.class).to(Random.class);
         bind(INIT_ANTALL_SPILL).to(Integer.class).named("antallSpill");
-        
-        //Bindtemplates
-        //bind(String.class).annotatedWith(LoggInnTemplate.class).toInstance("/WebContent/lobby/login.mustache");
-        //bind(String.class).annotatedWith(HjemTemplate.class).toInstance("/WebContent/lobby/hjem.mustache");
 
 	}
-	
-	private ResourceBundle getBosetterneText() {
-		Locale locale = new Locale("nb", "NO");
-		ResourceBundle bosetterneText = ResourceBundle.getBundle("bosetterne", locale);
-		return bosetterneText;
-	}
-	
-	private void bindResourceProviders() {
-		bind(new Provider<LoggInnResource>() {
-			@Override
-			public LoggInnResource get() {
-				return new LoggInnResource(configuration.getMustacheTemplates().getLoginTemplate());
-			}
-		}).to(new TypeLiteral<Provider<LoggInnResource>>(){});
-		
-	}
-
 	public Binder getAuthFactoryBinder(){
 		return AuthFactory.binder(authFactory);
 	}

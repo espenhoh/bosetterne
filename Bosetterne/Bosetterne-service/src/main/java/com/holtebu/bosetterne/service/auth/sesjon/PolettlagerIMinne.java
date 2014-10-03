@@ -124,14 +124,23 @@ public class PolettlagerIMinne implements
 	@Override
 	public void logOutSpiller(Spiller spiller) throws AutorisasjonsException {
 		Set<Entry<String,Spiller>> entrySet = accessTokens.entrySet();
+		if(!spillerInnlogget(spiller, entrySet)){
+			throw new AutorisasjonsException("Spiller " + spiller + " ikke logget inn!");
+		}
 		
+	}
+
+
+	private boolean spillerInnlogget(Spiller spiller,
+			Set<Entry<String, Spiller>> entrySet) {
 		for(Entry<String,Spiller> entry: entrySet){
 			if(spiller.equals(entry.getValue())){
 				accessTokens.remove(entry.getKey());
 				spiller.setInnlogget(false);
-				break;
+				return true;
 			}
 		}
+		return false;
 	}
 
 }

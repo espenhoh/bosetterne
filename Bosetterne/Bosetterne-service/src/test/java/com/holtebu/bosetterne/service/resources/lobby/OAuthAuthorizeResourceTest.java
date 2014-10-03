@@ -36,6 +36,7 @@ import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+import com.holtebu.bosetterne.service.inject.LobbyCacheFactory;
 
 public class OAuthAuthorizeResourceTest {
 
@@ -66,7 +67,7 @@ public class OAuthAuthorizeResourceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		lobbyService = new JDBILobbyService(com.holtebu.bosetterne.service.auth.JDBILobbyServiceTest.provideSpillerCache(daoMock));
+		lobbyService = new JDBILobbyService(new LobbyCacheFactory(daoMock).provide(),daoMock);
 		auth2Cred = new OAuth2Cred(TestConst.STD_CLIENTID, TestConst.STD_CLIENT_SECRET);
 		accessTokens = new HashMap<>();
 		codes = new HashMap<>();
