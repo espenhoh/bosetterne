@@ -36,5 +36,8 @@
             </form>
         {{/innlogget}}
     {{/article}}
-    {{$scripts}}{{^innlogget}}<script type="application/dart" src="/ressurser/dart/login.dart"></script>{{/innlogget}}{{/scripts}}
+    {{$scripts}}
+        {{#innlogget}}<script type="application/dart" src="/ressurser/dart/login/login_token.dart"></script>{{/innlogget}}
+        {{^innlogget}}<script type="application/dart" src="/ressurser/dart/login.dart"></script>{{/innlogget}}
+    {{/scripts}}
 {{/ ramme}}

@@ -2,7 +2,6 @@
 import 'dart:html';
 import 'dart:convert';
 import 'login/login_token.dart' as token;
-import 'Loggut.dart' as loggut;
 
 InputElement spiller = querySelector('#txtBrukerNavn');
 InputElement passord = querySelector('#pass');
@@ -35,10 +34,9 @@ void assertCheckMode() {
 
 void main() {
   assertCheckMode();
-  new token.Login_token().menyLenker();
+  token.main();
   InputElement submit = querySelector('#logg_inn');
   submit.onClick.listen( onSubmit );
-  new loggut.Loggut();
 }
 
 

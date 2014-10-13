@@ -18,15 +18,15 @@ import com.holtebu.bosetterne.api.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.MustacheTemplates;
 import com.holtebu.bosetterne.service.auth.LobbyService;
-import com.holtebu.bosetterne.service.auth.sesjon.AutorisasjonsException;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.inject.Message;
+import com.holtebu.bosetterne.service.views.BosetterneView;
 import com.holtebu.bosetterne.service.views.HjemView;
 
-public class LoggUtResource {
-	private final static Logger logger = LoggerFactory.getLogger(LoggUtResource.class);
+public class BosetterneResource {
+	private final static Logger logger = LoggerFactory.getLogger(BosetterneResource.class);
 	private ResourceBundle bundle;
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager;
 	private MustacheTemplates mustacheTemplates;
@@ -34,39 +34,23 @@ public class LoggUtResource {
 	
 	
 	@Inject
-	public LoggUtResource(
+	public BosetterneResource(
 			LobbyService<Optional<Spiller>, BasicCredentials> lobbyService,
 			Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager,
-			BosetterneConfiguration conf){
+			BosetterneConfiguration conf,
+			ResourceBundle bundle){
 		this.lobbyService = lobbyService;
 		this.polettLager = polettLager;
 		this.mustacheTemplates = conf.getMustacheTemplates();
+		this.bundle = bundle;
 	}
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public HjemView loggUt(@Auth(required = false) Spiller spiller, @Message ResourceBundle bundle) {
-		
-		HjemView view = new HjemView(mustacheTemplates.getHjemTemplate(), bundle, spiller);
-		
-		if(spiller == null) {
-			view.setBeskjed(bundle.getString("logout.userWasNotLoggedIn"));
-		} else {
-			loggUtSpiller(spiller, view);
-			view.setBeskjed(bundle.getString("logout.userLoggedOut"));
-		}
-		
+	public BosetterneView bosetterne(@Auth(required = false) Spiller spiller, @Message ResourceBundle msg){
+		BosetterneView view = new BosetterneView(mustacheTemplates.getBosetterneTemplate(), msg);
+		view .setSpiller(spiller);
 		return view;
-	}
-
-	private void loggUtSpiller(Spiller spiller, HjemView view) {
-		try {
-			polettLager.logOutSpiller(spiller);
-			lobbyService.lagreSpiller(Optional.of(spiller));
-		} catch (AutorisasjonsException e) {
-			logger.debug("{} ikke logget inn", spiller);
-		}
-		view.setSpiller(null);
 	}
 
 }

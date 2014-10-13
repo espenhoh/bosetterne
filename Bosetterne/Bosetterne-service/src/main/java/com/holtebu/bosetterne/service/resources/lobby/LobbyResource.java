@@ -60,6 +60,11 @@ public class LobbyResource {
 		return LoggUtResource.class;
 	}
 	
+	@Path("bosetterne")
+	public Class<BosetterneResource> bosetterneResource(){
+		return BosetterneResource.class;
+	}
+	
     
     @GET
     @Produces(MediaType.TEXT_PLAIN)

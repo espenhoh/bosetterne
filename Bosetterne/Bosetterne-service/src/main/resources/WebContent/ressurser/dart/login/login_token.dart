@@ -3,6 +3,18 @@ import 'dart:html';
 import 'dart:convert';
 
 
+void main(){
+  AnchorElement a = querySelector("#loggut");
+  if(a == null){
+    window.sessionStorage.remove("bosetterne_token");
+    print("token fjernet");
+  } else {
+    new Login_token().menyLenker();
+    a.onClick.listen((e) => window.sessionStorage.remove("bosetterne_token"));
+  }
+
+}
+
 class Login_token {
   List<AnchorElement> _menyLinker;
   String _access_token;

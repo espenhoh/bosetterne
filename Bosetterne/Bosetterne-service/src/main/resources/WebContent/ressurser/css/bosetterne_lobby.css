@@ -1,0 +1,45 @@
+/*
+    Document   : text.css
+    Created on : 29.sep.2013, 21:29:28
+    Author     : espenhoh
+    Description:
+        Definerer all tekst.
+    SELECTORS cheat sheet:
+    *{} match all
+    h1, h2, h3 {} type selector
+    (element).class.(class2) {} klassen(e) (til evt. en type element).
+    #id {} id selector
+    td>b {} direct child selector
+    table b {} decendant selector. Also non direct.
+
+
+*/
+
+h2 {
+    margin: 10px;
+}
+
+.spillediv {
+    position: relative;
+    width: 20%;
+    float: left;
+    margin: 10px;
+}
+
+.spilleliste {
+
+    height:10em;
+    display: block;
+    background-color: burlywood;
+
+
+
+
+}
+
+ul.spilleliste {
+    border-style: none;
+    list-style-type: none;
+    overflow:hidden;
+    overflow-y:scroll;
+}

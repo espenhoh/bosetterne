@@ -1,6 +1,7 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+//import static org.hamcrest.CoreMatchers.isA;
 import static com.holtebu.bosetterne.TestConst.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -8,9 +9,13 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.isA;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static com.holtebu.bosetterne.BosetterneConfigurationSuite.conf;
+import io.dropwizard.auth.basic.BasicCredentials;
 
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -62,7 +67,7 @@ public class LoggUtResourceTest {
 	private HashMap<String, Spiller> tokens;
 	
 	@Mock
-	private LobbyService<Optional<Spiller>, Legitimasjon> lobbyService;
+	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
 	
 	@Rule
 	public ExpectedException exception = ExpectedException.none();
@@ -103,7 +108,7 @@ public class LoggUtResourceTest {
 		
 	}
 
-	
+	@SuppressWarnings("unchecked")
 	@Test
 	public void ifPlayerLoggedInThenThePlayerMustBeLoggedOut() throws AutorisasjonsException {
 		
@@ -117,6 +122,23 @@ public class LoggUtResourceTest {
 		assertThat("Spiller skal være logget ut", spiller.isInnlogget(),is(false));
 		verify(polettLager).logOutSpiller(isA(Spiller.class));
 		verify(lobbyService).lagreSpiller(isA(Optional.class));
+		String beskjed = bundle.getString("logout.userLoggedOut");
+		assertThat("Beskjed skal være " + beskjed, hjemview.getBeskjed(), is(equalTo(beskjed)));
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Test
+	public void ifPlayerNotLoggedInThenThePlayerMustBeLoggedOut() throws AutorisasjonsException {
+		
+		Spiller spiller = new SpillerBuilder().withBrukernavn("Testspiller").withPassord("passord").build();
+		spiller.setInnlogget(false);
+		
+		HjemView hjemview = res.loggUt(spiller);
+		
+		
+		assertThat("Spiller skal være logget ut", spiller.isInnlogget(),is(false));
+		verify(polettLager).logOutSpiller(isA(Spiller.class));
+		verify(lobbyService, never()).lagreSpiller(isA(Optional.class));
 		String beskjed = bundle.getString("logout.userLoggedOut");
 		assertThat("Beskjed skal være " + beskjed, hjemview.getBeskjed(), is(equalTo(beskjed)));
 	}

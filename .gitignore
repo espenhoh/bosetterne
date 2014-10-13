@@ -3,7 +3,6 @@
 *~
 *.lock
 *.bak
-*.mwb
 
 # Directories #
 /build/
