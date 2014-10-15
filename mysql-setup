@@ -1,16 +1,7 @@
-Mysql 5.5.31
-- Std ubuntu install 
-$ mysql -u root -p
-mysql>
-CREATE SCHEMA IF NOT EXISTS bosetterne;
-CREATE USER 'test'@'localhost' IDENTIFIED BY 'test';
-GRANT ALTER,DELETE,INDEX,INSERT,UPDATE,SELECT ON bosetterne.* TO 'test'@'localhost';
-CREATE USER 'admin'@'localhost' IDENTIFIED BY '*********';
-GRANT ALL PRIVILEGES ON bosetterne.* TO 'admin'@'localhost' WITH GRANT OPTION;
-
-
-
-Use Workbench 6.1.4 +++++
+Mysql 5.6.19
+sudo apt-get install mysql-server-5.6
+sudo service mysql start/stop/restart
+check if running: sudo netstat -tap | grep mysql
 
 ----------------
 edit /etc/mysql/my.cnf. Add:
@@ -21,3 +12,24 @@ character-set-server=utf8
 collation-server=utf8_unicode_ci
 skip-character-set-client-handshake
 -----------------
+
+if reinstall:
+apt-get purge mysql-server-5.6 mysql-common mysql-client-5.6
+rm -rf /var/lib/mysql
+rm -rf /etc/mysql*
+select user,host from mysql.user; 
+show grants for test@%;
+show grants for admin@%;
+
+$ mysql -u root -p
+mysql>
+CREATE SCHEMA IF NOT EXISTS bosetterne;
+CREATE USER 'test'@'localhost' IDENTIFIED BY 'test';
+GRANT ALTER,DELETE,INDEX,INSERT,UPDATE,SELECT ON bosetterne.* TO 'test'@'localhost';
+CREATE USER 'admin'@'localhost' IDENTIFIED BY '*********';
+GRANT ALL PRIVILEGES ON bosetterne.* TO 'admin'@'localhost' WITH GRANT OPTION;
+
+
+
+Use Workbench 6.2.3 +++++
+
