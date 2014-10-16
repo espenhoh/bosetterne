@@ -16,3 +16,12 @@ insert into bosetterne.SPILL (navn, leder, type_spill, dato_fom, dato_tom)
 	values ('testspill', 'testbruker', 'BOSETTERNE', '2014-10-12 21:14:07', '2014-10-13 01:14:07');
 insert into bosetterne.SPILL (navn, leder, type_spill, dato_fom, dato_tom)
 	values ('testspill', 'testbruker', 'BOSETTERNE', '2014-10-12 21:14:07', null);
+    
+insert into bosetterne.SPILLER_I_SPILL (brukernavn, spill_id, plassering)
+	values ('testbruker', 1, 1);
+insert into bosetterne.SPILLER_I_SPILL (brukernavn, spill_id, plassering)
+	values ('testbruker2', 1, 2);
+insert into bosetterne.SPILLER_I_SPILL (brukernavn, spill_id, plassering)
+	values ('testbruker', 2, null);
+insert into bosetterne.SPILLER_I_SPILL (brukernavn, spill_id, plassering)
+	values ('testbruker2', 2, null);
