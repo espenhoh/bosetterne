@@ -1,5 +1,7 @@
 package com.holtebu.bosetterne.service.auth.sesjon;
 
+import java.util.Map;
+
 import org.jvnet.hk2.annotations.Contract;
 
 import com.google.common.base.Optional;
@@ -52,5 +54,10 @@ public interface Polettlager<T, I, L, C> {
 	 * @return Spilleren som tilsvarer autosriesingskoden.
 	 */
 	Optional<I> getSpillerByAuthorizationCode(C code);
+	
+	/**
+	 * Henter alle innloggede spillere ved tidspunktet metoden blir kalt.
+	 */
+	Map<String, I> getInnloggedeSpillere();
 
 }

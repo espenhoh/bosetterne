@@ -41,7 +41,9 @@ import static org.hamcrest.core.IsNull.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
+import static com.holtebu.bosetterne.api.SpillerBuilder.lagTestspiller;
 
 import com.google.common.base.Optional;
 
@@ -231,7 +233,13 @@ public class PolettlagerIMinneTest {
 		assertThat("Spilleren skal ikke kunne hentes med autoriseringskode 2 ganger", polettLager.getSpillerByAuthorizationCode(code).isPresent(), is(false));
 	}
 	
-
+	@Test
+	public void innloggedeSpillereSkalVæreIdentiskMedAccessTokenMap() {
+		
+		Map<String, Spiller> innloggedeSpillere = polettLager.getInnloggedeSpillere();
+		
+		assertSame(accessTokens, innloggedeSpillere);
+	}
 	
 	@Test
 	public void ifPlayerLoggedOutAccessTokenShouldNotWork() throws Exception {
@@ -262,21 +270,8 @@ public class PolettlagerIMinneTest {
 		polettLager.logOutSpiller(spiller);
 	}
 	
-	private Spiller lagTestspiller() {
-		String testBrukernavn = "test";
-		String testKallenavn = "Petter";
-		String testFarge = "#ff0000";
-		String testEpost = "Petter@pettersen.com";
-		String testPassord = "testPassord";
-		Date datoReg = new Date(System.currentTimeMillis());
-		
-		return new Spiller(
-				testBrukernavn,
-				testKallenavn,
-				testFarge,
-				testEpost,
-				testPassord,
-				datoReg);
-	}
+	
+	
+
 
 }

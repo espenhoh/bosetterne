@@ -27,7 +27,7 @@ import com.holtebu.bosetterne.service.views.HjemView;
 
 public class BosetterneResource {
 	private final static Logger logger = LoggerFactory.getLogger(BosetterneResource.class);
-	private ResourceBundle bundle;
+
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager;
 	private MustacheTemplates mustacheTemplates;
 	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
@@ -37,19 +37,18 @@ public class BosetterneResource {
 	public BosetterneResource(
 			LobbyService<Optional<Spiller>, BasicCredentials> lobbyService,
 			Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager,
-			BosetterneConfiguration conf,
-			ResourceBundle bundle){
+			BosetterneConfiguration conf) {
 		this.lobbyService = lobbyService;
 		this.polettLager = polettLager;
 		this.mustacheTemplates = conf.getMustacheTemplates();
-		this.bundle = bundle;
 	}
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public BosetterneView bosetterne(@Auth(required = false) Spiller spiller, @Message ResourceBundle msg){
 		BosetterneView view = new BosetterneView(mustacheTemplates.getBosetterneTemplate(), msg);
-		view .setSpiller(spiller);
+		view.setSpiller(spiller);
+		view.setInnloggedeSpillere(polettLager.getInnloggedeSpillere());
 		return view;
 	}
 

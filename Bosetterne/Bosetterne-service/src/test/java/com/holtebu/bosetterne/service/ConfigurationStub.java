@@ -21,27 +21,21 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
  */
 public class ConfigurationStub {
 	
-	BosetterneConfiguration config;
+	private static BosetterneConfiguration config;
 	
-	private ConfigurationStub () throws JsonProcessingException, IOException {
-		/*File file = new File("Bosetterne.yml");
-		ObjectMapper mapper = new ObjectMapper(new YAMLFactory());
-		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, Boolean.FALSE);
-		
-		JsonNode node = mapper.readTree(file);
-		
-		config = mapper.readValue(new TreeTraversingParser(node), BosetterneConfiguration.class);*/
-		
-		//Ny
+	private static BosetterneConfiguration conf() throws JsonProcessingException, IOException {
 		ObjectMapper mapper = Jackson.newObjectMapper();
 		FileInputStream is = new FileInputStream("Bosetterne.yml");
 		YAMLFactory yamlFactory = new YAMLFactory();
 		final JsonNode node = mapper.readTree(yamlFactory.createParser(is));
-		config = mapper.readValue(new TreeTraversingParser(node), BosetterneConfiguration.class);
+		return mapper.readValue(new TreeTraversingParser(node), BosetterneConfiguration.class);
 	}
 	
 	public static BosetterneConfiguration getConf() throws JsonProcessingException, IOException {
-		return new ConfigurationStub().config;
+		if (config == null) {
+			config = conf();
+		}
+		return config;
 	}
 	
 	public static void main(String[] args) throws JsonProcessingException, IOException{

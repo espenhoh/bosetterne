@@ -6,18 +6,9 @@
     <div class="spillediv">
         Innloggede spillere
         <ul class="spilleliste">
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
+            {{#InnloggedeSpillere}}
+                <li class="spiller">{{spiller}}</li>
+            {{/InnloggedeSpillere}}
         </ul>
     </div>
 

@@ -86,7 +86,7 @@ public class LoggUtResourceTest {
 		tokens = new HashMap<String, Spiller>();
 		polettLager = new PolettlagerIMinne(tokens, new HashMap<String, Legitimasjon>(), auth2Cred);
 		polettLager = spy(polettLager);
-		res = new LoggUtResource(lobbyService, polettLager, conf, bundle);
+		res = new LoggUtResource(lobbyService, polettLager, conf);
 	}
 
 	@After
@@ -101,7 +101,7 @@ public class LoggUtResourceTest {
 	@Test
 	public void ifPlayerNotLoggedInOrDoesNotExistRedirectHomeWithExceptionalMessage(){
 		
-		HjemView hjemView = res.loggUt(null);
+		HjemView hjemView = res.loggUt(null, bundle);
 		
 		String beskjed = bundle.getString("logout.userWasNotLoggedIn");
 		assertThat("Beskjed skal være " + beskjed, hjemView.getBeskjed(), is(equalTo(beskjed)));
@@ -116,7 +116,7 @@ public class LoggUtResourceTest {
 		spiller.setInnlogget(true);
 		tokens.put("Whatever", spiller);
 		
-		HjemView hjemview = res.loggUt(spiller);
+		HjemView hjemview = res.loggUt(spiller, bundle);
 		
 		
 		assertThat("Spiller skal være logget ut", spiller.isInnlogget(),is(false));
@@ -133,7 +133,7 @@ public class LoggUtResourceTest {
 		Spiller spiller = new SpillerBuilder().withBrukernavn("Testspiller").withPassord("passord").build();
 		spiller.setInnlogget(false);
 		
-		HjemView hjemview = res.loggUt(spiller);
+		HjemView hjemview = res.loggUt(spiller, bundle);
 		
 		
 		assertThat("Spiller skal være logget ut", spiller.isInnlogget(),is(false));

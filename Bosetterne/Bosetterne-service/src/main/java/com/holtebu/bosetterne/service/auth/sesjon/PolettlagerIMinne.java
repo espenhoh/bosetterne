@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.service.auth.sesjon;
 
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -141,6 +142,12 @@ public class PolettlagerIMinne implements
 			}
 		}
 		return false;
+	}
+
+
+	@Override
+	public Map<String, Spiller> getInnloggedeSpillere() {
+		return accessTokens;
 	}
 
 }
