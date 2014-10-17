@@ -17,7 +17,7 @@ import org.jvnet.hk2.annotations.Contract;
 import org.jvnet.hk2.annotations.Service;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;

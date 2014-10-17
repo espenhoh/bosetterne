@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.inject.Message;
 import com.holtebu.bosetterne.service.views.LoggInnView;
 

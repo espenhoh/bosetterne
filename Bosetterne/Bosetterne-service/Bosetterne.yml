@@ -6,6 +6,7 @@ mustacheTemplates:
   hjemTemplate: hjem.mustache
   loginTemplate: login.mustache
   bosetterneTemplate: bosetterne_lobby.mustache
+  historikkTemplate: historikk.mustache
 
 oauth2:
   clientId: Bosetterne

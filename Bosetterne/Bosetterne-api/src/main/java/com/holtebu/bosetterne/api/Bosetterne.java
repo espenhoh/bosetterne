@@ -9,7 +9,7 @@ import javax.inject.Named;
 import org.jvnet.hk2.annotations.Service;
 
 @Service
-public class Bosetterne extends ConcurrentHashMap<String, Spill>  {
+public class Bosetterne extends ConcurrentHashMap<String, SpillType>  {
 
 	private static final long serialVersionUID = 6227758345313528992L;
 	

@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.ConfigurationStub;
 import com.holtebu.bosetterne.service.OAuth2Cred;
@@ -43,7 +43,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
-import static com.holtebu.bosetterne.api.SpillerBuilder.lagTestspiller;
+import static com.holtebu.bosetterne.api.lobby.SpillerBuilder.lagTestspiller;
 
 import com.google.common.base.Optional;
 

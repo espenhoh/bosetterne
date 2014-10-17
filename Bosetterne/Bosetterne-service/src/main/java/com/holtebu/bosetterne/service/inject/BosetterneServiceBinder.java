@@ -39,7 +39,7 @@ import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.holtebu.bosetterne.api.Bosetterne;
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;

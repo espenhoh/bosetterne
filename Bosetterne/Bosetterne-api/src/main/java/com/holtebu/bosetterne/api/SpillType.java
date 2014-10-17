@@ -1,5 +1,5 @@
 package com.holtebu.bosetterne.api;
 
-public interface Spill {
+public interface SpillType {
 
 }

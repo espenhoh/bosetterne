@@ -1,13 +1,18 @@
 package com.holtebu.bosetterne.service.core.dao;
 
+import java.util.List;
+
 import org.skife.jdbi.v2.sqlobject.Bind;
 import org.skife.jdbi.v2.sqlobject.BindBean;
 import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
-import com.holtebu.bosetterne.api.Spiller;
-import com.holtebu.bosetterne.api.SpillerMapper;
+import com.holtebu.bosetterne.api.lobby.Historikk;
+import com.holtebu.bosetterne.api.lobby.HistorikkMapper;
+import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.bosetterne.api.lobby.SpillerISpillMapper;
+import com.holtebu.bosetterne.api.lobby.SpillerMapper;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 
 @RegisterMapper(SpillerMapper.class)
@@ -36,6 +41,14 @@ public interface LobbyDAO {
 
 	@SqlUpdate("DELETE FROM bosetterne.SPILLER WHERE brukernavn = :brukernavn")
 	void slettSpiller(@Bind("brukernavn") String navn);
+	
+	@SqlQuery("SELECT SPILLER_I_SPILL.spill_id, SPILL.navn, SPILLER_I_SPILL.brukernavn, SPILLER_I_SPILL.plassering, SPILL.dato_tom IS NOT NULL AS fullfort " +
+			"FROM SPILLER_I_SPILL " +
+			"INNER JOIN SPILL " +
+			"ON SPILLER_I_SPILL.spill_id=SPILL.spill_id " +
+			"WHERE SPILLER_I_SPILL.brukernavn = :brukernavn")
+	@RegisterMapper(HistorikkMapper.class)
+	List<Historikk> getHistorikk(@Bind("brukernavn") String navn);
 
 	/**
 	 * close with no args is used to close the connection

@@ -1,6 +1,6 @@
 package com.holtebu.bosetterne.service.auth;
 
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 

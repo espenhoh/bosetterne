@@ -1,9 +1,9 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
+import java.util.ResourceBundle;
+
 import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.basic.BasicCredentials;
-
-import java.util.ResourceBundle;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
@@ -22,34 +22,30 @@ import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.inject.Message;
-import com.holtebu.bosetterne.service.views.BosetterneView;
-import com.holtebu.bosetterne.service.views.HjemView;
+import com.holtebu.bosetterne.service.views.HistorikkView;
 
-public class BosetterneResource {
-	private final static Logger logger = LoggerFactory.getLogger(BosetterneResource.class);
+public class HistorikkResource {
+	private final static Logger logger = LoggerFactory.getLogger(HistorikkResource.class);
 
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager;
 	private MustacheTemplates mustacheTemplates;
-	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
+	//private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
 	
 	
 	@Inject
-	public BosetterneResource(
-			LobbyService<Optional<Spiller>, BasicCredentials> lobbyService,
+	public HistorikkResource(
+			//LobbyService<Optional<Spiller>, BasicCredentials> lobbyService,
 			Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager,
 			BosetterneConfiguration conf) {
-		this.lobbyService = lobbyService;
+		//this.lobbyService = lobbyService;
 		this.polettLager = polettLager;
 		this.mustacheTemplates = conf.getMustacheTemplates();
 	}
-	
+
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public BosetterneView bosetterne(@Auth(required = false) Spiller spiller, @Message ResourceBundle msg){
-		BosetterneView view = new BosetterneView(mustacheTemplates.getBosetterneTemplate(), msg);
-		view.setSpiller(spiller);
-		view.setInnloggedeSpillere(polettLager.getInnloggedeSpillere());
-		return view;
+	public HistorikkView historikk(@Auth Spiller spiller, @Message ResourceBundle msg) {
+		// TODO Auto-generated method stub
+		return null;
 	}
-
 }

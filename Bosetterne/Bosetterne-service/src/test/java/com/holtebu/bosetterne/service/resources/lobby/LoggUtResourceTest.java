@@ -37,8 +37,8 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Optional;
 import com.holtebu.bosetterne.BosetterneConfigurationSuite;
-import com.holtebu.bosetterne.api.Spiller;
-import com.holtebu.bosetterne.api.SpillerBuilder;
+import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.bosetterne.api.lobby.SpillerBuilder;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.ConfigurationStub;
 import com.holtebu.bosetterne.service.OAuth2Cred;

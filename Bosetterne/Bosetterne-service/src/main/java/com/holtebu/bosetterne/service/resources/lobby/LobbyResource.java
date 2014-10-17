@@ -11,7 +11,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.MustacheTemplates;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
@@ -65,6 +65,11 @@ public class LobbyResource {
 		return BosetterneResource.class;
 	}
 	
+	@Path("historikk")
+	public Class<HistorikkResource> historikkResource() {
+		return HistorikkResource.class;
+	}
+	
     
     @GET
     @Produces(MediaType.TEXT_PLAIN)
@@ -80,4 +85,6 @@ public class LobbyResource {
     	
         
     }
+
+
 }

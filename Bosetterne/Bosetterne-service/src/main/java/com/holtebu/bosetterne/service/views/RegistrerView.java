@@ -1,7 +1,7 @@
 package com.holtebu.bosetterne.service.views;
 
 
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.views.util.Feilmelding;
 
 import io.dropwizard.views.View;

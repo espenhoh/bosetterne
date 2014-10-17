@@ -18,8 +18,9 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+
 import io.dropwizard.auth.basic.BasicCredentials;
 
 public class Imports {

@@ -28,7 +28,7 @@ import org.skife.jdbi.v2.DBI;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.ConfigurationStub;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;

@@ -1,4 +1,4 @@
-package com.holtebu.bosetterne.api;
+package com.holtebu.bosetterne.api.lobby;
 
 import java.sql.Date;
 

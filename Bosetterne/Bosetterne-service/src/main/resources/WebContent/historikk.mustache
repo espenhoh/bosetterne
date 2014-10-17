@@ -1,0 +1,35 @@
+{{< ramme}}
+
+{{$csss}}<link rel="stylesheet" href="/ressurser/css/bosetterne_lobby.css">{{/csss}}
+{{$ article}}
+<h2>Spillhistorikk</h2>
+<div class="spillediv">
+    Innloggede spillere
+    <ul class="spilleliste">
+        {{#InnloggedeSpillere}}
+            <li class="spiller">{{spiller}}</li>
+        {{/InnloggedeSpillere}}
+    </ul>
+</div>
+
+<div class="spillediv">
+    Spill du har spilt i.
+    <ul class="spilleliste">
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+        <li class="spiller">testtekst</li>
+    </ul>
+</div>
+{{/ article}}
+{{$scripts}}<script type="application/dart" src="ressurser/dart/bosetterne.dart"></script>{{/scripts}}
+
+{{/ ramme}}

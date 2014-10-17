@@ -5,6 +5,8 @@ package com.holtebu.bosetterne.service.core.dao;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.util.Iterator;
+import java.util.List;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -17,7 +19,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.StringContains.containsString;
 
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Historikk;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 
 public class LobbyDAOIntegrationTest{
@@ -119,6 +122,16 @@ public class LobbyDAOIntegrationTest{
 		dao.oppdaterPassord(spiller);
 		Spiller hentetSpiller = dao.finnSpillerVedNavn(spiller.getBrukernavn());
 		assertThat("Spiller skal ha passord: \"nyttPassord\"", hentetSpiller.getPassord(), is(equalTo(nyttPassord)));
+	}
+	
+	@Test
+	public void testHistorikk(){
+		List<Historikk> historikks = dao.getHistorikk("testbruker");
+		
+		for (Iterator<Historikk> iterator = historikks.iterator(); iterator.hasNext();) {
+			Historikk historikk = (Historikk) iterator.next();
+			assertThat(historikk.getSpiller(), is("testbruker"));
+		}
 	}
 	
 	

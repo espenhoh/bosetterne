@@ -2,7 +2,7 @@ package com.holtebu.bosetterne.service.views;
 
 import java.util.ResourceBundle;
 
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 
 import io.dropwizard.views.View;
 
@@ -51,6 +51,10 @@ public class LobbyView extends View {
 	
 	public String getBosetterne(){
 		return msg.getString("bosetterne");
+	}
+	
+	public String getHistorikk(){
+		return msg.getString("historikk");
 	}
 	
 	public String getLogout(){

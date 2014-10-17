@@ -22,36 +22,43 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
+import static org.hamcrest.CoreMatchers.sameInstance;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.bosetterne.service.BosetterneConfiguration;
+import com.holtebu.bosetterne.service.ConfigurationStub;
+import com.holtebu.bosetterne.service.MustacheTemplates;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
+
 import io.dropwizard.auth.basic.BasicCredentials;
 
 public class LobbyResourceTest { // extends JerseyTest {
 	
 	private static LobbyDAO daoMock;
+	private static BosetterneConfiguration conf;
 
+	private LobbyResource res;
+	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		daoMock = mock(LobbyDAO.class);
-	}
-
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
+		conf = ConfigurationStub.getConf();
 	}
 
 	@Before
 	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
+		res = new LobbyResource(daoMock, conf);
 	}
 	
 	@Test
 	public void registrerSpiller(){
 		
+	}
+	
+	@Test
+	public void historikkResourceSkalReturnereHistorikkResourceClass(){
+		assertThat("historikkResource skal returnere HistorikkResource.class", res.historikkResource(), sameInstance(HistorikkResource.class));
 	}
 	
 

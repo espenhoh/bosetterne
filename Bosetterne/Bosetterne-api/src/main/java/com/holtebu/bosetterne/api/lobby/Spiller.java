@@ -1,9 +1,11 @@
-package com.holtebu.bosetterne.api;
+package com.holtebu.bosetterne.api.lobby;
 
 
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Set;
+
+import com.holtebu.bosetterne.api.Game;
 
 public class Spiller {
 

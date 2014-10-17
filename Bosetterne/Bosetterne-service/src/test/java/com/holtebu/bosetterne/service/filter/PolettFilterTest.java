@@ -39,7 +39,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 import ch.qos.logback.classic.Level;
 
 import com.holtebu.bosetterne.BaseLoggerTest;
-import com.holtebu.bosetterne.api.Spiller;
+import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
