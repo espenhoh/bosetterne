@@ -39,6 +39,18 @@ public class Historikk {
 	public boolean isFullfort() {
 		return fullfort;
 	}
+	
+	@Override
+	public String toString() {
+		StringBuffer buf = new StringBuffer(200);
+		buf.append("<tr>");
+		buf.append("<td class=\"\">" + spillId + "</td>");
+		buf.append("<td class=\"\">" + spill + "</td>");
+		buf.append("<td class=\"\">" + plassering + "</td>");
+		buf.append("<td class=\"\">" + fullfort + "</td>");
+		buf.append("</tr>");
+		return buf.toString();
+	}
 }
 
 

@@ -4,12 +4,18 @@
 {{$ article}}
 <h2>Spillhistorikk</h2>
 <div class="spillediv">
-    Innloggede spillere
-    <ul class="spilleliste">
-        {{#InnloggedeSpillere}}
-            <li class="spiller">{{spiller}}</li>
-        {{/InnloggedeSpillere}}
-    </ul>
+    Spillehistorikk
+    <table class="spilleliste">
+        <thead>
+            <td class="">spillId</td>
+            <td class="">spill</td>
+            <td class="">plassering</td>
+            <td class="">fullfort</td>
+        </thead>
+        {{#historikker}}
+            {{{.}}}
+        {{/historikker}}
+    </table>
 </div>
 
 <div class="spillediv">
