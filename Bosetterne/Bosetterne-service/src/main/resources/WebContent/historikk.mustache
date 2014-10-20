@@ -1,40 +1,34 @@
 {{< ramme}}
 
-{{$csss}}<link rel="stylesheet" href="/ressurser/css/bosetterne_lobby.css">{{/csss}}
+{{$csss}}
+<link rel="stylesheet" href="/ressurser/css/bosetterne_lobby.css" xmlns="http://www.w3.org/1999/html">{{/csss}}
 {{$ article}}
 <h2>Spillhistorikk</h2>
 <div class="spillediv">
-    Spillehistorikk
-    <table class="spilleliste">
+    <table>
         <thead>
-            <td class="">spillId</td>
-            <td class="">spill</td>
-            <td class="">plassering</td>
-            <td class="">fullfort</td>
+            <tr>
+                <td class="">Spill</td>
+                <td class="">Plassering</td>
+                <td class="">Replay</td>
+            </tr>
         </thead>
-        {{#historikker}}
-            {{{.}}}
-        {{/historikker}}
+        <tbody>
+            {{#historikker}}
+                <tr>
+                    <td class="">{{spillId}}-{{spill}}</td>
+                    <td class="">{{plassering}}</td>
+                    <td class="">
+                        {{#fullfort}}
+                            <div class="replay"></div>
+                        {{/fullfort}}
+                    </td>
+                </tr>
+            {{/historikker}}
+        </tbody>
     </table>
 </div>
 
-<div class="spillediv">
-    Spill du har spilt i.
-    <ul class="spilleliste">
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-        <li class="spiller">testtekst</li>
-    </ul>
-</div>
 {{/ article}}
 {{$scripts}}<script type="application/dart" src="ressurser/dart/bosetterne.dart"></script>{{/scripts}}
 

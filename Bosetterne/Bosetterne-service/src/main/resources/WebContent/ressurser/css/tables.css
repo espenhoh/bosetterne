@@ -6,19 +6,31 @@
         Purpose of the stylesheet follows.
 */
 
- table {
-   background-color : white;
-   border-style : solid;
-   border-width : 1px;
-   border-color : #999999;
- }
 
-th {
+
+
+table
+{
+    width: 100%;
+    border-color: #600;
+    border-collapse: collapse;
+    border-width: 0 0 1px 1px;
+    border-style: solid;
+}
+
+thead {
     background-color : #cccccc;
     font-weight : bold;
     padding : 5px;
 }
 
-td {
-    padding : 5px;  
+td
+{
+    width: 33%;
+    border-color: #600;
+    border-width: 1px 1px 0 0;
+    border-style: solid;
+    margin: 0;
+    padding: 5px;
+    background-color: #FFC;
 }
