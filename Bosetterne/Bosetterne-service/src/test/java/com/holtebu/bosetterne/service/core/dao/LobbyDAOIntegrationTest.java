@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.StringContains.containsString;
 
 import com.holtebu.bosetterne.api.lobby.Historikk;
+import com.holtebu.bosetterne.api.lobby.Spill;
 import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 
@@ -134,6 +135,13 @@ public class LobbyDAOIntegrationTest{
 		}
 	}
 	
+	@Test
+	public void testGetSpilliste(){
+		List<Spill> spill = dao.getSpilliste();
+		
+		assertThat("Spilliste skal ha innhold", spill.isEmpty(), is(false));
+	}
+	
 	
 	
 	@Test
@@ -151,6 +159,8 @@ public class LobbyDAOIntegrationTest{
 		spillerFunnet = dao.finnSpillerVedNavn(testSpiller.getBrukernavn());
 		assertThat(testSpiller.getBrukernavn() + " skal ikke eksistere i databasen.", spillerFunnet, is(nullValue()));
 	}
+	
+	
 
 	private void fjernTestSpillerHvisEksisterer(String testNavn){
 		Spiller spillerFunnet = dao.finnSpillerVedNavn(testNavn);

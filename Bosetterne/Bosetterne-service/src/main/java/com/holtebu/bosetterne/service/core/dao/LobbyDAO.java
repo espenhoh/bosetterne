@@ -9,7 +9,7 @@ import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
 import com.holtebu.bosetterne.api.lobby.Historikk;
-import com.holtebu.bosetterne.api.lobby.HistorikkMapper;
+import com.holtebu.bosetterne.api.lobby.Spill;
 import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.api.lobby.SpillerISpillMapper;
 import com.holtebu.bosetterne.api.lobby.SpillerMapper;
@@ -47,8 +47,12 @@ public interface LobbyDAO {
 			"INNER JOIN SPILL " +
 			"ON SPILLER_I_SPILL.spill_id=SPILL.spill_id " +
 			"WHERE SPILLER_I_SPILL.brukernavn = :brukernavn")
-	@RegisterMapper(HistorikkMapper.class)
+	@RegisterMapper(Historikk.HistorikkMapper.class)
 	List<Historikk> getHistorikk(@Bind("brukernavn") String navn);
+	
+	@SqlQuery("select spill_id, navn, dato_fom is null, dato_tom is null from SPILL")
+	@RegisterMapper(Spill.SpillMapper.class)
+	List<Spill> getSpilliste();
 
 	/**
 	 * close with no args is used to close the connection

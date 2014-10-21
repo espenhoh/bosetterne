@@ -1,5 +1,11 @@
 package com.holtebu.bosetterne.api.lobby;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import org.skife.jdbi.v2.StatementContext;
+import org.skife.jdbi.v2.tweak.ResultSetMapper;
+
 public class Historikk {
 	private int spillId;
 	private String spill;
@@ -50,6 +56,23 @@ public class Historikk {
 		buf.append("<td class=\"\">" + fullfort + "</td>");
 		buf.append("</tr>");
 		return buf.toString();
+	}
+	
+	public static class HistorikkMapper implements ResultSetMapper<Historikk> {
+
+		@Override
+		public Historikk map(int index, ResultSet r, StatementContext ctx)
+				throws SQLException {
+			
+			Historikk historikk = new Historikk();
+			historikk.setSpillId(r.getInt("spill_id"));
+			historikk.setSpill(r.getString("navn"));
+			historikk.setSpiller(r.getString("brukernavn"));
+			historikk.setPlassering(r.getInt("plassering"));
+			historikk.setFullfort(r.getBoolean("fullfort"));
+			return historikk;
+		}
+
 	}
 }
 
