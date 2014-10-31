@@ -14,6 +14,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.ws.rs.core.Response;
 
@@ -26,6 +27,7 @@ import org.mockito.MockitoAnnotations;
 import com.google.common.base.Optional;
 import com.google.common.base.Splitter;
 import com.holtebu.bosetterne.TestConst;
+import com.holtebu.bosetterne.api.lobby.Spill;
 import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.api.lobby.SpillerBuilder;
 import com.holtebu.bosetterne.service.OAuth2Cred;
@@ -67,7 +69,7 @@ public class OAuthAuthorizeResourceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		lobbyService = new JDBILobbyService(new LobbyCacheFactory(daoMock).provide(),daoMock);
+		lobbyService = new JDBILobbyService(new LobbyCacheFactory(daoMock).provide(), new CopyOnWriteArrayList<Spill>(), daoMock);
 		auth2Cred = new OAuth2Cred(TestConst.STD_CLIENTID, TestConst.STD_CLIENT_SECRET);
 		accessTokens = new HashMap<>();
 		codes = new HashMap<>();

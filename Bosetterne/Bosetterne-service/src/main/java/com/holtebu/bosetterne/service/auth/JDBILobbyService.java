@@ -1,16 +1,19 @@
 package com.holtebu.bosetterne.service.auth;
 
 
+import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.jvnet.hk2.annotations.Service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.holtebu.bosetterne.api.lobby.Spill;
 import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.google.common.base.Optional;
@@ -31,15 +34,20 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	private final static Logger logger = LoggerFactory.getLogger(JDBILobbyService.class);
 	
 	private final LoadingCache<String, Optional<Spiller>> spillerCache;
+	
+	private final List<Spill> spillCache;
 
 	private final LobbyDAO dao;
 	
 
 	@Inject
-	public JDBILobbyService(LoadingCache<String, Optional<Spiller>> spillerCache
-			,LobbyDAO dao) {
+	public JDBILobbyService(LoadingCache<String, Optional<Spiller>> spillerCache,
+			@Named("spillCache") List<Spill> spillCache,
+			LobbyDAO dao) {
 		this.spillerCache = spillerCache;
+		this.spillCache = spillCache;
 		this.dao = dao;
+		spillCache.addAll(dao.getSpilliste());
 	}
 
 	/**
@@ -97,6 +105,7 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 			dao.oppdaterSpiller(spiller.get());
 		}
 	}
+
 }
 
 

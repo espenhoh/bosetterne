@@ -5,6 +5,7 @@ package com.holtebu.bosetterne.service.auth;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
@@ -17,6 +18,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import io.dropwizard.auth.basic.BasicCredentials;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +31,7 @@ import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.holtebu.bosetterne.api.lobby.Spill;
 import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.api.lobby.SpillerBuilder;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
@@ -35,6 +40,7 @@ public class JDBILobbyServiceTest {
 	
 	private LobbyDAO daoMock;
 	private LoadingCache<String, Optional<Spiller>> spillerCache;
+	private List<Spill> spillCache;
 	
 	private JDBILobbyService lobbyService;
 	
@@ -49,13 +55,32 @@ public class JDBILobbyServiceTest {
 		
 		
 		spillerCache = spy(com.holtebu.bosetterne.service.auth.JDBILobbyServiceTest.provideSpillerCache(daoMock));
+		spillCache = new CopyOnWriteArrayList<>();
 		
-		lobbyService = new JDBILobbyService(spillerCache, daoMock);
+		lobbyService = new JDBILobbyService(spillerCache, spillCache, daoMock);
 		
 		brukernavn = "test";
 		passord = "testPassord";
 		
 		cred = new BasicCredentials(brukernavn, passord);
+	}
+	
+	@Test
+	public void testContructor() {
+		List<Spill> spillList = new CopyOnWriteArrayList<>();
+		
+		List<Spill> daoList = new ArrayList<>();
+		daoList.add(new Spill());
+		daoList.add(new Spill());
+		daoList.add(new Spill());
+		
+		when(daoMock.getSpilliste()).thenReturn(daoList);
+		
+		lobbyService = new JDBILobbyService(spillerCache, spillList, daoMock);
+		
+		//List<Spill> actual = lobbyService.initSpillCache(spillList);
+		
+		assertThat("Listene skal inneholde det samme", spillList, is(equalTo(daoList)));
 	}
 	
 	@Test

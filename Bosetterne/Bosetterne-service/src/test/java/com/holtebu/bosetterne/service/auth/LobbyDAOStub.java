@@ -1,5 +1,9 @@
 package com.holtebu.bosetterne.service.auth;
 
+import java.util.List;
+
+import com.holtebu.bosetterne.api.lobby.Historikk;
+import com.holtebu.bosetterne.api.lobby.Spill;
 import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
@@ -46,6 +50,18 @@ public class LobbyDAOStub implements LobbyDAO{
 
 	@Override
 	public String epostEksisterer(String epost) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Historikk> getHistorikk(String navn) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Spill> getSpilliste() {
 		// TODO Auto-generated method stub
 		return null;
 	}
