@@ -1,6 +1,10 @@
 package com.holtebu.bosetterne.service.auth;
 
+import java.util.List;
+
 import org.jvnet.hk2.annotations.Contract;
+
+import com.holtebu.bosetterne.api.lobby.Spill;
 
 /**
  * Hjelpemetode for utentisering
@@ -28,4 +32,10 @@ public interface LobbyService<S, L> {
 	 * @param spiller spilleren som skal logges ut/lagres
 	 */
 	void lagreSpiller(S spiller);
+	
+	/**
+	 * Henter Liste med spill
+	 * @return liste med alle spill på serveren.
+	 */
+	List<Spill> hentListe();
 }

@@ -7,10 +7,15 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 import io.dropwizard.auth.basic.BasicCredentials;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
+
+import javassist.expr.NewArray;
 
 import org.junit.After;
 import org.junit.Before;
@@ -22,6 +27,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Optional;
+import com.holtebu.bosetterne.api.lobby.Spill;
 import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.api.lobby.SpillerBuilder;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
@@ -40,6 +46,7 @@ public class BosetterneResourceTest {
 	private static ResourceBundle bundle;
 	private static BosetterneConfiguration conf;
 	private HashMap<String, Spiller> tokens;
+	private Spiller testSpiller;
 	
 	@Mock
 	private LobbyService<Optional<Spiller>, BasicCredentials> lobbyService;
@@ -63,24 +70,36 @@ public class BosetterneResourceTest {
 		polettLager = new PolettlagerIMinne(tokens, new HashMap<String, Legitimasjon>(), auth2Cred);
 		polettLager = spy(polettLager);
 		res = new BosetterneResource(lobbyService, polettLager, conf);
+		
+		testSpiller = SpillerBuilder.lagTestspiller();
 	}
 
 	@Test
 	public void skalSetteSpillerPaaView(){
-		Spiller spiller = SpillerBuilder.lagTestspiller();
 		
-		BosetterneView view = res.bosetterne(spiller, bundle);
+		BosetterneView view = res.bosetterne(testSpiller, bundle);
 		
-		assertThat("Spiller skal være på view",view.getSpiller(), is(sameInstance(spiller)));
+		assertThat("Spiller skal være på view",view.getSpiller(), is(sameInstance(testSpiller)));
 	}
 	
 	@Test
 	public void skalSetteInnloggedeSpillerePaaView(){
-		Spiller spiller = SpillerBuilder.lagTestspiller();
-		
-		BosetterneView view = res.bosetterne(spiller, bundle);
+		BosetterneView view = res.bosetterne(testSpiller, bundle);
 		
 		assertThat("Innloggede Spillere skal være på view", view.getInnloggedeSpillere(), is(sameInstance(polettLager.getInnloggedeSpillere())));
+		
+	}
+	
+	@Test
+	public void skalSetteSpillPaaView(){
+		List<Spill> spill = new ArrayList<Spill>();
+		
+		when(lobbyService.hentListe()).thenReturn(spill);
+		
+		BosetterneView view = res.bosetterne(testSpiller, bundle);
+		
+		
+		assertThat("Spill skal være på view", view.getSpillListe(), is(sameInstance(spill)));
 		
 	}
 }

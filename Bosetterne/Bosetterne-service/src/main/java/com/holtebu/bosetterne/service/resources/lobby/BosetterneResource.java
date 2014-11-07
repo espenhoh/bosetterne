@@ -49,6 +49,7 @@ public class BosetterneResource {
 		BosetterneView view = new BosetterneView(mustacheTemplates.getBosetterneTemplate(), msg);
 		view.setSpiller(spiller);
 		view.setInnloggedeSpillere(polettLager.getInnloggedeSpillere());
+		view.setSpillListe(lobbyService.hentListe());
 		return view;
 	}
 

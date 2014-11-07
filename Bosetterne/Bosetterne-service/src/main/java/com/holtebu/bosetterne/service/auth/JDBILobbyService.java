@@ -106,6 +106,14 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 		}
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Spill> hentListe() {
+		return spillCache;
+	}
+
 }
 
 

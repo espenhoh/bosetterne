@@ -12,9 +12,13 @@ public class Spill {
 	
 	private String navn;
 	
+	private String typeSpill;
+	
 	private boolean startet;
 	
 	private boolean fullfort;
+	
+	private int maxPoeng;
 	
 	public Spill(){}
 
@@ -34,6 +38,14 @@ public class Spill {
 		this.navn = navn;
 	}
 
+	public String getTypeSpill() {
+		return typeSpill;
+	}
+
+	public void setTypeSpill(String typeSpill) {
+		this.typeSpill = typeSpill;
+	}
+
 	public boolean isStartet() {
 		return startet;
 	}
@@ -50,15 +62,25 @@ public class Spill {
 		this.fullfort = fullfort;
 	}
 	
+	public int getMaxPoeng() {
+		return maxPoeng;
+	}
+
+	public void setMaxPoeng(int maxPoeng) {
+		this.maxPoeng = maxPoeng;
+	}
+
 	public static class SpillMapper implements ResultSetMapper<Spill> {
 	
 		public Spill map(int index, ResultSet r, StatementContext ctx) throws SQLException {
 			Spill spill = new Spill();
 			
 			spill.setSpillId(r.getInt(1));
-			spill.setNavn(r.getString(2));
-			spill.setStartet(r.getBoolean(3));
-			spill.setFullfort(r.getBoolean(4));
+			spill.setTypeSpill(r.getString(2));
+			spill.setNavn(r.getString(3));
+			spill.setStartet(r.getBoolean(4));
+			spill.setFullfort(r.getBoolean(5));
+			spill.setMaxPoeng(r.getInt(6));
 			
 			return spill;
 		}

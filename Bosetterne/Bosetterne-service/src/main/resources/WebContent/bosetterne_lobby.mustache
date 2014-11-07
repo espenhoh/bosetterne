@@ -13,6 +13,39 @@
     </div>
 
     <div class="spillediv">
+        <table>
+            <thead>
+            <tr>
+                <td class="">Status</td>
+                <td class="">Navn</td>
+                <td class="">Type</td>
+            </tr>
+            </thead>
+            <tbody>
+            {{#spillListe}}
+                <tr>
+                    <td class="">
+                        {{^startet}}
+                            <div class="star2"></div>
+                        {{/startet}}
+                        {{#startet}}
+                            {{#fullfort}}
+                                <div class="replay"></div>
+                            {{/fullfort}}
+                            {{^fullfort}}
+                                <div class="controller"></div>
+                            {{/fullfort}}
+                        {{/startet}}
+                    </td>
+                    <td class="">{{navn}}</td>
+                    <td class="">{{typeSpill}}</td>
+                </tr>
+            {{/spillListe}}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="spillediv">
         Spill
         <ul class="spilleliste">
             <li class="spiller">testtekst</li>
