@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.api.lobby;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
@@ -12,7 +13,7 @@ public class Spill {
 	
 	private String navn;
 	
-	private String typeSpill;
+	private TypeSpill typeSpill;
 	
 	private boolean startet;
 	
@@ -20,7 +21,13 @@ public class Spill {
 	
 	private int maxPoeng;
 	
+	private ResourceBundle msg;
+	
 	public Spill(){}
+	
+	public void setMsg(ResourceBundle msg){
+		this.msg = msg;
+	}
 
 	public int getSpillId() {
 		return spillId;
@@ -38,12 +45,12 @@ public class Spill {
 		this.navn = navn;
 	}
 
-	public String getTypeSpill() {
+	public TypeSpill getTypeSpill() {
 		return typeSpill;
 	}
 
 	public void setTypeSpill(String typeSpill) {
-		this.typeSpill = typeSpill;
+		this.typeSpill = TypeSpill.valueOf(typeSpill);
 	}
 
 	public boolean isStartet() {
@@ -86,4 +93,8 @@ public class Spill {
 		}
 		
 	}
+}
+
+enum TypeSpill {
+	BOSETTERNE, BYERRIDDER, SJOFARER, SJOOGLAND, HANDELBARB, EXPLPIRAT
 }
