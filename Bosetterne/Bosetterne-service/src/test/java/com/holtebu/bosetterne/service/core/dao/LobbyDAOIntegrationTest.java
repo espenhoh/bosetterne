@@ -12,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.skife.jdbi.v2.DBI;
+import org.skife.jdbi.v2.Handle;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.is;
