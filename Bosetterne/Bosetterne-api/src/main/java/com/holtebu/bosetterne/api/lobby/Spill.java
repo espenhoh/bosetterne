@@ -45,8 +45,12 @@ public class Spill {
 		this.navn = navn;
 	}
 
-	public TypeSpill getTypeSpill() {
-		return typeSpill;
+	public String getTypeSpill() {
+		if (msg == null) {
+			return typeSpill.toString();
+		} else {
+			return msg.getString(typeSpill.toString());
+		}
 	}
 
 	public void setTypeSpill(String typeSpill) {

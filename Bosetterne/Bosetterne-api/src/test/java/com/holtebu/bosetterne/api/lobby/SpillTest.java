@@ -1,5 +1,6 @@
 package com.holtebu.bosetterne.api.lobby;
 
+import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyInt;
@@ -55,7 +56,16 @@ public class SpillTest {
 		ResourceBundle msg = ResourceBundle.getBundle("bosetterne_test", locale);
 		
 		spill.setMsg(msg);
+		spill.setTypeSpill("BYERRIDDER");
+		
+		assertThat("", spill.getTypeSpill() ,is(equalTo("Byer og riddere")));
+	}
+	
+	@Test
+	public void testGetTypeSpillMsgNull() throws Exception {
 		spill.setTypeSpill("BOSETTERNE");
+		
+		assertThat("", spill.getTypeSpill() ,is(equalTo("BOSETTERNE")));
 	}
 	
 
