@@ -15,7 +15,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
@@ -118,7 +120,8 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		 
 		bind(ConcurrentHashMap.class).to(new TypeLiteral<Map<String, Spiller>>(){}).named("tokens");
 		bind(ConcurrentHashMap.class).to(new TypeLiteral<Map<String, Legitimasjon>>(){}).named("codes");
-		bind(CopyOnWriteArrayList.class).to(new TypeLiteral<List<Spill>>() {}).named("spillCache");
+		//bind(CopyOnWriteArrayList.class).to(new TypeLiteral<List<Spill>>() {}).named("spillCache");
+		bind(ConcurrentSkipListSet.class).to(new TypeLiteral<Set<Spill>>() {}).named("spillCache");
 		
 		
 		//Tokenstore

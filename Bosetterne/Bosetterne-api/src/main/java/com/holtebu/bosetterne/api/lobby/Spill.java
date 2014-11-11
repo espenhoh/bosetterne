@@ -7,7 +7,7 @@ import java.util.ResourceBundle;
 import org.skife.jdbi.v2.StatementContext;
 import org.skife.jdbi.v2.tweak.ResultSetMapper;
 
-public class Spill {
+public class Spill implements Comparable<Spill>{
 
 	private int spillId;
 	
@@ -96,6 +96,12 @@ public class Spill {
 			return spill;
 		}
 		
+	}
+
+	@Override
+	public int compareTo(Spill o) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }
 

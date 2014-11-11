@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.api.lobby;
 
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
@@ -67,6 +68,23 @@ public class SpillTest {
 		
 		assertThat("", spill.getTypeSpill() ,is(equalTo("BOSETTERNE")));
 	}
+
+	@Test
+	public void testCompareToEqual() throws Exception {
+		Spill spill2 = spill;
+		
+		assertThat("Spill2 og spill skulle vært samme objekt", spill2, sameInstance(spill));
+	}
 	
+	@Test
+	public void testCompareToLessThan() throws Exception {
+		spill.setSpillId(1);
+		Spill spill2 = new Spill();
+		spill2.setSpillId(2);
+		spill2.set
+		
+		
+		assertThat("Spill2 og spill skulle vært samme objekt", spill2, sameInstance(spill));
+	}
 
 }

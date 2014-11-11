@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.service.auth;
 
 
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -35,14 +36,14 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	
 	private final LoadingCache<String, Optional<Spiller>> spillerCache;
 	
-	private final List<Spill> spillCache;
+	private final Set<Spill> spillCache;
 
 	private final LobbyDAO dao;
 	
 
 	@Inject
 	public JDBILobbyService(LoadingCache<String, Optional<Spiller>> spillerCache,
-			@Named("spillCache") List<Spill> spillCache,
+			@Named("spillCache") Set<Spill> spillCache,
 			LobbyDAO dao) {
 		this.spillerCache = spillerCache;
 		this.spillCache = spillCache;
@@ -110,7 +111,7 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<Spill> hentListe() {
+	public Set<Spill> hentListe() {
 		return spillCache;
 	}
 

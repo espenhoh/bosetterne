@@ -1,6 +1,6 @@
 package com.holtebu.bosetterne.service.auth;
 
-import java.util.List;
+import java.util.Set;
 
 import org.jvnet.hk2.annotations.Contract;
 
@@ -37,5 +37,5 @@ public interface LobbyService<S, L> {
 	 * Henter Liste med spill
 	 * @return liste med alle spill på serveren.
 	 */
-	List<Spill> hentListe();
+	Set<Spill> hentListe();
 }
