@@ -1,46 +1,6 @@
 package com.holtebu.bosetterne.service.inject;
 
-import io.dropwizard.auth.AuthFactory;
-import io.dropwizard.auth.Authenticator;
-import io.dropwizard.auth.basic.BasicCredentials;
-import io.dropwizard.auth.oauth.OAuthFactory;
-import io.dropwizard.jdbi.DBIFactory;
-import io.dropwizard.setup.Environment;
-
-import java.lang.annotation.Annotation;
-import java.lang.reflect.Type;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Random;
-import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicLong;
-
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-import org.glassfish.hk2.api.ActiveDescriptor;
-import org.glassfish.hk2.api.Descriptor;
-import org.glassfish.hk2.api.Filter;
-import org.glassfish.hk2.api.Injectee;
-import org.glassfish.hk2.api.MultiException;
-import org.glassfish.hk2.api.ServiceHandle;
-import org.glassfish.hk2.api.ServiceLocator;
-import org.glassfish.hk2.api.ServiceLocatorState;
-import org.glassfish.hk2.api.TypeLiteral;
-import org.glassfish.hk2.utilities.Binder;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.skife.jdbi.v2.DBI;
-
 import com.google.common.base.Optional;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.holtebu.bosetterne.api.Bosetterne;
 import com.holtebu.bosetterne.api.lobby.Spill;
@@ -50,6 +10,7 @@ import com.holtebu.bosetterne.service.OAuth2Cred;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.auth.JDBILobbyService;
 import com.holtebu.bosetterne.service.auth.LobbyService;
+import com.holtebu.bosetterne.service.auth.OAuthFactory;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
@@ -59,9 +20,22 @@ import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
-import com.holtebu.bosetterne.service.resources.lobby.LoggInnResource;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
+import io.dropwizard.auth.AuthFactory;
+import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.setup.Environment;
+import org.glassfish.hk2.api.TypeLiteral;
+import org.glassfish.hk2.utilities.Binder;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
+import org.skife.jdbi.v2.DBI;
+
+import javax.inject.Singleton;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class BosetterneServiceBinder extends AbstractBinder{
 	private final DBIFactory dbiFactory;

@@ -5,6 +5,7 @@ import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 import com.holtebu.bosetterne.service.inject.Message;
 import com.holtebu.bosetterne.service.views.LoggInnView;
+import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.AuthenticationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,22 +31,17 @@ public class LoggInnResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public LoggInnView logInn(@QueryParam("innlogget_token") String bearer, @Message ResourceBundle msg) {
-        Optional<Spiller> spiller = null;
-        try {
-            spiller = authenticator.authenticate(bearer);
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-        }
+	public LoggInnView logInn(@Auth(required = false) Spiller spiller, @Message ResourceBundle msg) {
 
-        if (spiller.isPresent()) {
-            logger.info("Spiller logget inn som {}", spiller.get().getBrukernavn());
-            spiller.get().setInnlogget(true);
+
+        if (spiller != null) {
+            logger.info("Spiller logget inn som {}", spiller.getBrukernavn());
+            spiller.setInnlogget(true);
 		} else {
             logger.info("Spiller ikke logget inn");
 		}
 
-        return new LoggInnView(template, msg, spiller.orNull());
+        return new LoggInnView(template, msg, spiller);
 
 	}
 }

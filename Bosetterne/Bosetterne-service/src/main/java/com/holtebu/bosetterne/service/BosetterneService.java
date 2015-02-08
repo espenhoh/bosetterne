@@ -1,21 +1,6 @@
 package com.holtebu.bosetterne.service;
 
 
-import java.util.ResourceBundle;
-
-import io.dropwizard.Application;
-import io.dropwizard.assets.AssetsBundle;
-import io.dropwizard.jdbi.DBIFactory;
-import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
-import io.dropwizard.jersey.setup.JerseyEnvironment;
-import io.dropwizard.setup.Bootstrap;
-import io.dropwizard.setup.Environment;
-import io.dropwizard.views.ViewBundle;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.holtebu.bosetterne.service.filter.PolettFilter;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.inject.BosetterneServiceBinder;
 import com.holtebu.bosetterne.service.inject.ResourceBundleResolver;
@@ -25,6 +10,16 @@ import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
+import io.dropwizard.Application;
+import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.jdbi.DBIFactory;
+import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
+import io.dropwizard.jersey.setup.JerseyEnvironment;
+import io.dropwizard.setup.Bootstrap;
+import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 //import com.yammer.dropwizard.config.FilterBuilder;
