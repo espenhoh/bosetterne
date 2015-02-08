@@ -92,7 +92,7 @@ public class BosetterneResourceTest {
 	
 	@Test
 	public void skalSetteSpillPaaView(){
-		List<Spill> spill = new ArrayList<Spill>();
+		List<Spill> spill = new ArrayList<>();
 		
 		when(lobbyService.hentListe()).thenReturn(spill);
 		

@@ -1,3 +1,5 @@
+-- MySQL Workbench Forward Engineering
+
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
@@ -6,6 +8,10 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 -- Schema bosetterne
 -- -----------------------------------------------------
 DROP SCHEMA IF EXISTS `bosetterne` ;
+
+-- -----------------------------------------------------
+-- Schema bosetterne
+-- -----------------------------------------------------
 CREATE SCHEMA IF NOT EXISTS `bosetterne` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
 USE `bosetterne` ;
 
@@ -35,50 +41,39 @@ CREATE UNIQUE INDEX `epost_UNIQUE` ON `bosetterne`.`SPILLER` (`epost` ASC);
 
 
 -- -----------------------------------------------------
--- Table `bosetterne`.`K_TYPE`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `bosetterne`.`K_TYPE` (
-  `k_type` VARCHAR(10) NOT NULL,
-  `dekode` VARCHAR(50) NULL,
-  PRIMARY KEY (`k_type`))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8
-COLLATE = utf8_general_ci;
-
-CREATE UNIQUE INDEX `k_type_UNIQUE` ON `bosetterne`.`K_TYPE` (`k_type` ASC);
-
-
--- -----------------------------------------------------
 -- Table `bosetterne`.`SPILL`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bosetterne`.`SPILL` (
-  `spill_id` INT NOT NULL,
-  `type` VARCHAR(20) NOT NULL,
-  `dato_fom` TIMESTAMP NOT NULL,
+  `spill_id` INT NOT NULL AUTO_INCREMENT,
+  `navn` VARCHAR(45) NULL,
+  `leder` VARCHAR(15) NOT NULL,
+  `type_spill` ENUM('BOSETTERNE','BYERRIDDER','SJOFARER','SJOOGLAND','HANDELBARB','EXPLPIRAT') NOT NULL,
+  `dato_fom` TIMESTAMP NULL,
   `dato_tom` TIMESTAMP NULL,
-  `aktiv` VARCHAR(45) NOT NULL,
+  `max_poeng` TINYINT(1) UNSIGNED NOT NULL DEFAULT 13,
   PRIMARY KEY (`spill_id`),
-  CONSTRAINT `type`
-    FOREIGN KEY (`type`)
-    REFERENCES `bosetterne`.`K_TYPE` (`k_type`)
+  CONSTRAINT `fk_SPILL_SPILLER1`
+    FOREIGN KEY (`leder`)
+    REFERENCES `bosetterne`.`SPILLER` (`brukernavn`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
 COLLATE = utf8_general_ci;
 
-CREATE INDEX `fk_SPILL_K_TYPE_idx` ON `bosetterne`.`SPILL` (`type` ASC);
+CREATE INDEX `fk_SPILL_SPILLER1_idx` ON `bosetterne`.`SPILL` (`leder` ASC);
+
+CREATE INDEX `idx_dato` USING BTREE ON `bosetterne`.`SPILL` (`dato_fom` ASC, `dato_tom` ASC);
 
 
 -- -----------------------------------------------------
 -- Table `bosetterne`.`SPILLER_I_SPILL`
 -- -----------------------------------------------------
 CREATE TABLE IF NOT EXISTS `bosetterne`.`SPILLER_I_SPILL` (
-  `spiller_i_spill_id` INT NOT NULL,
+  `spiller_i_spill_id` INT NOT NULL AUTO_INCREMENT,
   `brukernavn` VARCHAR(15) NOT NULL,
   `spill_id` INT NOT NULL,
   `plassering` TINYINT NULL,
-  `fullført` BIT NULL,
   PRIMARY KEY (`spiller_i_spill_id`),
   CONSTRAINT `fk_SPILLER_i_SPILL`
     FOREIGN KEY (`brukernavn`)
@@ -98,7 +93,7 @@ CREATE INDEX `fk_SPILL_med_SPILLER_idx` USING BTREE ON `bosetterne`.`SPILLER_I_S
 
 CREATE INDEX `fk_SPILLER_i_SPILL_idx` ON `bosetterne`.`SPILLER_I_SPILL` (`brukernavn` ASC);
 
-CREATE UNIQUE INDEX `game_id_UNIQUE` ON `bosetterne`.`SPILLER_I_SPILL` (`spiller_i_spill_id` ASC);
+CREATE UNIQUE INDEX `game_id_UNIQUE` USING BTREE ON `bosetterne`.`SPILLER_I_SPILL` (`spill_id` ASC, `brukernavn` ASC);
 
 
 -- -----------------------------------------------------

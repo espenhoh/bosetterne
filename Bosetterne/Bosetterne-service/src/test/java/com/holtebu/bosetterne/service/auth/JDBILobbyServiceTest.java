@@ -20,6 +20,8 @@ import io.dropwizard.auth.basic.BasicCredentials;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -69,7 +71,7 @@ public class JDBILobbyServiceTest {
 	public void testContructor() {
 		List<Spill> spillList = new CopyOnWriteArrayList<>();
 		
-		List<Spill> daoList = new ArrayList<>();
+		List<Spill> daoList = new CopyOnWriteArrayList<>();
 		daoList.add(new Spill());
 		daoList.add(new Spill());
 		daoList.add(new Spill());

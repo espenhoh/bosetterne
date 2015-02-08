@@ -182,6 +182,7 @@ database:
   # the minimum number of connections to keep open
   minSize: 2
 
+
   # the maximum number of connections to keep open
   maxSize: 32
 

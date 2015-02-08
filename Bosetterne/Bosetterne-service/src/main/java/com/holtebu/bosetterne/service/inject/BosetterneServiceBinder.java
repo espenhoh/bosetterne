@@ -100,6 +100,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(RegistrerResource.class).to(RegistrerResource.class).in(Singleton.class);
 		bind(BosetterneResource.class).to(BosetterneResource.class).in(Singleton.class);
 		bind(Bosetterne.class).to(Bosetterne.class).in(Singleton.class);
+        bind(BosetterneAuthenticator.class).to(BosetterneAuthenticator.class);
 		
 		//bindResourceProviders();
 		bind(ResourceBundle.getBundle("bosetterne")).to(ResourceBundle.class);
@@ -121,7 +122,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(ConcurrentHashMap.class).to(new TypeLiteral<Map<String, Spiller>>(){}).named("tokens");
 		bind(ConcurrentHashMap.class).to(new TypeLiteral<Map<String, Legitimasjon>>(){}).named("codes");
 		//bind(CopyOnWriteArrayList.class).to(new TypeLiteral<List<Spill>>() {}).named("spillCache");
-		bind(ConcurrentSkipListSet.class).to(new TypeLiteral<Set<Spill>>() {}).named("spillCache");
+		bind(CopyOnWriteArrayList.class).to(new TypeLiteral<List<Spill>>() {}).named("spillCache");
 		
 		
 		//Tokenstore

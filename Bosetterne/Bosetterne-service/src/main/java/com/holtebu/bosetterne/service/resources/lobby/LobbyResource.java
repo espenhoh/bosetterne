@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.service.resources.lobby;
 
 import java.util.ResourceBundle;
 
+import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 import io.dropwizard.auth.Auth;
 
 import javax.inject.Inject;
@@ -29,11 +30,13 @@ public class LobbyResource {
 	
 	private final LobbyDAO dao;
 	private MustacheTemplates templates;
+    private BosetterneAuthenticator authenticator;
 	
 	@Inject
-	public LobbyResource(LobbyDAO dao, BosetterneConfiguration conf){
+	public LobbyResource(LobbyDAO dao, BosetterneConfiguration conf, BosetterneAuthenticator authenticator){
 		this.dao = dao;
 		this.templates = conf.getMustacheTemplates();
+        this.authenticator = authenticator;
 	}
 	
 	@GET
@@ -52,7 +55,7 @@ public class LobbyResource {
 	
 	@Path("logg_inn")
 	public LoggInnResource loggInnResource(){
-		return new LoggInnResource(templates.getLoginTemplate());
+		return new LoggInnResource(templates.getLoginTemplate(), authenticator);
 	}
 	
 	@Path("logg_ut")

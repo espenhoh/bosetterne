@@ -4,6 +4,7 @@
 *.lock
 *.bak
 *.mwb
+*.iml
 
 # Directories #
 /build/
@@ -12,6 +13,8 @@ target/
 .idea/
 Bosetterne/Bosetterne-service/logs/
 Bosetterne/Bosetterne-service/src/main/resources/WebContent/ressurser/packages
+Bosetterne/Bosetterne-service/src/main/resources/WebContent/ressurser/dart/packages/
+
 
 
 # Package Files #

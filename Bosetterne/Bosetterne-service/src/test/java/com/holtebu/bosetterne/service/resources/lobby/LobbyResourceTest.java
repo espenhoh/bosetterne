@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.service.resources.lobby;
 
 import javax.ws.rs.core.Application;
 
+import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,6 +38,7 @@ public class LobbyResourceTest { // extends JerseyTest {
 	
 	private static LobbyDAO daoMock;
 	private static BosetterneConfiguration conf;
+    private static BosetterneAuthenticator authenticator;
 
 	private LobbyResource res;
 	
@@ -48,7 +50,7 @@ public class LobbyResourceTest { // extends JerseyTest {
 
 	@Before
 	public void setUp() throws Exception {
-		res = new LobbyResource(daoMock, conf);
+		res = new LobbyResource(daoMock, conf,authenticator);
 	}
 	
 	@Test

@@ -81,7 +81,7 @@ public class SpillTest {
 		spill.setSpillId(1);
 		Spill spill2 = new Spill();
 		spill2.setSpillId(2);
-		spill2.set
+		//spill2.set
 		
 		
 		assertThat("Spill2 og spill skulle vært samme objekt", spill2, sameInstance(spill));

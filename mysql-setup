@@ -4,13 +4,20 @@ sudo service mysql start/stop/restart
 check if running: sudo netstat -tap | grep mysql
 
 ----------------
-edit /etc/mysql/my.cnf. Add:
+edit /etc/mysql/my.cnf:
+To set the default to UTF-8, you want to add the following
+
+[client]
+default-character-set=utf8
+
+[mysql]
+default-character-set=utf8
+
+
 [mysqld]
-init_connect=‘SET collation_connection = utf8_unicode_ci’
-init_connect=‘SET NAMES utf8’
-character-set-server=utf8
-collation-server=utf8_unicode_ci
-skip-character-set-client-handshake
+collation-server = utf8_unicode_ci
+init-connect='SET NAMES utf8'
+character-set-server = utf8
 -----------------
 
 if reinstall:

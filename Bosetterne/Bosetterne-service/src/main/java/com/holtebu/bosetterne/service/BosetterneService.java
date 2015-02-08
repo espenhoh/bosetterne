@@ -46,6 +46,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
 	public static void main(String[] args) throws Exception {
 		BosetterneServiceBinder binder = new BosetterneServiceBinder(new DBIFactory());
         new BosetterneService(binder).run(args);
+
     }
 
 
@@ -93,7 +94,6 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         //jersey.register(AuthFactory.binder(authFactory));
         //Litt kjip hack :( bedre forslag?
         jersey.register(binder.getAuthFactoryBinder());
-        jersey.register(PolettFilter.class);
         jersey.register(OAuthAccessTokenResource.class);
         jersey.register(OAuthAuthorizeResource.class);      
         

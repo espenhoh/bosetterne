@@ -1,1 +1,5 @@
 ssl keystore: http://www.sslshopper.com/article-how-to-create-a-self-signed-certificate-using-java-keytool.html
+
+disable chrome cache http://stackoverflow.com/questions/5690269/disabling-chrome-cache-for-website-development
+
+enable check mode in dartium: copey dartium file to chromium path in dat sdk

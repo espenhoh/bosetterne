@@ -36,14 +36,14 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	
 	private final LoadingCache<String, Optional<Spiller>> spillerCache;
 	
-	private final Set<Spill> spillCache;
+	private final List<Spill> spillCache;
 
 	private final LobbyDAO dao;
 	
 
 	@Inject
 	public JDBILobbyService(LoadingCache<String, Optional<Spiller>> spillerCache,
-			@Named("spillCache") Set<Spill> spillCache,
+			@Named("spillCache") List<Spill> spillCache,
 			LobbyDAO dao) {
 		this.spillerCache = spillerCache;
 		this.spillCache = spillCache;
@@ -111,7 +111,7 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	 * {@inheritDoc}
 	 */
 	@Override
-	public Set<Spill> hentListe() {
+	public List<Spill> hentListe() {
 		return spillCache;
 	}
 
