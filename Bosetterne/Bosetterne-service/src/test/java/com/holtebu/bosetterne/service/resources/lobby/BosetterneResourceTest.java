@@ -10,10 +10,8 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import io.dropwizard.auth.basic.BasicCredentials;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import javassist.expr.NewArray;
 
@@ -92,7 +90,7 @@ public class BosetterneResourceTest {
 	
 	@Test
 	public void skalSetteSpillPaaView(){
-		List<Spill> spill = new ArrayList<>();
+		Set<Spill> spill = new ConcurrentSkipListSet<>();
 		
 		when(lobbyService.hentListe()).thenReturn(spill);
 		

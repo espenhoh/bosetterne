@@ -14,6 +14,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentSkipListSet;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import javax.ws.rs.core.Response;
@@ -69,7 +70,7 @@ public class OAuthAuthorizeResourceTest {
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
-		lobbyService = new JDBILobbyService(new LobbyCacheFactory(daoMock).provide(), new CopyOnWriteArrayList<Spill>(), daoMock);
+		lobbyService = new JDBILobbyService(new LobbyCacheFactory(daoMock).provide(), new ConcurrentSkipListSet<Spill>(), daoMock);
 		auth2Cred = new OAuth2Cred(TestConst.STD_CLIENTID, TestConst.STD_CLIENT_SECRET);
 		accessTokens = new HashMap<>();
 		codes = new HashMap<>();

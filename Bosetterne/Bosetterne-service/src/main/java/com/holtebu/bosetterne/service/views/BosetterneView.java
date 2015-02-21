@@ -12,7 +12,7 @@ public class BosetterneView extends LobbyView {
 	
 	private Map<String,Spiller> innloggedeSpillere;
 	
-	private List<Spill> spillListe;
+	private Set<Spill> spillListe;
 
 	public BosetterneView(String templateName, ResourceBundle msg) {
 		super(templateName, msg);
@@ -27,11 +27,11 @@ public class BosetterneView extends LobbyView {
 		this.innloggedeSpillere = innloggedeSpillere;
 	}
 
-	public List<Spill> getSpillListe() {
+	public Set<Spill> getSpillListe() {
 		return spillListe;
 	}
 
-	public void setSpillListe(List<Spill> spill) {
+	public void setSpillListe(Set<Spill> spill) {
 		this.spillListe = spill;
 	}
 

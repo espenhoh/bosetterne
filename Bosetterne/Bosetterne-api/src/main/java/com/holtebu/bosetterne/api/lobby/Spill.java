@@ -2,6 +2,7 @@ package com.holtebu.bosetterne.api.lobby;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 import org.skife.jdbi.v2.StatementContext;
@@ -16,8 +17,14 @@ public class Spill implements Comparable<Spill>{
 	private TypeSpill typeSpill;
 	
 	private boolean startet;
+
+
+
+    private Date datoFom;
 	
 	private boolean fullfort;
+
+    private Date datoTom;
 	
 	private int maxPoeng;
 	
@@ -81,6 +88,22 @@ public class Spill implements Comparable<Spill>{
 		this.maxPoeng = maxPoeng;
 	}
 
+    public Date getDatoFom() {
+        return datoFom;
+    }
+
+    public void setDatoFom(Date datoFom) {
+        this.datoFom = datoFom;
+    }
+
+    public Date getDatoTom() {
+        return datoTom;
+    }
+
+    public void setDatoTom(Date datoTom) {
+        this.datoTom = datoTom;
+    }
+
 	public static class SpillMapper implements ResultSetMapper<Spill> {
 	
 		public Spill map(int index, ResultSet r, StatementContext ctx) throws SQLException {
@@ -89,8 +112,11 @@ public class Spill implements Comparable<Spill>{
 			spill.setSpillId(r.getInt(1));
 			spill.setTypeSpill(r.getString(2));
 			spill.setNavn(r.getString(3));
-			spill.setStartet(r.getBoolean(4));
-			spill.setFullfort(r.getBoolean(5));
+
+            spill.setDatoFom(r.getTimestamp(4));
+            spill.setStartet(spill.getDatoFom() != null);
+            spill.setDatoFom(r.getTimestamp(5));
+            spill.setFullfort(spill.getDatoTom() != null);
 			spill.setMaxPoeng(r.getInt(6));
 			
 			return spill;
@@ -99,10 +125,46 @@ public class Spill implements Comparable<Spill>{
 	}
 
 	@Override
-	public int compareTo(Spill o) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int compareTo(Spill spill) {
+        if(getDatoTom() != null) {
+            if(spill.getDatoTom() == null) {
+                return 1;
+            }
+            int compareDatoTom = getDatoTom().compareTo(spill.getDatoTom());
+            if (compareDatoTom == 0) {
+                return compareId(spill);
+            } else {
+                return compareDatoTom;
+            }
+        } else {
+            if(spill.getDatoTom() != null) {
+                return -1;
+            }
+            if (getDatoFom() != null) {
+                if(spill.getDatoFom() == null) {
+                    return 1;
+                }
+                int compareDatoFom = getDatoFom().compareTo(spill.getDatoFom());
+                if (compareDatoFom == 0) {
+                    return compareId(spill);
+                } else {
+                    return compareDatoFom;
+                }
+            } else {
+                if(spill.getDatoFom() != null) {
+                    return -1;
+                } else {
+                    return compareId(spill);
+                }
+            }
+        }
 	}
+
+    private int compareId(Spill spill) {
+        return new Integer(getSpillId()).compareTo(spill.getSpillId());
+    }
+
+
 }
 
 enum TypeSpill {

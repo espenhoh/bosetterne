@@ -25,6 +25,7 @@ import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalListeners;
 
 import io.dropwizard.auth.basic.BasicCredentials;
+import sun.security.provider.ConfigFile;
 
 /**
  * Denne implementasjonen kan hente spiller fra database via cache.
@@ -36,19 +37,20 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	
 	private final LoadingCache<String, Optional<Spiller>> spillerCache;
 	
-	private final List<Spill> spillCache;
+	private final Set<Spill> spillCache;
 
 	private final LobbyDAO dao;
 	
 
 	@Inject
 	public JDBILobbyService(LoadingCache<String, Optional<Spiller>> spillerCache,
-			@Named("spillCache") List<Spill> spillCache,
+			@Named("spillCache") Set<Spill> spillCache,
 			LobbyDAO dao) {
 		this.spillerCache = spillerCache;
 		this.spillCache = spillCache;
 		this.dao = dao;
-		spillCache.addAll(dao.getSpilliste());
+        List<Spill> liste = dao.getSpilliste();
+		spillCache.addAll(liste);
 	}
 
 	/**
@@ -111,7 +113,7 @@ public class JDBILobbyService implements LobbyService<Optional<Spiller>, BasicCr
 	 * {@inheritDoc}
 	 */
 	@Override
-	public List<Spill> hentListe() {
+	public Set<Spill> hentListe() {
 		return spillCache;
 	}
 

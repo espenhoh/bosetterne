@@ -38,5 +38,5 @@ public interface LobbyService<S, L> {
 	 * Henter Liste med spill
 	 * @return liste med alle spill på serveren.
 	 */
-	List<Spill> hentListe();
+	Set<Spill> hentListe();
 }
