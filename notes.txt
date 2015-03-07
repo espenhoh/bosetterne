@@ -3,3 +3,12 @@ ssl keystore: http://www.sslshopper.com/article-how-to-create-a-self-signed-cert
 disable chrome cache http://stackoverflow.com/questions/5690269/disabling-chrome-cache-for-website-development
 
 enable check mode in dartium: copey dartium file to chromium path in dat sdk
+
+disable mustache caching:
+git clone https://github.com/dropwizard/dropwizard.git
+MustacheViewRenderer, comment and change line:
+            //final Mustache template = factories.get(view.getClass()).compile(view.getTemplateName());
+            final Mustache template = new PerClassMustacheFactory(view.getClass()).compile(view.getTemplateName());
+fjern		ExecutionException | 
+mvn clean install and change version if neccesary in bosetterne
+Pass på å flytte mustache template inn i target mappa ....

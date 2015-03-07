@@ -125,12 +125,13 @@ public class BosetterneServiceBinder extends AbstractBinder{
 	 */
     public DBI buildJDBI(){
     	DBI jdbi = null;
-        try {
+
+        // try {
         	jdbi = dbiFactory.build(environment, configuration.getDataSourceFactory(), "mySQL");
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-			throw new RuntimeException("Kunne ikke starte opp databasen!");
-		}
+		//} catch (ClassNotFoundException e) {
+		//	e.printStackTrace();
+		//	throw new RuntimeException("Kunne ikke starte opp databasen!");
+		//}
         return jdbi;
     }
 	

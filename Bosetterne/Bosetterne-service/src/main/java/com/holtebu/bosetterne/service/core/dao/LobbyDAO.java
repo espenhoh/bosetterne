@@ -49,8 +49,9 @@ public interface LobbyDAO {
 			"WHERE SPILLER_I_SPILL.brukernavn = :brukernavn")
 	@RegisterMapper(Historikk.HistorikkMapper.class)
 	List<Historikk> getHistorikk(@Bind("brukernavn") String navn);
-	
-	@SqlQuery("select spill_id, type_spill, navn, dato_fom, dato_tom, max_poeng from SPILL WHERE (dato_fom > TIMESTAMP(DATE_SUB(NOW(), INTERVAL 14 day))) OR (dato_fom IS NULL) ORDER by dato_fom, dato_tom asc ")
+
+    //@SqlQuery("select spill_id, type_spill, navn, dato_fom, dato_tom, max_poeng from SPILL WHERE (dato_fom > TIMESTAMP(DATE_SUB(NOW(), INTERVAL 14 day))) OR (dato_fom IS NULL) ORDER by dato_fom, dato_tom asc ")
+    @SqlQuery("select spill_id, type_spill, navn, dato_fom, dato_tom, max_poeng from SPILL")
 	@RegisterMapper(Spill.SpillMapper.class)
 	List<Spill> getSpilliste();
 

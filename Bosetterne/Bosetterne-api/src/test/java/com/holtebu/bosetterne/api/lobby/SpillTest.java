@@ -1,8 +1,6 @@
 package com.holtebu.bosetterne.api.lobby;
 
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyString;
@@ -11,9 +9,9 @@ import static org.mockito.Mockito.when;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 import org.hamcrest.number.*;
 import org.junit.After;
@@ -63,6 +61,34 @@ public class SpillTest {
 		
 		assertThat("", spill.getTypeSpill() ,is(equalTo("Byer og riddere")));
 	}
+
+    @Test
+    public void datoFomFormat() {
+        Calendar date = new GregorianCalendar(2011, 3, 7, 23, 30, 56);
+        Date datoFom = date.getTime();
+        spill.setDatoFom(datoFom);
+        assertThat("Dato fom skal ha spesifikt format \"dd/mm HH:MM\"",spill.getDatoFomStr(),is(equalTo("07/04 23:30")));
+    }
+
+    @Test
+    public void datoFomNull() {
+        spill.setDatoFom(null);
+        assertThat("Dato fom skal være null",spill.getDatoFomStr(),is(nullValue()));
+    }
+
+    @Test
+    public void datoTomFormat() {
+        Calendar date = new GregorianCalendar(2011, 3, 7, 23, 30, 56);
+        Date datoTom = date.getTime();
+        spill.setDatoTom(datoTom);
+        assertThat("Dato tom skal ha spesifikt format \"dd/mm HH:MM\"",spill.getDatoTomStr(),is(equalTo("07/04 23:30")));
+    }
+
+    @Test
+    public void datoTomNull() {
+        spill.setDatoTom(null);
+        assertThat("Dato tom skal være null",spill.getDatoFomStr(),is(nullValue()));
+    }
 	
 	@Test
 	public void testGetTypeSpillMsgNull() throws Exception {

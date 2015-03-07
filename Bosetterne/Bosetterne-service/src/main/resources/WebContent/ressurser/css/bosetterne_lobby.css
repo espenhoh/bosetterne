@@ -57,8 +57,8 @@ ul.spilleliste {
 
 .star2{
     font-size: 13px;
-    margin: 0.45em 0.15em 0.15em auto;
-    background: #2c2c2c;
+    margin: 0.35em 0.85em 0.15em auto;
+    background: #caad00;
     display: block;
     width: 2em;
     height: 2em;
@@ -68,7 +68,7 @@ ul.spilleliste {
 .star2:before{
     content: "";
     display: block;
-    background: #2c2c2c;
+    background: #caad00;
     width:2em;
     height: 2em;
     position: absolute;
@@ -79,7 +79,7 @@ ul.spilleliste {
 .star2:after{
     content: "";
     display: block;
-    background: #2c2c2c;
+    background: #caad00;
     width: 2em;
     height: 2em;
     position: absolute;
@@ -93,7 +93,8 @@ ul.spilleliste {
     position: relative;
     height: 0.4em;
     width: 0.2em;
-    margin-top: -1.2em;
+    margin-top: -1.5em;
+    margin-left: 3em;
 }
 
 .controller::before {

@@ -2,6 +2,8 @@ package com.holtebu.bosetterne.api.lobby;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.ResourceBundle;
 
@@ -92,12 +94,24 @@ public class Spill implements Comparable<Spill>{
         return datoFom;
     }
 
+    public String getDatoFomStr() {
+        if (getDatoFom() == null) return null;
+        DateFormat df = new SimpleDateFormat("dd/MM HH:mm");
+        return df.format(getDatoFom());
+    }
+
     public void setDatoFom(Date datoFom) {
         this.datoFom = datoFom;
     }
 
     public Date getDatoTom() {
         return datoTom;
+    }
+
+    public String getDatoTomStr() {
+        if (getDatoTom() == null) return null;
+        DateFormat df = new SimpleDateFormat("dd/MM HH:mm");
+        return df.format(getDatoTom());
     }
 
     public void setDatoTom(Date datoTom) {
@@ -115,7 +129,7 @@ public class Spill implements Comparable<Spill>{
 
             spill.setDatoFom(r.getTimestamp(4));
             spill.setStartet(spill.getDatoFom() != null);
-            spill.setDatoFom(r.getTimestamp(5));
+            spill.setDatoTom(r.getTimestamp(5));
             spill.setFullfort(spill.getDatoTom() != null);
 			spill.setMaxPoeng(r.getInt(6));
 			
@@ -127,38 +141,46 @@ public class Spill implements Comparable<Spill>{
 	@Override
 	public int compareTo(Spill spill) {
         if(getDatoTom() != null) {
-            if(spill.getDatoTom() == null) {
-                return 1;
-            }
-            int compareDatoTom = getDatoTom().compareTo(spill.getDatoTom());
-            if (compareDatoTom == 0) {
-                return compareId(spill);
-            } else {
-                return compareDatoTom;
-            }
+            return compareFerdig(spill);
         } else {
-            if(spill.getDatoTom() != null) {
-                return -1;
-            }
-            if (getDatoFom() != null) {
-                if(spill.getDatoFom() == null) {
-                    return 1;
-                }
-                int compareDatoFom = getDatoFom().compareTo(spill.getDatoFom());
-                if (compareDatoFom == 0) {
-                    return compareId(spill);
-                } else {
-                    return compareDatoFom;
-                }
-            } else {
-                if(spill.getDatoFom() != null) {
-                    return -1;
-                } else {
-                    return compareId(spill);
-                }
-            }
+            return compareIkkeFerdig(spill);
         }
 	}
+
+    private int compareIkkeFerdig(Spill spill) {
+        if(spill.getDatoTom() != null) {
+            return -1;
+        }
+        if (getDatoFom() != null) {
+            if(spill.getDatoFom() == null) {
+                return 1;
+            }
+            int compareDatoFom = getDatoFom().compareTo(spill.getDatoFom());
+            if (compareDatoFom == 0) {
+                return compareId(spill);
+            } else {
+                return compareDatoFom;
+            }
+        } else {
+            if(spill.getDatoFom() != null) {
+                return -1;
+            } else {
+                return compareId(spill);
+            }
+        }
+    }
+
+    private int compareFerdig(Spill spill) {
+        if(spill.getDatoTom() == null) {
+            return 1;
+        }
+        int compareDatoTom = getDatoTom().compareTo(spill.getDatoTom());
+        if (compareDatoTom == 0) {
+            return compareId(spill);
+        } else {
+            return compareDatoTom;
+        }
+    }
 
     private int compareId(Spill spill) {
         return new Integer(getSpillId()).compareTo(spill.getSpillId());

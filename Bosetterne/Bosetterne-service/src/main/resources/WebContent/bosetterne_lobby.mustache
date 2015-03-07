@@ -19,6 +19,8 @@
                 <td class="">Status</td>
                 <td class="">Navn</td>
                 <td class="">Type</td>
+                <td class="">Startet</td>
+                <td class="">Avsluttet</td>
             </tr>
             </thead>
             <tbody>
@@ -39,28 +41,12 @@
                     </td>
                     <td class="">{{navn}}</td>
                     <td class="">{{typeSpill}}</td>
+                    <td class="">{{datoFomStr}}</td>
+                    <td class="">{{datoTomStr}}</td>
                 </tr>
             {{/spillListe}}
             </tbody>
         </table>
-    </div>
-
-    <div class="spillediv">
-        Spill
-        <ul class="spilleliste">
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-            <li class="spiller">testtekst</li>
-        </ul>
     </div>
 {{/ article}}
 {{$scripts}}<script type="application/dart" src="ressurser/dart/bosetterne.dart"></script>{{/scripts}}
