@@ -23,6 +23,8 @@ Bosetterne/Bosetterne-service/src/main/resources/WebContent/ressurser/dart/packa
 *.ear
 *.db
 
+#JavaScript (just compile dart)
+*.js
 
 ######################
 # Eclipse

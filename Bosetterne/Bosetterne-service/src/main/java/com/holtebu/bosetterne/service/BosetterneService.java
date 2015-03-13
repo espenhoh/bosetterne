@@ -1,6 +1,7 @@
 package com.holtebu.bosetterne.service;
 
 
+import com.google.common.collect.ImmutableMap;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.inject.BosetterneServiceBinder;
 import com.holtebu.bosetterne.service.inject.ResourceBundleResolver;
@@ -20,6 +21,8 @@ import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.Map;
 
 
 //import com.yammer.dropwizard.config.FilterBuilder;
@@ -49,7 +52,12 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
         bootstrap.addBundle(new AssetsBundle("/WebContent/ressurser/", "/ressurser/"));
         bootstrap.addBundle(new DBIExceptionsBundle());
-        bootstrap.addBundle(new ViewBundle());
+        bootstrap.addBundle(new ViewBundle<BosetterneConfiguration>() {
+            @Override
+            public Map<String, Map<String, String>> getViewConfiguration(BosetterneConfiguration config) {
+                return config.getViewRendererConfiguration();
+            }
+        });
     }
     
     @Override
