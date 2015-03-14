@@ -67,6 +67,7 @@ public class BosetterneConfiguration extends Configuration {
         return viewRendererConfiguration;
     }
 
+/*
     @JsonProperty("viewRendererConfiguration")
     public void setViewRendererConfiguration(Map<String, Map<String, String>> viewRendererConfiguration) {
         ImmutableMap.Builder<String, Map<String, String>> builder = ImmutableMap.builder();
@@ -74,5 +75,5 @@ public class BosetterneConfiguration extends Configuration {
             builder.put(entry.getKey(), ImmutableMap.copyOf(entry.getValue()));
         }
         this.viewRendererConfiguration = builder.build();
-    }
+    }*/
 }

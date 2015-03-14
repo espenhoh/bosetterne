@@ -11,6 +11,7 @@ import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
+import com.holtebu.bosetterne.service.views.mustachehack.MustacheViewBundle;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.jdbi.DBIFactory;
@@ -52,7 +53,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
         bootstrap.addBundle(new AssetsBundle("/WebContent/ressurser/", "/ressurser/"));
         bootstrap.addBundle(new DBIExceptionsBundle());
-        bootstrap.addBundle(new ViewBundle<BosetterneConfiguration>() {
+        bootstrap.addBundle(new MustacheViewBundle<BosetterneConfiguration>() {
             @Override
             public Map<String, Map<String, String>> getViewConfiguration(BosetterneConfiguration config) {
                 return config.getViewRendererConfiguration();
