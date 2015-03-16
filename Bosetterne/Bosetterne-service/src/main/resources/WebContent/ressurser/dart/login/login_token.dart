@@ -12,7 +12,6 @@ void main(){
     new Login_token().menyLenker();
     a.onClick.listen((e) => window.sessionStorage.remove("bosetterne_token"));
   }
-
 }
 
 class Login_token {

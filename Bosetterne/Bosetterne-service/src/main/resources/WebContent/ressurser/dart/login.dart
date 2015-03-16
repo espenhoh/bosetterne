@@ -23,7 +23,6 @@ class BasicCred {
 }
 
 void assertCheckMode() {
-
   try {
     int i = '';
     throw new Exception("Check Mode is disabled!");
@@ -37,6 +36,8 @@ void main() {
   token.main();
   InputElement submit = querySelector('#logg_inn');
   submit.onClick.listen( onSubmit );
+  print('This will be logged to the console in the browser. main');
+
 }
 
 
@@ -56,7 +57,7 @@ void onSubmit(Event e) {
   BasicCred creds = new BasicCred(spiller.value,passord.value);
 
   Map reqHdr = {'Authorization': creds.toString()};
-
+/*
   HttpRequest.postFormData("/authorize/authcode", data, withCredentials: false)
   .then((HttpRequest resp){
 
@@ -69,7 +70,8 @@ void onSubmit(Event e) {
         querySelector("#logginn").click();
       });
     print(resp.responseText);
-  });
+  });*/
 /*
   */
+  print('This will be logged to the console in the browser. onsubmit');
 }

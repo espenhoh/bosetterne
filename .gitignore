@@ -25,6 +25,8 @@ Bosetterne/Bosetterne-service/src/main/resources/WebContent/ressurser/dart/packa
 
 #JavaScript (just compile dart)
 *.js
+*.map
+*.deps
 
 ######################
 # Eclipse
