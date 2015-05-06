@@ -2,14 +2,14 @@
 <html>
 <head>
     <link rel="shortcut icon"
-          href="/ressurser/favicon.ico.png" />
+          href="favicon.ico.png" />
     <meta charset="utf-8">
     <!--<script src="ressurser/js/CheckDart.js"></script>-->
     <title>{{bosetterne}}</title>
-    <link rel="stylesheet" href="/ressurser/css/sections.css">
-    <link rel="stylesheet" href="/ressurser/css/tables.css">
-    <link rel="stylesheet" href="/ressurser/css/text.css">
-    <link rel="stylesheet" href="/ressurser/css/forms.css">
+    <link rel="stylesheet" href="/../css/sections.css">
+    <link rel="stylesheet" href="/../css/tables.css">
+    <link rel="stylesheet" href="/../css/text.css">
+    <link rel="stylesheet" href="/../css/forms.css">
     {{$csss}}{{/csss}}
 </head>
 <body>
@@ -27,9 +27,9 @@
             <li class="meny"><a class="meny" id="logginn" href="logg_inn">{{login}}</a></li>
         {{/innlogget}}
         {{#innlogget}}
-            <li class="meny"><a class="meny" href="bosetterne">{{bosetterne}}</a></li>
+            <li class="meny"><a class="meny" href="">{{bosetterne}}</a></li>
             <li class="meny"><a class="meny" href="historikk">{{historikk}}</a></li>
-            <li class="meny"><a class="meny" href="ressurser/chat.html">{{chat}}</a></li>
+            <li class="meny"><a class="meny" href="chat.html">{{chat}}</a></li>
             <li class="meny"><a class="meny" id="loggut" href="logg_ut">{{logout}}</a></li>
         {{/innlogget}}
     </ul>
@@ -40,6 +40,7 @@
 <footer>
     {{copyright}}
 </footer>
+<script src="js/libs/require.js" data-main="js/main.js"></script>
 {{$scripts}}...{{/scripts}}
 </body>
 </html>

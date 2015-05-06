@@ -5,6 +5,7 @@ import io.dropwizard.Configuration;
 import io.dropwizard.ConfiguredBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 import io.dropwizard.views.ViewConfigurable;
 import io.dropwizard.views.ViewMessageBodyWriter;
 import io.dropwizard.views.ViewRenderer;
@@ -19,7 +20,7 @@ import static com.google.common.base.MoreObjects.firstNonNull;
 /**
  * Created by espen on 3/14/15.
  */
-public abstract class MustacheViewBundle<T extends Configuration> implements ConfiguredBundle<T>, ViewConfigurable<T> {
+public abstract class MustacheViewBundle<T extends Configuration> extends ViewBundle<T>  {
     private final MustacheHackRenderer hackRenderer;
 
     public MustacheViewBundle() {
@@ -41,7 +42,7 @@ public abstract class MustacheViewBundle<T extends Configuration> implements Con
     }
 
     @Override
-    public void initialize(Bootstrap<?> bootstrap) {
+    public void initialize(Bootstrap<? extends T> bootstrap) {
         // nothing doing
     }
 }

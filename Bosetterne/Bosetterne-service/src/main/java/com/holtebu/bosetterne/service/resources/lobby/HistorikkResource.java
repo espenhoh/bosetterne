@@ -2,13 +2,12 @@ package com.holtebu.bosetterne.service.resources.lobby;
 
 import java.util.ResourceBundle;
 
-import io.dropwizard.auth.Auth;
-import io.dropwizard.auth.basic.BasicCredentials;
-
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,8 +47,8 @@ public class HistorikkResource {
 
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public HistorikkView historikk(@Auth Spiller spiller, @Message ResourceBundle msg) {
-		
+	public HistorikkView historikk(@Context SecurityContext sc, @Message ResourceBundle msg) {
+		Spiller spiller = (Spiller) sc.getUserPrincipal();
 		HistorikkView view = new HistorikkView(mustacheTemplates.getHistorikkTemplate(), msg);
 		view.setSpiller(spiller);
 		view.setHistorikker(dao.getHistorikk(spiller.getBrukernavn()));

@@ -1,7 +1,6 @@
 package com.holtebu.bosetterne.service;
 
 
-import com.google.common.collect.ImmutableMap;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.inject.BosetterneServiceBinder;
 import com.holtebu.bosetterne.service.inject.ResourceBundleResolver;
@@ -14,6 +13,7 @@ import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
 import com.holtebu.bosetterne.service.views.mustachehack.MustacheViewBundle;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
@@ -51,7 +51,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
 
     @Override
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/WebContent/ressurser/", "/ressurser/"));
+        bootstrap.addBundle(new AssetsBundle("/WebContent/bosetterne/", "/bosetterne/"));
         bootstrap.addBundle(new DBIExceptionsBundle());
         bootstrap.addBundle(new MustacheViewBundle<BosetterneConfiguration>() {
             @Override
@@ -88,6 +88,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     	binder.setUpDao(binder.buildJDBI());
     	jersey.register(binder);
     	jersey.register(new ResourceBundleResolver.Binder());
+
     	
     	
         //Authentication
@@ -97,7 +98,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         //OAuthFactory<Spiller> authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
         //jersey.register(AuthFactory.binder(authFactory));
         //Litt kjip hack :( bedre forslag?
-        jersey.register(binder.getAuthFactoryBinder());
+        jersey.register(OAuthCredentialAuthFilter.class);
         jersey.register(OAuthAccessTokenResource.class);
         jersey.register(OAuthAuthorizeResource.class);      
         

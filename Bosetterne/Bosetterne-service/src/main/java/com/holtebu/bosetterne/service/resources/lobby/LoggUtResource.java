@@ -1,6 +1,5 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
-import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.basic.BasicCredentials;
 
 import java.util.ResourceBundle;
@@ -8,7 +7,9 @@ import java.util.ResourceBundle;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,8 +46,8 @@ public class LoggUtResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public HjemView loggUt(@Auth(required = false) Spiller spiller, @Message ResourceBundle bundle) {
-		
+	public HjemView loggUt(@Context SecurityContext sc, @Message ResourceBundle bundle) {
+		Spiller spiller = (Spiller) sc.getUserPrincipal();
 		HjemView view = new HjemView(mustacheTemplates.getHjemTemplate(), bundle, spiller);
 		
 		if(spiller == null) {

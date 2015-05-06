@@ -1,13 +1,14 @@
 package com.holtebu.bosetterne.api.lobby;
 
 
+import java.security.Principal;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Set;
 
 import com.holtebu.bosetterne.api.Game;
 
-public class Spiller {
+public class Spiller implements Principal {
 
 	public Spiller(){}
 	
@@ -136,7 +137,12 @@ public class Spiller {
 		}
 		return hashCode;
 	}
-	
+
+	@Override
+	public String getName() {
+		return getBrukernavn();
+	}
+
 	/**
 	 * Brukernavnet representerer Objektet, siden det er unikt.
 	 */

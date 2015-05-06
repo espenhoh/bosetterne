@@ -11,7 +11,6 @@ import com.holtebu.bosetterne.service.core.Legitimasjon;
 
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
-import io.dropwizard.auth.basic.BasicCredentials;
 
 public class BosetterneAuthenticator implements Authenticator<String, Spiller> {
 

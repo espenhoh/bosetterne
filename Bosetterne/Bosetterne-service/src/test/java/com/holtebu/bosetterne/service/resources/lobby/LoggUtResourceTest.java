@@ -23,6 +23,7 @@ import java.util.UUID;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
 
 import org.junit.After;
 import org.junit.Before;
@@ -115,8 +116,8 @@ public class LoggUtResourceTest {
 		Spiller spiller = new SpillerBuilder().withBrukernavn("Testspiller").withPassord("passord").build();
 		spiller.setInnlogget(true);
 		tokens.put("Whatever", spiller);
-		
-		HjemView hjemview = res.loggUt(spiller, bundle);
+		SecurityContext sc = new DummySecurityContext(spiller);
+		HjemView hjemview = res.loggUt(sc, bundle);
 		
 		
 		assertThat("Spiller skal være logget ut", spiller.isInnlogget(),is(false));
@@ -132,8 +133,8 @@ public class LoggUtResourceTest {
 		
 		Spiller spiller = new SpillerBuilder().withBrukernavn("Testspiller").withPassord("passord").build();
 		spiller.setInnlogget(false);
-		
-		HjemView hjemview = res.loggUt(spiller, bundle);
+		SecurityContext sc = new DummySecurityContext(spiller);
+		HjemView hjemview = res.loggUt(sc, bundle);
 		
 		
 		assertThat("Spiller skal være logget ut", spiller.isInnlogget(),is(false));

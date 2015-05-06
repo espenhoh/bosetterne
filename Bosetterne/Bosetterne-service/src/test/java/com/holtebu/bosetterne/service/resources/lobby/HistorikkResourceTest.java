@@ -34,6 +34,8 @@ import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.views.HistorikkView;
 
+import javax.ws.rs.core.SecurityContext;
+
 public class HistorikkResourceTest {
 	
 	private HistorikkResource res;
@@ -71,8 +73,8 @@ public class HistorikkResourceTest {
 		List<Historikk> h = new ArrayList<>();
 		when(daoMock.getHistorikk(anyString())).thenReturn(h);
 		Spiller spiller = SpillerBuilder.lagTestspiller();
-		
-		HistorikkView view = res.historikk(spiller, bundle);
+		SecurityContext sc = new DummySecurityContext(spiller);
+		HistorikkView view = res.historikk(sc, bundle);
 		
 		assertThat(view.getHistorikker(),sameInstance(h));
 	}

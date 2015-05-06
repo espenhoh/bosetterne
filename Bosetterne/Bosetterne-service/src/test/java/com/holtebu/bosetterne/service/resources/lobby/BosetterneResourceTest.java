@@ -10,6 +10,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 import io.dropwizard.auth.basic.BasicCredentials;
 
+import java.security.Principal;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
@@ -37,6 +38,8 @@ import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
 import com.holtebu.bosetterne.service.core.Legitimasjon;
 import com.holtebu.bosetterne.service.views.BosetterneView;
+
+import javax.ws.rs.core.SecurityContext;
 
 public class BosetterneResourceTest {
 	private BosetterneResource res;
@@ -74,15 +77,19 @@ public class BosetterneResourceTest {
 
 	@Test
 	public void skalSetteSpillerPaaView(){
-		
-		BosetterneView view = res.bosetterne(testSpiller, bundle);
+		SecurityContext sc = new DummySecurityContext(testSpiller);
+
+		BosetterneView view = res.bosetterne(sc, bundle);
 		
 		assertThat("Spiller skal være på view",view.getSpiller(), is(sameInstance(testSpiller)));
 	}
-	
+
+
+
 	@Test
 	public void skalSetteInnloggedeSpillerePaaView(){
-		BosetterneView view = res.bosetterne(testSpiller, bundle);
+		SecurityContext sc = new DummySecurityContext(testSpiller);
+		BosetterneView view = res.bosetterne(sc, bundle);
 		
 		assertThat("Innloggede Spillere skal være på view", view.getInnloggedeSpillere(), is(sameInstance(polettLager.getInnloggedeSpillere())));
 		
@@ -93,8 +100,8 @@ public class BosetterneResourceTest {
 		Set<Spill> spill = new ConcurrentSkipListSet<>();
 		
 		when(lobbyService.hentListe()).thenReturn(spill);
-		
-		BosetterneView view = res.bosetterne(testSpiller, bundle);
+		SecurityContext sc = new DummySecurityContext(testSpiller);
+		BosetterneView view = res.bosetterne(sc, bundle);
 		
 		
 		assertThat("Spill skal være på view", view.getSpillListe(), is(sameInstance(spill)));

@@ -7,10 +7,7 @@ import com.holtebu.bosetterne.api.lobby.Spill;
 import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
 import com.holtebu.bosetterne.service.OAuth2Cred;
-import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
-import com.holtebu.bosetterne.service.auth.JDBILobbyService;
-import com.holtebu.bosetterne.service.auth.LobbyService;
-import com.holtebu.bosetterne.service.auth.OAuthFactory;
+import com.holtebu.bosetterne.service.auth.*;
 import com.holtebu.bosetterne.service.auth.sesjon.Polettlager;
 import com.holtebu.bosetterne.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.bosetterne.service.core.AccessToken;
@@ -22,12 +19,11 @@ import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
-import io.dropwizard.auth.AuthFactory;
 import io.dropwizard.auth.basic.BasicCredentials;
+import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.setup.Environment;
 import org.glassfish.hk2.api.TypeLiteral;
-import org.glassfish.hk2.utilities.Binder;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.skife.jdbi.v2.DBI;
 
@@ -35,7 +31,6 @@ import javax.inject.Singleton;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentSkipListSet;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class BosetterneServiceBinder extends AbstractBinder{
@@ -47,7 +42,6 @@ public class BosetterneServiceBinder extends AbstractBinder{
 	private DBI jdbi;
 	private DAOFactory daoFactory;
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;
-	private OAuthFactory<Spiller> authFactory;
 
 	public BosetterneServiceBinder(final DBIFactory factory) {
 		dbiFactory = factory;
@@ -57,7 +51,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		this.configuration = configuration;
 		this.environment = environment;
 		tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
-		authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
+		//authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
 	}
 	
 	public void setUpDao(DBI jdbi){
@@ -67,8 +61,9 @@ public class BosetterneServiceBinder extends AbstractBinder{
 
 	@Override
 	protected void configure() {
-		bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);		
-		//bindFactory(OAuthFactoryFactory.class).to(OAuthFactory.class);//.in(Singleton.class);
+        bind(new BosetterneOAuthFilter().getFilter(tokenStore)).to(OAuthCredentialAuthFilter.class);
+
+        bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);
 		bind(OAuthAccessTokenResource.class).to(OAuthAccessTokenResource.class).in(Singleton.class);
 		bind(OAuthAuthorizeResource.class).to(OAuthAuthorizeResource.class).in(Singleton.class);
 		bind(LobbyResource.class).to(LobbyResource.class).in(Singleton.class);
@@ -81,11 +76,8 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(ResourceBundle.getBundle("bosetterne")).to(ResourceBundle.class);
 		
 		
-		//DAO binding
+		//DAO bindingK,
 		bindFactory(daoFactory.lobbyDAOFactory()).to(LobbyDAO.class);
-		
-		bind("protected-resources").to(String.class).named("realm");
-		//bind(BosetterneAuthenticator.class).to(new TypeLiteral<Authenticator<String,Spiller>>() {});
 		
 		bind(configuration).to(BosetterneConfiguration.class);
 		bind(configuration.getOauth2()).to(OAuth2Cred.class);
@@ -116,9 +108,6 @@ public class BosetterneServiceBinder extends AbstractBinder{
         bind(INIT_ANTALL_SPILL).to(Integer.class).named("antallSpill");
 
 	}
-	public Binder getAuthFactoryBinder(){
-		return AuthFactory.binder(authFactory);
-	}
 	
 	/**
 	 * @return the single JDBI instance required
@@ -134,6 +123,6 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		//}
         return jdbi;
     }
-	
+
 
 }

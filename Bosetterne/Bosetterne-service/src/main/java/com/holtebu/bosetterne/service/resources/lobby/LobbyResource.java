@@ -3,14 +3,15 @@ package com.holtebu.bosetterne.service.resources.lobby;
 import java.util.ResourceBundle;
 
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
-import io.dropwizard.auth.Auth;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 import com.holtebu.bosetterne.api.lobby.Spiller;
 import com.holtebu.bosetterne.service.BosetterneConfiguration;
@@ -41,7 +42,7 @@ public class LobbyResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public HjemView hjem(@Message ResourceBundle msg, @Auth(required = false) Spiller spiller) {
+	public HjemView hjem(@Message ResourceBundle msg, @Context SecurityContext sc, Spiller spiller) {
 		HjemView hjemView = new HjemView(templates.getHjemTemplate(), msg, spiller);
 		return hjemView;
 	}
@@ -77,10 +78,10 @@ public class LobbyResource {
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("{brukernavn}/secretPlan")
-    public String getSecretPlan(@PathParam("brukernavn") String brukernavn, @Auth Spiller spiller) {
-    	
-    	Object[] f = {,};
-    	if(brukernavn.equals(spiller.getBrukernavn())){
+    public String getSecretPlan(@PathParam("brukernavn") String brukernavn, @Context SecurityContext sc) {
+		Spiller spiller = (Spiller) sc.getUserPrincipal();
+
+    	if(spiller != null && brukernavn.equals(spiller.getBrukernavn())){
     		return "Secret plan revealed!";
     	} else {
     		return "no luck";

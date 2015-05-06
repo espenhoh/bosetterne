@@ -1,6 +1,5 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
-import io.dropwizard.auth.Auth;
 import io.dropwizard.auth.basic.BasicCredentials;
 
 import java.util.ResourceBundle;
@@ -8,7 +7,9 @@ import java.util.ResourceBundle;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.SecurityContext;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,9 +46,12 @@ public class BosetterneResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public BosetterneView bosetterne(@Auth(required = false) Spiller spiller, @Message ResourceBundle msg){
+	public BosetterneView bosetterne(@Context SecurityContext sc, @Message ResourceBundle msg){
 		BosetterneView view = new BosetterneView(mustacheTemplates.getBosetterneTemplate(), msg);
-		view.setSpiller(spiller);
+		if (sc.isUserInRole("Spiller")){
+			view.setSpiller((Spiller)sc.getUserPrincipal());
+		}
+
 		view.setInnloggedeSpillere(polettLager.getInnloggedeSpillere());
 		view.setSpillListe(lobbyService.hentListe());
 		return view;
