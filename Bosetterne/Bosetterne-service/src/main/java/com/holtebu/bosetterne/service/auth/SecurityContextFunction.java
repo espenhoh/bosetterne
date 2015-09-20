@@ -17,6 +17,7 @@ public class SecurityContextFunction implements Function<Tuple, SecurityContext>
         public SecurityContext apply(final Tuple input) {
 
             return new SecurityContext() {
+
                 @Override
                 public Principal getUserPrincipal() {
                     return input.getPrincipal();
@@ -29,12 +30,12 @@ public class SecurityContextFunction implements Function<Tuple, SecurityContext>
 
                 @Override
                 public boolean isSecure() {
-                    return false;
+                    return input.getContainerRequestContext().getSecurityContext().isSecure();
                 }
 
                 @Override
                 public String getAuthenticationScheme() {
-                    return "OAuth2";
+                    return SecurityContext.BASIC_AUTH;
                 }
             };
         }

@@ -1,6 +1,8 @@
 package com.holtebu.bosetterne.service;
 
 
+import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.bosetterne.service.auth.BosetterneOAuthFilter;
 import com.holtebu.bosetterne.service.health.TemplateHealthCheck;
 import com.holtebu.bosetterne.service.inject.BosetterneServiceBinder;
 import com.holtebu.bosetterne.service.inject.ResourceBundleResolver;
@@ -13,6 +15,7 @@ import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
 import com.holtebu.bosetterne.service.views.mustachehack.MustacheViewBundle;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
@@ -20,6 +23,7 @@ import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,7 +55,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
 
     @Override
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/WebContent/bosetterne/", "/bosetterne/"));
+        bootstrap.addBundle(new AssetsBundle("/WebContent/", "/app/"));
         bootstrap.addBundle(new DBIExceptionsBundle());
         bootstrap.addBundle(new MustacheViewBundle<BosetterneConfiguration>() {
             @Override
@@ -98,7 +102,10 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         //OAuthFactory<Spiller> authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
         //jersey.register(AuthFactory.binder(authFactory));
         //Litt kjip hack :( bedre forslag?
-        jersey.register(OAuthCredentialAuthFilter.class);
+        jersey.register(new AuthValueFactoryProvider.Binder<>(Spiller.class));
+        jersey.register(RolesAllowedDynamicFeature.class);
+        BosetterneOAuthFilter filter = new BosetterneOAuthFilter(binder.getTokenStore());
+        jersey.register(filter.getFilter());
         jersey.register(OAuthAccessTokenResource.class);
         jersey.register(OAuthAuthorizeResource.class);      
         

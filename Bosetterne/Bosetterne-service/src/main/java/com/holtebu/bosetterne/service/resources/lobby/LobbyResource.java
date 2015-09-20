@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 
 import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 
+import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -20,7 +21,8 @@ import com.holtebu.bosetterne.service.core.dao.LobbyDAO;
 import com.holtebu.bosetterne.service.inject.Message;
 import com.holtebu.bosetterne.service.views.HjemView;
 import com.holtebu.bosetterne.service.views.LobbyView;
- 
+import io.dropwizard.auth.Auth;
+
 /**
  * Lobby resource (exposed at "lobby" path)
  */
@@ -42,8 +44,8 @@ public class LobbyResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public HjemView hjem(@Message ResourceBundle msg, @Context SecurityContext sc, Spiller spiller) {
-		HjemView hjemView = new HjemView(templates.getHjemTemplate(), msg, spiller);
+	public HjemView hjem(@Message ResourceBundle msg) {
+		HjemView hjemView = new HjemView(templates.getHjemTemplate(), msg, null);
 		return hjemView;
 	}
 	
@@ -64,7 +66,7 @@ public class LobbyResource {
 		return LoggUtResource.class;
 	}
 	
-	@Path("bosetterne")
+	@Path("bosetterne/spill")
 	public Class<BosetterneResource> bosetterneResource(){
 		return BosetterneResource.class;
 	}

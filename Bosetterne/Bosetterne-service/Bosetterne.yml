@@ -2,7 +2,7 @@ template: Hello, %s!
 defaultName: Stranger
 
 mustacheTemplates:
-  baseMappe: /WebContent/bosetterne/
+  baseMappe: /WebContent/
   hjemTemplate: hjem.mustache
   loginTemplate: login.mustache
   bosetterneTemplate: bosetterne_lobby.mustache

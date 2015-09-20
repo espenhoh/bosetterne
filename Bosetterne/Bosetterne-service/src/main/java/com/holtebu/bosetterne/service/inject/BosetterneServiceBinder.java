@@ -19,6 +19,7 @@ import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
+import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.jdbi.DBIFactory;
@@ -53,6 +54,10 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
 		//authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
 	}
+
+	public Polettlager<AccessToken, Spiller, Legitimasjon, String> getTokenStore (){
+		return tokenStore;
+	}
 	
 	public void setUpDao(DBI jdbi){
 		this.jdbi = jdbi;
@@ -61,9 +66,8 @@ public class BosetterneServiceBinder extends AbstractBinder{
 
 	@Override
 	protected void configure() {
-        bind(new BosetterneOAuthFilter().getFilter(tokenStore)).to(OAuthCredentialAuthFilter.class);
 
-        bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);
+		bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);
 		bind(OAuthAccessTokenResource.class).to(OAuthAccessTokenResource.class).in(Singleton.class);
 		bind(OAuthAuthorizeResource.class).to(OAuthAuthorizeResource.class).in(Singleton.class);
 		bind(LobbyResource.class).to(LobbyResource.class).in(Singleton.class);

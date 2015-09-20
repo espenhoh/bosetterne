@@ -1,11 +1,13 @@
 /**
  * Created by Espen on 06.05.2015.
  */
+/* global: require */
 
 require.config({
-    baseUrl: 'js',
+    baseUrl: 'app/js',
     paths: {
-        jquery: 'libs/jquery'
+        jquery: 'libs/jquery',
+        login_token: 'modules/login/login_token'
     }
 });
 
