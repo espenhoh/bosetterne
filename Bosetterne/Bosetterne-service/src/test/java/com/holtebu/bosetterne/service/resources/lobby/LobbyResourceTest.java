@@ -58,10 +58,10 @@ public class LobbyResourceTest { // extends JerseyTest {
 		
 	}
 	
-	@Test
-	public void historikkResourceSkalReturnereHistorikkResourceClass(){
-		assertThat("historikkResource skal returnere HistorikkResource.class", res.historikkResource(), sameInstance(HistorikkResource.class));
-	}
+//	@Test
+//	public void historikkResourceSkalReturnereHistorikkResourceClass(){
+//		assertThat("historikkResource skal returnere HistorikkResource.class", res.historikkResource(), sameInstance(HistorikkResource.class));
+//	}
 	
 
 

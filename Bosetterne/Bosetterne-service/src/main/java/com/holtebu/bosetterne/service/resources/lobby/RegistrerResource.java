@@ -1,6 +1,7 @@
 package com.holtebu.bosetterne.service.resources.lobby;
 
 import java.sql.Date;
+import java.util.ResourceBundle;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.holtebu.bosetterne.service.inject.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,14 +43,15 @@ public class RegistrerResource {
 	
 	@GET
 	@Produces(MediaType.TEXT_HTML)
-	public RegistrerView registrer(@Context HttpServletRequest request) {
-		return new RegistrerView(registrer_template);
+	public RegistrerView registrer(@Context HttpServletRequest request, @Message ResourceBundle msg) {
+		return new RegistrerView(registrer_template, msg);
 	}
 	
 	@POST
 	@Consumes("application/x-www-form-urlencoded")
 	@Produces(MediaType.TEXT_HTML)
 	public RegistrerView registrerSpiller(
+			@Message ResourceBundle msg,
 			@FormParam("brukernavn") String brukernavn,
 			@FormParam("kallenavn") String kallenavn,
 			@FormParam("spillerfarge") String farge,
@@ -60,7 +63,7 @@ public class RegistrerResource {
 		
 		Spiller registrertSpiller = new Spiller(brukernavn, kallenavn, farge, epost, passord1, new Date(System.currentTimeMillis()));
 		
-		RegistrerView view = new RegistrerView(registrer_template);
+		RegistrerView view = new RegistrerView(registrer_template, msg);
 		
 		view.setPassordMatcherIkke(!passord1.equals(passord2));
 		view.setPassordForKort(passord1.length() < 6);
@@ -77,7 +80,7 @@ public class RegistrerResource {
 			} else {
 				logger.warn("Annen feil enn \"Duplicate entry\" ved registrering" , utese);
 				utese.printStackTrace();
-				return new RegistrerView(registrering_feilet_template);
+				return new RegistrerView(registrering_feilet_template, msg);
 			}
 		}
 		
@@ -85,7 +88,7 @@ public class RegistrerResource {
 			return view;
 		}
 		
-		return new RegistrerView(registrert_template);
+		return new RegistrerView(registrert_template, msg);
 	}
 
 }

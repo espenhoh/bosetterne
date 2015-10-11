@@ -1,7 +1,8 @@
 /**
  * Created by Espen on 06.05.2015.
  */
-/* global: require */
+/*global require, define */
+
 
 require.config({
     baseUrl: 'app/js',
@@ -11,8 +12,11 @@ require.config({
     }
 });
 
-require(['jquery'], function(){});
+require(['jquery'], function () {
+    "use strict";
+});
 
-define(function(require) {
-   var $ = require('jquery');
+define(function require) {
+    "use strict";
+    var $ = require('jquery');
 });

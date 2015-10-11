@@ -6,7 +6,9 @@ import com.holtebu.bosetterne.service.views.util.Feilmelding;
 
 import io.dropwizard.views.View;
 
-public class RegistrerView extends View {
+import java.util.ResourceBundle;
+
+public class RegistrerView extends LobbyView {
 	private boolean loggedIn;
 	private Feilmelding brukernavnEksisterer;
 	private Feilmelding fargeEksisterer;
@@ -17,8 +19,8 @@ public class RegistrerView extends View {
 	
 	private Spiller registrertSpiller;
 
-	public RegistrerView(String templateName) {
-		super(templateName);
+	public RegistrerView(String templateName, ResourceBundle msg) {
+		super(templateName, msg);
 	}
 	
 	public boolean feilet() {

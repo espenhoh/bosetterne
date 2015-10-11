@@ -6,6 +6,7 @@ import com.holtebu.bosetterne.service.auth.BosetterneAuthenticator;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
+import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -26,6 +27,7 @@ import io.dropwizard.auth.Auth;
 /**
  * Lobby resource (exposed at "lobby" path)
  */
+@Singleton
 @Path("/")
 public class LobbyResource {
 	static final String KLOKKE_PATTERN = "HH:mm:ss";
@@ -45,38 +47,37 @@ public class LobbyResource {
 	@GET
 	@Produces(MediaType.TEXT_HTML)
 	public HjemView hjem(@Message ResourceBundle msg) {
-		HjemView hjemView = new HjemView(templates.getHjemTemplate(), msg, null);
-		return hjemView;
+		return new HjemView(templates.getHjemTemplate(), msg, null);
 	}
-	
+
 	@GET
 	@Path("test")
 	@Produces(MediaType.TEXT_HTML)
 	public LobbyView test(@Message ResourceBundle msg) {
 		return new LobbyView("/WebContent/test.mustache", msg);
 	}
-	
+
 	@Path("logg_inn")
 	public LoggInnResource loggInnResource(){
 		return new LoggInnResource(templates.getLoginTemplate(), authenticator);
 	}
-	
+
 	@Path("logg_ut")
 	public Class<LoggUtResource> loggUtResource(){
 		return LoggUtResource.class;
 	}
-	
+
 	@Path("bosetterne/spill")
 	public Class<BosetterneResource> bosetterneResource(){
 		return BosetterneResource.class;
 	}
-	
+
 	@Path("historikk")
 	public Class<HistorikkResource> historikkResource() {
 		return HistorikkResource.class;
 	}
-	
-    
+
+
     @GET
     @Produces(MediaType.TEXT_PLAIN)
     @Path("{brukernavn}/secretPlan")
@@ -88,8 +89,8 @@ public class LobbyResource {
     	} else {
     		return "no luck";
     	}
-    	
-        
+
+
     }
 
 

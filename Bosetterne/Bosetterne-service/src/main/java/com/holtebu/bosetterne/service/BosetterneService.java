@@ -15,6 +15,7 @@ import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
 import com.holtebu.bosetterne.service.views.mustachehack.MustacheViewBundle;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.jdbi.DBIFactory;
@@ -55,7 +56,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
 
     @Override
     public void initialize(Bootstrap<BosetterneConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/WebContent/", "/app/"));
+        bootstrap.addBundle(new AssetsBundle("/WebContent/app/", "/app/"));
         bootstrap.addBundle(new DBIExceptionsBundle());
         bootstrap.addBundle(new MustacheViewBundle<BosetterneConfiguration>() {
             @Override
@@ -97,17 +98,16 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     	
         //Authentication
         logger.info("2/5 Setter opp autentisering og autorisering med polettlager i minnet.");
-        
-        //Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
-        //OAuthFactory<Spiller> authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
-        //jersey.register(AuthFactory.binder(authFactory));
-        //Litt kjip hack :( bedre forslag?
+
         jersey.register(new AuthValueFactoryProvider.Binder<>(Spiller.class));
         jersey.register(RolesAllowedDynamicFeature.class);
-        BosetterneOAuthFilter filter = new BosetterneOAuthFilter(binder.getTokenStore());
-        jersey.register(filter.getFilter());
+        jersey.register(new AuthDynamicFeature(binder.filter()));
+
+        //BosetterneOAuthFilter filter = new BosetterneOAuthFilter(binder.getTokenStore());
+        //jersey.register(filter.getFilter());
         jersey.register(OAuthAccessTokenResource.class);
-        jersey.register(OAuthAuthorizeResource.class);      
+        jersey.register(OAuthAuthorizeResource.class);
+
         
         //Resources
         logger.info("3/5 Legger til standard resources");
@@ -115,7 +115,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
         jersey.register(RegistrerResource.class);
         jersey.register(HelloWorldResource.class);
         jersey.register(BosetterneResource.class);
-        
+
         //Health checks
         logger.info("4/5 Legger til HealthChecks");
         environment.healthChecks().register("template", new TemplateHealthCheck(configuration));

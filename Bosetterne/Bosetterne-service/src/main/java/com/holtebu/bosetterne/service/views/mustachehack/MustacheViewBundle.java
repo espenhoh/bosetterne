@@ -41,8 +41,5 @@ public abstract class MustacheViewBundle<T extends Configuration> extends ViewBu
         environment.jersey().register(new ViewMessageBodyWriter(environment.metrics(), renderers));
     }
 
-    @Override
-    public void initialize(Bootstrap<? extends T> bootstrap) {
-        // nothing doing
-    }
+
 }

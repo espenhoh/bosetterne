@@ -20,18 +20,13 @@ public class BosetterneOAuthFilter {
         this.tokenStore = tokenStore;
     }
 
-    public AuthDynamicFeature getFilter(){
-        OAuthCredentialAuthFilter.Builder<Spiller,BosetterneAuthenticator> oauthBuilder = new OAuthCredentialAuthFilter.Builder<>();
-        oauthBuilder.setAuthenticator(new BosetterneAuthenticator(tokenStore))
-                .setRealm("protected-resources")
-                .setPrefix("Bearer")
-                .setSecurityContextFunction(getSecurityContextFunction());
-
-        return new AuthDynamicFeature(oauthBuilder.buildAuthFilter());
-    }
-
-    private SecurityContextFunction getSecurityContextFunction() {
-        return new SecurityContextFunction();
-    }
+//    public AuthDynamicFeature getFilter(){
+//        OAuthCredentialAuthFilter.Builder<Spiller,BosetterneAuthenticator> oauthBuilder = new OAuthCredentialAuthFilter.Builder<>();
+//        oauthBuilder.setAuthenticator(new BosetterneAuthenticator(tokenStore))
+//                .setRealm("protected-resources")
+//                .setPrefix("Bearer");
+//
+//        return new AuthDynamicFeature(oauthBuilder.buildAuthFilter());
+//    }
 
 }

@@ -17,8 +17,10 @@ import com.holtebu.bosetterne.service.resources.BosetterneResource;
 import com.holtebu.bosetterne.service.resources.HelloWorldResource;
 import com.holtebu.bosetterne.service.resources.OAuthAccessTokenResource;
 import com.holtebu.bosetterne.service.resources.lobby.LobbyResource;
+import com.holtebu.bosetterne.service.resources.lobby.LoggUtResource;
 import com.holtebu.bosetterne.service.resources.lobby.OAuthAuthorizeResource;
 import com.holtebu.bosetterne.service.resources.lobby.RegistrerResource;
+import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
@@ -66,7 +68,6 @@ public class BosetterneServiceBinder extends AbstractBinder{
 
 	@Override
 	protected void configure() {
-
 		bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);
 		bind(OAuthAccessTokenResource.class).to(OAuthAccessTokenResource.class).in(Singleton.class);
 		bind(OAuthAuthorizeResource.class).to(OAuthAuthorizeResource.class).in(Singleton.class);
@@ -74,7 +75,8 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bind(RegistrerResource.class).to(RegistrerResource.class).in(Singleton.class);
 		bind(BosetterneResource.class).to(BosetterneResource.class).in(Singleton.class);
 		bind(Bosetterne.class).to(Bosetterne.class).in(Singleton.class);
-        bind(BosetterneAuthenticator.class).to(BosetterneAuthenticator.class);
+        bind(BosetterneAuthenticator.class).to(BosetterneAuthenticator.class).in(Singleton.class);
+
 		
 		//bindResourceProviders();
 		bind(ResourceBundle.getBundle("bosetterne")).to(ResourceBundle.class);
@@ -127,6 +129,16 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		//}
         return jdbi;
     }
+
+	public OAuthCredentialAuthFilter filter(){
+		return new OAuthCredentialAuthFilter.Builder<Spiller>()
+                .setAuthenticator(new BosetterneAuthenticator(tokenStore))
+                .setRealm("Bosetterne")
+                .setPrefix("Bearer")
+                .setAuthorizer(new BosetterneAuthorizer())
+                .buildAuthFilter();
+	}
+
 
 
 }
