@@ -1,10 +1,10 @@
 /*global require, $ */
 
 
-require(['main', ], function () {
+require(['common'  ], function () {
     'use strict';
     require(['jquery'], function($) {
-        document.write('RequireJS virker!');
+        document.write('RequireJS  virkher!');
     });
 });
 
