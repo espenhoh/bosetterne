@@ -1,3 +1,4 @@
+/* global module */
 /**
  * Created by Espen on 15.03.2016.
  */
@@ -18,8 +19,8 @@ module.exports = function(grunt) {
                     // if the source file has an extension of es6 then
                     // we change the name of the source file accordingly.
                     // The result file's extension is always .js
-                    "dist/hjem.js": ["hjem.js"],
-                    "dist/modules/LoginToken.js": ["modules/LoginToken.js"]
+                    "js/dist/hjem.js": ["js/hjem.js"],
+                    //"js/dist/modules/LoginToken.js": ["js/modules/LoginToken.js"]
                 }
             }
         },
