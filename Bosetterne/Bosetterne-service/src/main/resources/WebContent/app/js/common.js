@@ -5,6 +5,6 @@ requirejs.config({
     baseUrl: 'app/js',
     paths: {
         jquery: 'libs/jquery',
-        login_token: 'modules/login/login_token'
+        login_token: 'modules/login_token'
     }
 });
