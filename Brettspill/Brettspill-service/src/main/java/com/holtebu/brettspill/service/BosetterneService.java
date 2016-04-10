@@ -1,10 +1,11 @@
 package com.holtebu.brettspill.service;
 
 
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.health.TemplateHealthCheck;
 import com.holtebu.brettspill.service.inject.BosetterneServiceBinder;
 import com.holtebu.brettspill.service.inject.ResourceBundleResolver;
+import com.holtebu.brettspill.service.inject.StartupBinder;
 import com.holtebu.brettspill.service.resources.BosetterneResource;
 import com.holtebu.brettspill.service.resources.HelloWorldResource;
 import com.holtebu.brettspill.service.resources.OAuthAccessTokenResource;
@@ -23,11 +24,15 @@ import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import io.dropwizard.views.ViewBundle;
+import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.inject.Inject;
 import java.util.Map;
+import java.util.UUID;
 
 
 //import com.yammer.dropwizard.config.FilterBuilder;
@@ -41,15 +46,15 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     private final static Logger logger = LoggerFactory.getLogger("BosetterneService.class");
     private final BosetterneServiceBinder binder;
 
-	
+	@Inject
 	public BosetterneService(BosetterneServiceBinder binder) {
 		this.binder = binder;
 	}
 
 	public static void main(String[] args) throws Exception {
-		BosetterneServiceBinder binder = new BosetterneServiceBinder(new DBIFactory());
-        new BosetterneService(binder).run(args);
-
+        ServiceLocator brettspillLocator = ServiceLocatorUtilities.bind(UUID.randomUUID().toString(), new StartupBinder());
+        BosetterneService service = brettspillLocator.getService(BosetterneService.class);
+        service.run(args);
     }
 
 
@@ -89,7 +94,6 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     	//Dependency injectors
     	logger.info("1/5 Setter opp hk2 injector");
     	binder.setUpEnv(configuration, environment);
-    	binder.setUpDao(binder.buildJDBI());
     	jersey.register(binder);
     	jersey.register(new ResourceBundleResolver.Binder());
 

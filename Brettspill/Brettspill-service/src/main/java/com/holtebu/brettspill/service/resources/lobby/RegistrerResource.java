@@ -20,7 +20,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.views.RegistrerView;
 
 @Path("/registrer")

@@ -1,0 +1,60 @@
+﻿Setup:
+
+Components:
+    Players: 2-4
+    Hexes:
+        Land: 19
+            Desert: 1
+            Brick: 3
+            Grain: 4
+            Lumber: 4
+            Ore: 3
+            Wool: 4
+        Harbors:
+            Special Harbor: 5
+            Generic Harbor: 4
+    Board:
+        Hexagonal: 1
+    Number tokens: 18
+    Cards:
+        Resource cards: 95
+            Brick:
+            Grain:
+            Lumber:
+            Ore:
+            Wool:
+        Development cards:
+            Knight cards: 14
+            Progress cards: 6
+            Victory point cards: 5
+        Special cards:
+            Longest road: 1
+            Largest Army: 1
+    Playing pieces:
+        Cities: 16
+        Settlements: 20
+        Roads: 60
+    Dice: 2
+    Robber: 1
+
+
+
+
+Tur:
+   Spillerstatus:
+      aktiv
+         Kaste terning
+            Råstoff
+            Røver
+               1. Flytt røver
+               2. Stjel råstoff
+         Valgfritt
+             - Handle
+             
+             - Bygge
+                Vei (Tre+leire)
+                landsby (tre+leire+ull+korn)
+                By (3xkorn + 3xStein)
+		Kort (sau + stein + korn)
+             - Spille kort
+      passiv

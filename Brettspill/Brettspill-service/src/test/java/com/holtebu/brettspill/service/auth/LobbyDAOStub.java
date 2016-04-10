@@ -2,9 +2,9 @@ package com.holtebu.brettspill.service.auth;
 
 import java.util.List;
 
-import com.holtebu.bosetterne.api.lobby.Historikk;
-import com.holtebu.bosetterne.api.lobby.Spill;
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Historikk;
+import com.holtebu.brettspill.api.lobby.Spill;
+import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.core.Legitimasjon;
 import com.holtebu.brettspill.service.core.dao.LobbyDAO;
 

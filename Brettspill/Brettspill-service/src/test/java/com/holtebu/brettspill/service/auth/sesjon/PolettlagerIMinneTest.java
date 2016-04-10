@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.ConfigurationStub;
 import com.holtebu.brettspill.service.core.Legitimasjon;
 
@@ -37,7 +37,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
-import static com.holtebu.bosetterne.api.lobby.SpillerBuilder.lagTestspiller;
+import static com.holtebu.brettspill.api.lobby.SpillerBuilder.lagTestspiller;
 
 import com.google.common.base.Optional;
 

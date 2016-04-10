@@ -24,7 +24,7 @@ public class ConfigurationStub {
 	
 	private static BosetterneConfiguration conf() throws JsonProcessingException, IOException {
 		ObjectMapper mapper = Jackson.newObjectMapper();
-		FileInputStream is = new FileInputStream("Bosetterne.yml");
+		FileInputStream is = new FileInputStream("Brettspill.yml");
 		YAMLFactory yamlFactory = new YAMLFactory();
 		final JsonNode node = mapper.readTree(yamlFactory.createParser(is));
 		return mapper.readValue(new TreeTraversingParser(node), BosetterneConfiguration.class);

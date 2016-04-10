@@ -32,8 +32,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.api.lobby.Spiller;
-import com.holtebu.bosetterne.api.lobby.SpillerBuilder;
+import com.holtebu.brettspill.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.SpillerBuilder;
 
 public class OAuthAccessTokenResourceTest{
 	

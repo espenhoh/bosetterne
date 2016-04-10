@@ -24,7 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 
 public class LoggUtResource {
 	private final static Logger logger = LoggerFactory.getLogger(LoggUtResource.class);

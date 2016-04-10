@@ -20,9 +20,9 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.core.StringContains.containsString;
 
-import com.holtebu.bosetterne.api.lobby.Historikk;
-import com.holtebu.bosetterne.api.lobby.Spill;
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Historikk;
+import com.holtebu.brettspill.api.lobby.Spill;
+import com.holtebu.brettspill.api.lobby.Spiller;
 
 public class LobbyDAOIntegrationTest{
 	

@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.jvnet.hk2.annotations.Contract;
 
-import com.holtebu.bosetterne.api.lobby.Spill;
+import com.holtebu.brettspill.api.lobby.Spill;
 
 /**
  * Hjelpemetode for utentisering

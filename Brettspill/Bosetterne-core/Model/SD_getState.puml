@@ -1,0 +1,32 @@
+@startuml
+
+Browser -> BoardGameResource : GET bosetternecore/state&gameID=gameID
+group System
+    activate BoardGameResource
+
+
+    BoardGameResource -> BoardGameHandler: getState(gameID)
+    activate BoardGameHandler
+    BoardGameHandler -> BoardGame : getState()
+    activate BoardGame
+    BoardGame -> Board : getBoardState()
+    activate Board
+    activate Hex
+    loop all hexes
+        Board ->Hex : getHexState()
+        Board <- Hex : hexState
+    end
+    deactivate Hex
+    BoardGame <- Board : boardState
+    deactivate Board
+    BoardGameHandler <- BoardGame : gameState
+    deactivate BoardGame
+    BoardGameResource <-- BoardGameHandler: gameState
+    deactivate BoardGameHandler
+
+
+
+    deactivate BoardGameResource
+end
+Browser <-- BoardGameResource : gameState JSON
+@enduml

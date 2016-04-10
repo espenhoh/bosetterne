@@ -1,0 +1,56 @@
+@startuml
+
+package Brettspill-api {
+    class Player
+    Interface BoardGame
+    Interface Board
+    abstract class Piece
+    Interface CoordinateSystem
+    Interface Card
+
+
+
+
+
+
+    package Bosetterne-core {
+        enum NumberToken
+        class HexagonalBoard
+        abstract class Hex
+        class LandHex
+        class HexagonalCoordinateSystem
+        class BosetterneCard
+        class BosetterneCoreGame
+
+        BosetterneCoreGame -() BoardGame
+
+        BosetterneCoreGame --> HexagonalBoard
+        BosetterneCard -() Card
+        CoordinateSystem ()- HexagonalCoordinateSystem
+        HexagonalBoard --> HexagonalCoordinateSystem
+        Board ()- HexagonalBoard
+        HexagonalBoard --> Hex
+        Hex <|-- LandHex
+        NumberToken <- LandHex
+        LandHex <|-- Brick
+        LandHex <|-- Grain
+        LandHex <|-- Lumber
+        LandHex <|-- Ore
+        LandHex <|-- Wool
+        Hex <|-- HarborHex
+        HarborHex <|-- SpecialHarbor
+        HarborHex <|-- GenericHarbor
+    }
+
+}
+
+
+
+
+enum TimeUnit {
+DAYS
+HOURS
+MINUTES
+}
+
+@enduml

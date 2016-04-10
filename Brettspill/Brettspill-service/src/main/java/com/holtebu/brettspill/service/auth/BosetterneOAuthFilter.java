@@ -1,6 +1,6 @@
 package com.holtebu.brettspill.service.auth;
 
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.auth.sesjon.Polettlager;
 import com.holtebu.brettspill.service.core.AccessToken;
 import com.holtebu.brettspill.service.core.Legitimasjon;

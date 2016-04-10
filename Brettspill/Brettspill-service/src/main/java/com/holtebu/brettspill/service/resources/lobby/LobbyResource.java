@@ -15,7 +15,7 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.SecurityContext;
 
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.BosetterneConfiguration;
 import com.holtebu.brettspill.service.MustacheTemplates;
 import com.holtebu.brettspill.service.core.dao.LobbyDAO;

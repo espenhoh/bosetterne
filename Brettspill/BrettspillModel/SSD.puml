@@ -1,0 +1,8 @@
+@startuml
+Actor Player
+
+Player -> Browser: Play
+Browser -> System : getState(gameID)
+Browser <-- System : gameState JSON
+
+@enduml

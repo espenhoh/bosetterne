@@ -1,5 +1,9 @@
 package com.holtebu.brettspill.service;
 
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -14,16 +18,22 @@ import static org.mockito.Mockito.when;
 
 import com.holtebu.brettspill.service.core.dao.LobbyDAO;
 import com.holtebu.brettspill.service.inject.BosetterneServiceBinder;
+import com.holtebu.brettspill.service.inject.StartupBinder;
 import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Environment;
 
+import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.skife.jdbi.v2.DBI;
+
+import javax.inject.Singleton;
 
 public class BosetterneServiceTest {
 	@Mock
@@ -47,10 +57,17 @@ public class BosetterneServiceTest {
     	config = ConfigurationStub.getConf();
     	
     	
-    	application = new BosetterneService(new BosetterneServiceBinder(new DBIFactory()));
+    	application = canInject();
     	
     	
         when(environment.jersey()).thenReturn(jersey);
+    }
+
+    private BosetterneService canInject() throws Exception {
+        ServiceLocator brettspillLocator = ServiceLocatorUtilities.bind("SetupBrettspillLocatorClassTest", new StartupBinder());
+        BosetterneService service = brettspillLocator.getService(BosetterneService.class);
+        assertThat("Should find an instance",service,notNullValue());
+        return service;
     }
 
     @Test

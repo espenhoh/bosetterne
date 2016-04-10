@@ -2,9 +2,9 @@ package com.holtebu.brettspill.service.inject;
 
 import com.google.common.base.Optional;
 import com.google.common.cache.LoadingCache;
-import com.holtebu.bosetterne.api.Bosetterne;
-import com.holtebu.bosetterne.api.lobby.Spill;
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.Bosetterne;
+import com.holtebu.brettspill.api.lobby.Spill;
+import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.BosetterneConfiguration;
 import com.holtebu.brettspill.service.OAuth2Cred;
 import com.holtebu.brettspill.service.auth.BosetterneAuthenticator;
@@ -32,6 +32,7 @@ import org.glassfish.hk2.api.TypeLiteral;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.skife.jdbi.v2.DBI;
 
+import javax.inject.Inject;
 import javax.inject.Singleton;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -41,43 +42,35 @@ import java.util.concurrent.atomic.AtomicLong;
 public class BosetterneServiceBinder extends AbstractBinder{
 	private final DBIFactory dbiFactory;
 	private final Integer INIT_ANTALL_SPILL = 20;
-	
 	private BosetterneConfiguration configuration;
+
 	private Environment environment;
 	private DBI jdbi;
 	private DAOFactory daoFactory;
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;
 
+	@Inject
 	public BosetterneServiceBinder(final DBIFactory factory) {
 		dbiFactory = factory;
 	}
-	
-	public void setUpEnv(BosetterneConfiguration configuration, Environment environment) {
+
+    BosetterneServiceBinder(DBIFactory dbiFactory, BosetterneConfiguration configuration, Environment environment) {
+        this(dbiFactory);
+        setUpEnv(configuration, environment);
+    }
+
+    public void setUpEnv(BosetterneConfiguration configuration, Environment environment) {
 		this.configuration = configuration;
 		this.environment = environment;
-		tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
+		this.jdbi = dbiFactory.build(environment, configuration.getDataSourceFactory(), "mySQL");
+		this.daoFactory = new DAOFactory(jdbi);
+		//tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
 		//authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
-	}
-
-	public Polettlager<AccessToken, Spiller, Legitimasjon, String> getTokenStore (){
-		return tokenStore;
-	}
-	
-	public void setUpDao(DBI jdbi){
-		this.jdbi = jdbi;
-		daoFactory = new DAOFactory(jdbi);
 	}
 
 	@Override
 	protected void configure() {
-		bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);
-		bind(OAuthAccessTokenResource.class).to(OAuthAccessTokenResource.class).in(Singleton.class);
-		bind(OAuthAuthorizeResource.class).to(OAuthAuthorizeResource.class).in(Singleton.class);
-		bind(LobbyResource.class).to(LobbyResource.class).in(Singleton.class);
-		bind(RegistrerResource.class).to(RegistrerResource.class).in(Singleton.class);
-		bind(BosetterneResource.class).to(BosetterneResource.class).in(Singleton.class);
-		bind(Bosetterne.class).to(Bosetterne.class).in(Singleton.class);
-        bind(BosetterneAuthenticator.class).to(BosetterneAuthenticator.class).in(Singleton.class);
+        bindClasses();
 
 		
 		//bindResourceProviders();
@@ -88,20 +81,16 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		bindFactory(daoFactory.lobbyDAOFactory()).to(LobbyDAO.class);
 		
 		bind(configuration).to(BosetterneConfiguration.class);
-		bind(configuration.getOauth2()).to(OAuth2Cred.class);
+
 		
 		bind(environment).to(Environment.class);
-		
-		bind(AtomicLong.class).to(AtomicLong.class);
 		 
 		bind(ConcurrentHashMap.class).to(new TypeLiteral<Map<String, Spiller>>(){}).named("tokens");
 		bind(ConcurrentHashMap.class).to(new TypeLiteral<Map<String, Legitimasjon>>(){}).named("codes");
+		bind(configuration.getOauth2()).to(OAuth2Cred.class);
 		//bind(CopyOnWriteArrayList.class).to(new TypeLiteral<List<Spill>>() {}).named("spillCache");
 		bind(ConcurrentSkipListSet.class).to(new TypeLiteral<Set<Spill>>() {}).named("spillCache");
-		
-		
-		//Tokenstore
-		bind(tokenStore).to(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){});
+		bind(PolettlagerIMinne.class).to(new TypeLiteral<Polettlager<AccessToken, Spiller, Legitimasjon, String>>(){}).in(Singleton.class);
 		
 		
 		
@@ -116,23 +105,20 @@ public class BosetterneServiceBinder extends AbstractBinder{
         bind(INIT_ANTALL_SPILL).to(Integer.class).named("antallSpill");
 
 	}
-	
-	/**
-	 * @return the single JDBI instance required
-	 */
-    public DBI buildJDBI(){
-    	DBI jdbi = null;
 
-        // try {
-        	jdbi = dbiFactory.build(environment, configuration.getDataSourceFactory(), "mySQL");
-		//} catch (ClassNotFoundException e) {
-		//	e.printStackTrace();
-		//	throw new RuntimeException("Kunne ikke starte opp databasen!");
-		//}
-        return jdbi;
+    private void bindClasses() {
+        bind(HelloWorldResource.class).to(HelloWorldResource.class).in(Singleton.class);
+        bind(OAuthAccessTokenResource.class).to(OAuthAccessTokenResource.class).in(Singleton.class);
+        bind(OAuthAuthorizeResource.class).to(OAuthAuthorizeResource.class).in(Singleton.class);
+        bind(LobbyResource.class).to(LobbyResource.class).in(Singleton.class);
+        bind(RegistrerResource.class).to(RegistrerResource.class).in(Singleton.class);
+        bind(BosetterneResource.class).to(BosetterneResource.class).in(Singleton.class);
+        bind(Bosetterne.class).to(Bosetterne.class).in(Singleton.class);
+        bind(BosetterneAuthenticator.class).to(BosetterneAuthenticator.class).in(Singleton.class);
+        bind(AtomicLong.class).to(AtomicLong.class);
     }
 
-	public OAuthCredentialAuthFilter filter(){
+    public OAuthCredentialAuthFilter filter(){
 		return new OAuthCredentialAuthFilter.Builder<Spiller>()
                 .setAuthenticator(new BosetterneAuthenticator(tokenStore))
                 .setRealm("Bosetterne")

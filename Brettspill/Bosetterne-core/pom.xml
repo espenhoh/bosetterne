@@ -3,13 +3,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <groupId>com.holtebu.bosetterne</groupId>
-    <artifactId>Bosetterne</artifactId>
+    <groupId>com.holtebu.brettspill</groupId>
+    <artifactId>Brettspill</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <groupId>com.holtebu.bosetterne.core</groupId>
+  <groupId>com.holtebu.brettspill.bosetterne.core</groupId>
   <artifactId>Bosetterne-core</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>0.0.1-SNAPSHOT</version>
   <name>Bosetterne-core</name>
   <url>http://maven.apache.org</url>
   <properties>
@@ -19,6 +19,14 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>io.dropwizard</groupId>
+      <artifactId>dropwizard-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.holtebu.brettspill.api</groupId>
+      <artifactId>Brettspill-api</artifactId>
     </dependency>
   </dependencies>
 </project>

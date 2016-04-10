@@ -1,34 +1,55 @@
 <!DOCTYPE html>
 
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>Test</title>
-    <link rel="stylesheet" href="test.css">
-  </head>
-  <body>
-    <h1>Test</h1>
-    
-    <p>Hello world from Dart!</p>
-    
-    <div id="sample_container_id">
-        <input type="number" id="years" value="5" min="1" max="30">
-        <input type="button" id="submit" value="Calculate"/>
-        <br/>Number of rabbits: <label id="output"></label>
-    </div>
+    <head>
+        <meta charset="utf-8">
+        <title>Test</title>
+        <link rel="stylesheet" href="css/brett.css">
+    </head>
+    <body>
+        <h1>Test</h1>
+        <div id="game"></div>
+        <svg id="s" version="1.1"
+             width="600" height="600"
+             xmlns="http://www.w3.org/2000/svg">
+        </svg>
 
-    <script type="application/dart" src="test.dart"></script>
-    <script src="bosetterne/packages/browser/dart.js"></script>
-    <script type="text/javascript">
-        // In JavaScript code:
-//        if (navigator.userAgent.indexOf('(Dart)') == -1) {
-//            // No native Dart support...
-//            window.addEventListener("DOMContentLoaded", function (e) {
-//                alert("No dart support");
-//            }, false);
-//        } else {
-//            alert("Dart supported");
-//        }
-    </script>
-  </body>
+        <script>
+            function hexPoints(x, y, radius) {
+                var points = [];
+                for (var theta = 0; theta < Math.PI * 2; theta += Math.PI / 3) {
+                    var pointX, pointY;
+                    pointX = x + radius * Math.sin(theta);
+                    pointY = y + radius * Math.cos(theta);
+                    points.push(pointX + ',' + pointY);
+                }
+                return points.join(' ');
+            }
+            var x, y, row, col, pointX, pointY, theta;
+            var svg = document.getElementById('s');
+            var radius = 30;
+            for (col = 0; col < 7; col += 1) {
+                for (row = 0; row < 7; row += 1) {
+                    var offset = (Math.sqrt(3) * radius) / 2;
+                    x = 40 + offset * col * 2;
+                    y = 40 + offset * row * Math.sqrt(3);
+                    if (row % 2 !== 0) x += offset;
+                    var polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                    polygon.style.fill = 'white';
+                    polygon.style.stroke = 'black';
+                    polygon.style.strokeWidth = '4px';
+                    polygon.setAttribute('points', hexPoints(x, y, radius));
+                    polygon.addEventListener('click', function (event) {
+                        event.target.style.boxShadow = '0 0 5px blue inset';
+                    }, false);
+                    svg.appendChild(polygon);
+                }
+            }
+        </script>
+
+
+        <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
+
+        </script>
+    </body>
 </html>

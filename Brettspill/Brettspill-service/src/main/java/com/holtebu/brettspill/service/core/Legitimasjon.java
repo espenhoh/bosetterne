@@ -1,6 +1,6 @@
 package com.holtebu.brettspill.service.core;
 
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 
 /** Håndterer innlogging og sesjon */
 public class Legitimasjon {

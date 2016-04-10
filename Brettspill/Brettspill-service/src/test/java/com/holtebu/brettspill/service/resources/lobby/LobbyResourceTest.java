@@ -27,7 +27,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.BosetterneConfiguration;
 import com.holtebu.brettspill.service.ConfigurationStub;
 

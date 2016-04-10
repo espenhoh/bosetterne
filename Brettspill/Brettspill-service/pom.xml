@@ -19,6 +19,10 @@
 			<artifactId>Brettspill-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>com.holtebu.brettspill.bosetterne.core</groupId>
+			<artifactId>Bosetterne-core</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-core</artifactId>
 		</dependency>
@@ -33,10 +37,17 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>org.hamcrest</groupId>
+					<artifactId>hamcrest-core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.mockito</groupId>
@@ -58,12 +69,6 @@
 			<groupId>io.dropwizard</groupId>
 			<artifactId>dropwizard-views-mustache</artifactId>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.glassfish.hk2</groupId> -->
-		<!-- <artifactId>guice-bridge</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> <groupId>org.glassfish.jersey.test-framework.providers</groupId> 
-			<artifactId>jersey-test-framework-provider-jetty</artifactId> </dependency> -->
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-web</artifactId>
@@ -72,55 +77,31 @@
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 		</dependency>
-		<!-- <dependency> -->
-		<!-- <groupId>org.eclipse.jetty</groupId> -->
-		<!-- <artifactId>jetty-servlets</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.eclipse.jetty</groupId> -->
-		<!-- <artifactId>jetty-server</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.eclipse.jetty</groupId> -->
-		<!-- <artifactId>jetty-websocket</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.eclipse.jetty.websocket</groupId> -->
-		<!-- <artifactId>websocket-server</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.atmosphere</groupId> -->
-		<!-- <artifactId>atmosphere-jersey</artifactId> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.atmosphere.client</groupId> -->
-		<!-- <artifactId>jquery</artifactId> -->
-		<!-- <type>war</type> -->
-		<!-- </dependency> -->
-		<!-- <dependency> -->
-		<!-- <groupId>org.atmosphere.client</groupId> -->
-		<!-- <artifactId>javascript</artifactId> -->
-		<!-- <type>war</type> -->
-		<!-- </dependency> -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
-
-		<!-- <dependency> -->
-		<!-- <groupId>mysql</groupId> -->
-		<!-- <artifactId>jdbcdriver</artifactId> -->
-		<!-- </dependency> -->
 	</dependencies>
 	<build>
+		<resources>
+			<resource>
+				<directory>src\main\resources\</directory>
+				<excludes>
+					<exclude>WebContent\app\node_modules\**</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>2.10</version>
+				<version>2.19.1</version>
 				<configuration>
 					<includes>
 						<include>BosetterneConfigurationSuite.java</include>
+						<include>**/Test*.java</include>
+						<include>**/*Test.java</include>
+						<include>**/*TestCase.java</include>
 					</includes>
 				</configuration>
 			</plugin>
@@ -141,6 +122,7 @@
 								<exclude>META-INF/*.SF</exclude>
 								<exclude>META-INF/*.DSA</exclude>
 								<exclude>META-INF/*.RSA</exclude>
+								<exclude>resources/*</exclude>
 							</excludes>
 						</filter>
 					</filters>
@@ -152,6 +134,7 @@
 							<goal>shade</goal>
 						</goals>
 						<configuration>
+							<minimizeJar>true</minimizeJar>
 							<transformers>
 								<transformer
 									implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
@@ -167,8 +150,9 @@
 			<plugin>
 				<groupId>com.ning.maven.plugins</groupId>
 				<artifactId>maven-duplicate-finder-plugin</artifactId>
-				<version>1.0.7</version>
+				<version>1.0.9</version>
 				<configuration>
+					<checkTestClasspath>true</checkTestClasspath>
 					<ignoredDependencies>
 						<dependency>
 							<groupId>org.glassfish.jersey.test-framework.providers</groupId>
@@ -298,6 +282,7 @@
 									<version>3.0.0</version>
 								</dependency>
 							</conflictingDependencies>
+
 							<packages>
 								<package>javax.servlet</package>
 								<package>javax.servlet.http</package>

@@ -28,11 +28,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -41,8 +37,8 @@ import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Optional;
 import com.holtebu.bosetterne.BosetterneConfigurationSuite;
-import com.holtebu.bosetterne.api.lobby.Spiller;
-import com.holtebu.bosetterne.api.lobby.SpillerBuilder;
+import com.holtebu.brettspill.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.SpillerBuilder;
 import com.holtebu.brettspill.service.auth.sesjon.AutorisasjonsException;
 import com.holtebu.brettspill.service.auth.sesjon.Polettlager;
 import com.holtebu.brettspill.service.auth.sesjon.PolettlagerIMinne;
@@ -96,7 +92,8 @@ public class LoggUtResourceTest {
 	public void BosetterneConfigurationNotNull() {
 		assertNotNull( "A value should've been set by a rule.", conf);
 	}
-	
+
+	@Ignore
 	@Test
 	public void ifPlayerNotLoggedInOrDoesNotExistRedirectHomeWithExceptionalMessage(){
 		

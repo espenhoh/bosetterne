@@ -8,11 +8,11 @@ import org.skife.jdbi.v2.sqlobject.SqlQuery;
 import org.skife.jdbi.v2.sqlobject.SqlUpdate;
 import org.skife.jdbi.v2.sqlobject.customizers.RegisterMapper;
 
-import com.holtebu.bosetterne.api.lobby.Historikk;
-import com.holtebu.bosetterne.api.lobby.Spill;
-import com.holtebu.bosetterne.api.lobby.Spiller;
-import com.holtebu.bosetterne.api.lobby.SpillerISpillMapper;
-import com.holtebu.bosetterne.api.lobby.SpillerMapper;
+import com.holtebu.brettspill.api.lobby.Historikk;
+import com.holtebu.brettspill.api.lobby.Spill;
+import com.holtebu.brettspill.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.SpillerISpillMapper;
+import com.holtebu.brettspill.api.lobby.SpillerMapper;
 import com.holtebu.brettspill.service.core.Legitimasjon;
 
 @RegisterMapper(SpillerMapper.class)

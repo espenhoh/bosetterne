@@ -1,7 +1,7 @@
 package com.holtebu.brettspill.service.auth;
 
-import com.holtebu.bosetterne.api.lobby.Spiller;
-import com.holtebu.bosetterne.api.lobby.SpillerBuilder;
+import com.holtebu.brettspill.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.SpillerBuilder;
 import org.junit.Before;
 import org.junit.Test;
 

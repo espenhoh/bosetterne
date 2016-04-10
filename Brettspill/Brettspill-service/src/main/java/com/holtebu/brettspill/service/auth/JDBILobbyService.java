@@ -13,8 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.holtebu.bosetterne.api.lobby.Spill;
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spill;
+import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.core.dao.LobbyDAO;
 import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;

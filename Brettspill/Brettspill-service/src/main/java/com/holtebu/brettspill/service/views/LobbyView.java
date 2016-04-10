@@ -2,7 +2,7 @@ package com.holtebu.brettspill.service.views;
 
 import java.util.ResourceBundle;
 
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 
 import io.dropwizard.views.View;
 

@@ -1,6 +1,6 @@
 package com.holtebu.brettspill.service.resources.lobby;
 
-import com.holtebu.bosetterne.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.Spiller;
 
 import javax.ws.rs.core.SecurityContext;
 import java.security.Principal;

@@ -34,9 +34,9 @@ import com.google.common.base.Optional;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import com.holtebu.bosetterne.api.lobby.Spill;
-import com.holtebu.bosetterne.api.lobby.Spiller;
-import com.holtebu.bosetterne.api.lobby.SpillerBuilder;
+import com.holtebu.brettspill.api.lobby.Spill;
+import com.holtebu.brettspill.api.lobby.Spiller;
+import com.holtebu.brettspill.api.lobby.SpillerBuilder;
 
 public class JDBILobbyServiceTest {
 	

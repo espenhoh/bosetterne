@@ -3,7 +3,7 @@ package com.holtebu.brettspill.service.views;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import com.holtebu.bosetterne.api.lobby.Historikk;
+import com.holtebu.brettspill.api.lobby.Historikk;
 
 public class HistorikkView extends LobbyView {
 	private List<Historikk> historikker;
