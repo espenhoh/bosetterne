@@ -2,7 +2,7 @@ package com.holtebu.brettspill.service.auth;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static com.holtebu.bosetterne.BosetterneConfigurationSuite.conf;
+import static com.holtebu.bosetterne.BoardgameConfigurationSuite.conf;
 
 import java.util.HashMap;
 
@@ -19,10 +19,10 @@ import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.api.lobby.SpillerBuilder;
 import com.holtebu.brettspill.service.core.Legitimasjon;
 
-public class BosetterneAuthenticatorTest {
+public class BoardgameAuthenticatorTestSuiteCase {
 	
 	private static OAuth2Cred oAuth2Verdier;
-	private BosetterneAuthenticator authenticator;
+	private BoardgameAuthenticator authenticator;
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;
 	
 	@BeforeClass
@@ -36,7 +36,7 @@ public class BosetterneAuthenticatorTest {
 		HashMap<String, Legitimasjon> codes = new HashMap<String, Legitimasjon>();
 		tokenStore = new PolettlagerIMinne(accessTokens, codes, oAuth2Verdier);
 		
-		authenticator = new BosetterneAuthenticator(tokenStore);
+		authenticator = new BoardgameAuthenticator(tokenStore);
 	}
 	
 	@Test

@@ -12,12 +12,12 @@ import com.holtebu.brettspill.service.core.Legitimasjon;
 import io.dropwizard.auth.AuthenticationException;
 import io.dropwizard.auth.Authenticator;
 
-public class BosetterneAuthenticator implements Authenticator<String, Spiller> {
+public class BoardgameAuthenticator implements Authenticator<String, Spiller> {
 
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore;
 
 	@Inject
-	public BosetterneAuthenticator(
+	public BoardgameAuthenticator(
 			Polettlager<AccessToken, Spiller, Legitimasjon, String> tokenStore) {
 		super();
 		this.tokenStore = tokenStore;

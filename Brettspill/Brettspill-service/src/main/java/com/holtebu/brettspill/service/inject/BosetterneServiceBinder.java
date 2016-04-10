@@ -7,7 +7,7 @@ import com.holtebu.brettspill.api.lobby.Spill;
 import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.BosetterneConfiguration;
 import com.holtebu.brettspill.service.OAuth2Cred;
-import com.holtebu.brettspill.service.auth.BosetterneAuthenticator;
+import com.holtebu.brettspill.service.auth.BoardgameAuthenticator;
 import com.holtebu.brettspill.service.auth.BosetterneAuthorizer;
 import com.holtebu.brettspill.service.auth.sesjon.Polettlager;
 import com.holtebu.brettspill.service.auth.sesjon.PolettlagerIMinne;
@@ -22,8 +22,6 @@ import com.holtebu.brettspill.service.resources.lobby.OAuthAuthorizeResource;
 import com.holtebu.brettspill.service.resources.lobby.RegistrerResource;
 import com.holtebu.brettspill.service.auth.JDBILobbyService;
 import com.holtebu.brettspill.service.auth.LobbyService;
-import io.dropwizard.auth.AuthDynamicFeature;
-import io.dropwizard.auth.AuthValueFactoryProvider;
 import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
 import io.dropwizard.jdbi.DBIFactory;
@@ -65,7 +63,7 @@ public class BosetterneServiceBinder extends AbstractBinder{
 		this.jdbi = dbiFactory.build(environment, configuration.getDataSourceFactory(), "mySQL");
 		this.daoFactory = new DAOFactory(jdbi);
 		//tokenStore = new PolettlagerIMinne(new HashMap<String, Spiller>(), new HashMap<String, Legitimasjon>(), configuration.getOauth2());
-		//authFactory = new OAuthFactory<Spiller>(new BosetterneAuthenticator(tokenStore), "protected", Spiller.class);
+		//authFactory = new OAuthFactory<Spiller>(new BoardgameAuthenticator(tokenStore), "protected", Spiller.class);
 	}
 
 	@Override
@@ -114,13 +112,13 @@ public class BosetterneServiceBinder extends AbstractBinder{
         bind(RegistrerResource.class).to(RegistrerResource.class).in(Singleton.class);
         bind(BosetterneResource.class).to(BosetterneResource.class).in(Singleton.class);
         bind(Bosetterne.class).to(Bosetterne.class).in(Singleton.class);
-        bind(BosetterneAuthenticator.class).to(BosetterneAuthenticator.class).in(Singleton.class);
+        bind(BoardgameAuthenticator.class).to(BoardgameAuthenticator.class).in(Singleton.class);
         bind(AtomicLong.class).to(AtomicLong.class);
     }
 
     public OAuthCredentialAuthFilter filter(){
 		return new OAuthCredentialAuthFilter.Builder<Spiller>()
-                .setAuthenticator(new BosetterneAuthenticator(tokenStore))
+                .setAuthenticator(new BoardgameAuthenticator(tokenStore))
                 .setRealm("Bosetterne")
                 .setPrefix("Bearer")
                 .setAuthorizer(new BosetterneAuthorizer())

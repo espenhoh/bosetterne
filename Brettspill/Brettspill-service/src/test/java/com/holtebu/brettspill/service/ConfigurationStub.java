@@ -32,6 +32,7 @@ public class ConfigurationStub {
 	
 	public static BosetterneConfiguration getConf() throws JsonProcessingException, IOException {
 		if (config == null) {
+			System.out.println("Creates new config!");
 			config = conf();
 		}
 		return config;

@@ -8,12 +8,12 @@ import org.junit.runners.Suite.SuiteClasses;
 
 import com.holtebu.brettspill.service.BosetterneConfiguration;
 import com.holtebu.brettspill.service.ConfigurationStub;
-import com.holtebu.brettspill.service.auth.BosetterneAuthenticatorTest;
-import com.holtebu.brettspill.service.resources.lobby.LoggUtResourceTest;
+import com.holtebu.brettspill.service.auth.BoardgameAuthenticatorTestSuiteCase;
+import com.holtebu.brettspill.service.resources.lobby.LoggUtResourceTestSuiteCase;
 
 @RunWith(Suite.class)
-@SuiteClasses({ LoggUtResourceTest.class, BosetterneAuthenticatorTest.class })
-public class BosetterneConfigurationSuite {
+@SuiteClasses({ LoggUtResourceTestSuiteCase.class, BoardgameAuthenticatorTestSuiteCase.class })
+public class BoardgameConfigurationSuite {
 	
 	public static BosetterneConfiguration conf;
 

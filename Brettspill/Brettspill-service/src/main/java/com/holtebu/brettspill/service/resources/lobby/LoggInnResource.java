@@ -1,8 +1,7 @@
 package com.holtebu.brettspill.service.resources.lobby;
 
-import com.google.common.base.Optional;
 import com.holtebu.brettspill.api.lobby.Spiller;
-import com.holtebu.brettspill.service.auth.BosetterneAuthenticator;
+import com.holtebu.brettspill.service.auth.BoardgameAuthenticator;
 import com.holtebu.brettspill.service.inject.Message;
 import com.holtebu.brettspill.service.views.LoggInnView;
 import org.slf4j.Logger;
@@ -20,9 +19,9 @@ public class LoggInnResource {
 	private final static Logger logger = LoggerFactory.getLogger("LoggInnResource.class");
 	
 	final String template;
-    private BosetterneAuthenticator authenticator;
+    private BoardgameAuthenticator authenticator;
 
-	public LoggInnResource(String template, BosetterneAuthenticator authenticator) {
+	public LoggInnResource(String template, BoardgameAuthenticator authenticator) {
 		this.template = template;
         this.authenticator = authenticator;
 	}

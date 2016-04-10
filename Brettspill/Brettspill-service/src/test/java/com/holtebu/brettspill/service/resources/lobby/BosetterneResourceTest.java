@@ -77,7 +77,7 @@ public class BosetterneResourceTest {
 
 	@Test
 	public void skalSetteSpillerPaaView(){
-		SecurityContext sc = new DummySecurityContext(testSpiller);
+		SecurityContext sc = new DummySecurityContext(testSpiller,"Spiller");
 
 		BosetterneView view = res.bosetterne(sc, bundle);
 		

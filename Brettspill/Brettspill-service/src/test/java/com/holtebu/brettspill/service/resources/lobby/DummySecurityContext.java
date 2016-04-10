@@ -11,9 +11,15 @@ import java.security.Principal;
 public class DummySecurityContext implements SecurityContext {
 
     private final Spiller testSpiller;
+    private final String role;
 
     public DummySecurityContext(Spiller testSpiller) {
+        this(testSpiller,null);
+    }
+
+    public DummySecurityContext(Spiller testSpiller, String role) {
         this.testSpiller = testSpiller;
+        this.role = role;
     }
 
     @Override
@@ -23,7 +29,7 @@ public class DummySecurityContext implements SecurityContext {
 
     @Override
     public boolean isUserInRole(String role) {
-        return false;
+        return (this.role == null ? role == null: this.role.equals(role));
     }
 
     @Override

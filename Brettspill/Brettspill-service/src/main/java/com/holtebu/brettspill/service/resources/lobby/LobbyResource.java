@@ -2,9 +2,8 @@ package com.holtebu.brettspill.service.resources.lobby;
 
 import java.util.ResourceBundle;
 
-import com.holtebu.brettspill.service.auth.BosetterneAuthenticator;
+import com.holtebu.brettspill.service.auth.BoardgameAuthenticator;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 import javax.ws.rs.GET;
@@ -22,7 +21,6 @@ import com.holtebu.brettspill.service.core.dao.LobbyDAO;
 import com.holtebu.brettspill.service.inject.Message;
 import com.holtebu.brettspill.service.views.HjemView;
 import com.holtebu.brettspill.service.views.LobbyView;
-import io.dropwizard.auth.Auth;
 
 /**
  * Lobby resource (exposed at "lobby" path)
@@ -35,10 +33,10 @@ public class LobbyResource {
 	
 	private final LobbyDAO dao;
 	private MustacheTemplates templates;
-    private BosetterneAuthenticator authenticator;
+    private BoardgameAuthenticator authenticator;
 	
 	@Inject
-	public LobbyResource(LobbyDAO dao, BosetterneConfiguration conf, BosetterneAuthenticator authenticator){
+	public LobbyResource(LobbyDAO dao, BosetterneConfiguration conf, BoardgameAuthenticator authenticator){
 		this.dao = dao;
 		this.templates = conf.getMustacheTemplates();
         this.authenticator = authenticator;

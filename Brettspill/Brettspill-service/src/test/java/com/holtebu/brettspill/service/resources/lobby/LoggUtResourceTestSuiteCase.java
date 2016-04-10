@@ -13,8 +13,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static com.holtebu.bosetterne.BosetterneConfigurationSuite.conf;
+import static com.holtebu.bosetterne.BoardgameConfigurationSuite.conf;
 
 import com.holtebu.brettspill.service.OAuth2Cred;
 import com.holtebu.brettspill.service.auth.LobbyService;
@@ -24,8 +23,6 @@ import io.dropwizard.auth.basic.BasicCredentials;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
 import org.junit.*;
@@ -36,7 +33,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import com.google.common.base.Optional;
-import com.holtebu.bosetterne.BosetterneConfigurationSuite;
+import com.holtebu.bosetterne.BoardgameConfigurationSuite;
 import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.api.lobby.SpillerBuilder;
 import com.holtebu.brettspill.service.auth.sesjon.AutorisasjonsException;
@@ -44,16 +41,15 @@ import com.holtebu.brettspill.service.auth.sesjon.Polettlager;
 import com.holtebu.brettspill.service.auth.sesjon.PolettlagerIMinne;
 import com.holtebu.brettspill.service.core.Legitimasjon;
 import com.holtebu.brettspill.service.views.HjemView;
-import com.sun.research.ws.wadl.Option;
 
 /**
- * @see BosetterneConfigurationSuite
+ * @see BoardgameConfigurationSuite
  * 
  * @author espen
  *
  */
 @RunWith(JUnit4.class)
-public class LoggUtResourceTest {
+public class LoggUtResourceTestSuiteCase {
 	
 	
 	private LoggUtResource res;

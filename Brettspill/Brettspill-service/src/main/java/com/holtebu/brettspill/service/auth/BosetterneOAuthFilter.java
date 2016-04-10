@@ -21,8 +21,8 @@ public class BosetterneOAuthFilter {
     }
 
 //    public AuthDynamicFeature getFilter(){
-//        OAuthCredentialAuthFilter.Builder<Spiller,BosetterneAuthenticator> oauthBuilder = new OAuthCredentialAuthFilter.Builder<>();
-//        oauthBuilder.setAuthenticator(new BosetterneAuthenticator(tokenStore))
+//        OAuthCredentialAuthFilter.Builder<Spiller,BoardgameAuthenticator> oauthBuilder = new OAuthCredentialAuthFilter.Builder<>();
+//        oauthBuilder.setAuthenticator(new BoardgameAuthenticator(tokenStore))
 //                .setRealm("protected-resources")
 //                .setPrefix("Bearer");
 //
