@@ -31,7 +31,7 @@ import static io.dropwizard.testing.FixtureHelpers.fixture;
  * Created by Espen on 03.04.2016.
  */
 public class AxialHexCoordinatesTest {
-    private HexCoordinates axialHexCoordinates;
+    private AxialHexCoordinates axialHexCoordinates;
     private static final ObjectMapper MAPPER = Jackson.newObjectMapper();
 
 
@@ -40,7 +40,7 @@ public class AxialHexCoordinatesTest {
 
     @Before
     public void setUp() throws Exception {
-        axialHexCoordinates = new AxialHexCoordinates(0,0);
+        axialHexCoordinates = new AxialHexCoordinates(1,2);
         readFixture = MAPPER.readValue(fixture("fixtures/axialHex.json"), AxialHexCoordinates.class);
     }
 
@@ -51,7 +51,7 @@ public class AxialHexCoordinatesTest {
 
     @Test
     public void getAxial() throws Exception {
-        AxialHexCoordinates coordinates = axialHexCoordinates.getAxial();
+        HexCoordinates coordinates = axialHexCoordinates.getAxial();
 
         assertThat("Coordinates should be the same object", coordinates ,sameInstance(axialHexCoordinates));
     }
@@ -70,6 +70,11 @@ public class AxialHexCoordinatesTest {
 
     @Test
     public void getCube() throws Exception {
+        CubeHexCoordinates expected = new CubeHexCoordinates(1,2,-3);
+
+        CubeHexCoordinates got = (CubeHexCoordinates) axialHexCoordinates.getCube();
+
+        assertThat("Converted axialHexCoordinates must be equal to the original hex coordinate", got, equalTo(expected));
 
     }
 

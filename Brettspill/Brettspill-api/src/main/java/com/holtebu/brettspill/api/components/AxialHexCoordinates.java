@@ -30,7 +30,7 @@ public class AxialHexCoordinates implements HexCoordinates {
 
     @JsonIgnore
     @Override
-    public AxialHexCoordinates getAxial() {
+    public HexCoordinates getAxial() {
         return this;
     }
 
@@ -42,8 +42,8 @@ public class AxialHexCoordinates implements HexCoordinates {
 
     @JsonIgnore
     @Override
-    public CubeHexCoordinates getCube() {
-        return null;
+    public HexCoordinates getCube() {
+        return new CubeHexCoordinates(this);
     }
 
     @Override

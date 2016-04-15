@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.base.Objects;
+import com.holtebu.brettspill.api.exceptions.CoordinateException;
 
 /**
  * Created by Espen on 03.04.2016.
@@ -20,11 +21,30 @@ public class CubeHexCoordinates implements HexCoordinates {
     @JsonProperty("z")
     private final int z;
 
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getZ() {
+        return z;
+    }
+
     @JsonCreator
-    public CubeHexCoordinates(@JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("z") int z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    public CubeHexCoordinates(@JsonProperty("x") int x, @JsonProperty("y") int y, @JsonProperty("z") int z) throws CoordinateException {
+        int sum = x + y + z;
+        if(sum == 0) {
+            this.x = x;
+            this.y = y;
+            this.z = z;
+        } else {
+            String message = "" + x + " + " + y + " + " + z + " does not sum to zero.";
+            throw new CoordinateException(message);
+        }
     }
 
 
@@ -37,13 +57,13 @@ public class CubeHexCoordinates implements HexCoordinates {
 
     @Override
     @JsonIgnore
-    public AxialHexCoordinates getAxial() {
+    public HexCoordinates getAxial() {
         return new AxialHexCoordinates(x,y);
     }
 
     @Override
     @JsonIgnore
-    public CubeHexCoordinates getCube() {
+    public HexCoordinates getCube() {
         return this;
     }
 

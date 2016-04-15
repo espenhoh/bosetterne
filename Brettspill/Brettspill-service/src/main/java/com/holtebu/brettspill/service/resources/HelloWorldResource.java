@@ -1,8 +1,7 @@
 package com.holtebu.brettspill.service.resources;
 
-import com.holtebu.brettspill.api.components.CubeHexCoordinates;
-import com.holtebu.brettspill.api.components.Hex;
-import com.holtebu.brettspill.api.components.HexCoordinates;
+import com.codahale.metrics.annotation.Timed;
+import com.holtebu.brettspill.api.helloworld.Saying;
 import com.holtebu.brettspill.service.BosetterneConfiguration;
 
 import java.util.concurrent.atomic.AtomicLong;
@@ -12,6 +11,7 @@ import javax.inject.Singleton;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import org.jvnet.hk2.annotations.Service;
@@ -32,24 +32,11 @@ public class HelloWorldResource {
         this.counter = counter;
     }
 
-//    @GET
-//    @Timed
-//    public Saying sayHello() {
-//        return sayHello(defaultName);
-//    }
-//
-//    @GET
-//    @Timed
-//    public Saying sayHello(@QueryParam("name") String name) {
-//        return new Saying(counter.incrementAndGet(),
-//                          String.format(template, name));
-//    }
-
     @GET
-    @Path("/hex")
-    public Hex sayHex() {
-        CubeHexCoordinates coordinates = new CubeHexCoordinates(1,2,3);
-        return new Hex(coordinates);
+    @Timed
+    public Saying sayHello(@QueryParam("name") String name) {
+        return new Saying(counter.incrementAndGet(),
+                          String.format(template, name));
     }
 
 }

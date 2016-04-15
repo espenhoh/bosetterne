@@ -20,11 +20,11 @@ public interface HexCoordinates extends Coordinates {
      * Converts these hexagonal cooridnates to axial coordiantes
      * @return Axial representation
      */
-    AxialHexCoordinates getAxial();
+    HexCoordinates getAxial();
 
     /**
      * Converts these hexagonal cooridnates to cube hegagonal coordiantes
      * @return Cube representation
      */
-    CubeHexCoordinates getCube();
+    HexCoordinates getCube();
 }

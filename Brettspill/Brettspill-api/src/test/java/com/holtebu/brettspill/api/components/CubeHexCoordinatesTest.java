@@ -1,22 +1,20 @@
 package com.holtebu.brettspill.api.components;
 
 
+import com.holtebu.brettspill.api.exceptions.CoordinateException;
 import nl.jqno.equalsverifier.EqualsVerifier;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
 
 import java.util.HashMap;
 
-import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
 
 import static io.dropwizard.testing.FixtureHelpers.*;
 import io.dropwizard.jackson.Jackson;
 import org.junit.Test;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.rules.ExpectedException;
 
 
 /**
@@ -29,10 +27,14 @@ public class CubeHexCoordinatesTest {
 
     private CubeHexCoordinates readFixture;
 
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
+
     @Before
     public void setUp() throws Exception {
         cubeHexCoordinates = new CubeHexCoordinates(0, 0, 0);
         readFixture = MAPPER.readValue(fixture("fixtures/cubeHex.json"), CubeHexCoordinates.class);
+
     }
 
     @After
@@ -42,18 +44,30 @@ public class CubeHexCoordinatesTest {
 
     @Test
     public void producesCubeFromAxial() throws Exception {
-
-
         CubeHexCoordinates convertedCoordinates = new CubeHexCoordinates(new AxialHexCoordinates(0,0));
 
         assertThat("X coorindates should be the same",convertedCoordinates,is(equalTo(cubeHexCoordinates)));
+    }
 
+    @Test
+    public void throwsCoordinateExceptionWhenIllegalCoordinates() throws Exception {
+        exception.expect(CoordinateException.class);
+        exception.expectMessage(containsString("does not sum to zero"));
+        CubeHexCoordinates convertedCoordinates = new CubeHexCoordinates(1,2,3);
+    }
 
+    @Test
+    public void sumOfConvertetAxialCoordinatesIsZero(){
+        AxialHexCoordinates axial = new AxialHexCoordinates(33,-54);
+        CubeHexCoordinates convertedCoordinates = new CubeHexCoordinates(axial);
+
+        int sum = convertedCoordinates.getX() + convertedCoordinates.getY() + convertedCoordinates.getZ();
+        assertThat("Sum must be 0", sum, is(0));
     }
 
     @Test
     public void getAxial() throws Exception {
-        AxialHexCoordinates axialHexCoordinates = cubeHexCoordinates.getAxial();
+        AxialHexCoordinates axialHexCoordinates = (AxialHexCoordinates) cubeHexCoordinates.getAxial();
         AxialHexCoordinates expected = new AxialHexCoordinates(0,0);
 
         assertThat("Axial coordinates must be equal to converted cube coordinates",axialHexCoordinates,is(equalTo(expected)));

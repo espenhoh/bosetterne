@@ -13,6 +13,9 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holtebu.brettspill.api.Bosetterne;
+import com.holtebu.brettspill.api.components.AxialHexCoordinates;
+import com.holtebu.brettspill.api.components.Hex;
+import com.holtebu.brettspill.api.components.HexCoordinates;
 import com.holtebu.brettspill.api.lobby.Spiller;
  
 /**
@@ -30,6 +33,15 @@ public class BosetterneResource {
 		this.bosetterne = bosetterne;
 		this.getit = getit;
 	}
+
+
+    @GET
+    @Path("/hex")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Hex sayHex() {
+        HexCoordinates coordinates = new AxialHexCoordinates(1,2);
+        return new Hex(coordinates);
+    }
  
     /**
      * Method handling HTTP GET requests. The returned object will be sent
