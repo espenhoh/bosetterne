@@ -1,11 +1,12 @@
 package com.holtebu.brettspill.api.components;
 
 
+import com.holtebu.brettspill.api.components.boardcomponents.AxialHexCoordinates;
+import com.holtebu.brettspill.api.components.boardcomponents.CubeHexCoordinates;
+import com.holtebu.brettspill.api.components.boardcomponents.HexCoordinates;
 import com.holtebu.brettspill.api.exceptions.CoordinateException;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.*;
-
-import java.util.HashMap;
 
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.MatcherAssert.assertThat;

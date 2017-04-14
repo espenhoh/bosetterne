@@ -1,6 +1,5 @@
-package com.holtebu.brettspill.api.components;
+package com.holtebu.brettspill.api.components.boardcomponents;
 
-import com.fasterxml.jackson.annotation.JacksonInject;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;

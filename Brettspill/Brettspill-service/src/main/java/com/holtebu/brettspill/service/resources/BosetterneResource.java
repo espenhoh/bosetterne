@@ -13,11 +13,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.holtebu.brettspill.api.Bosetterne;
-import com.holtebu.brettspill.api.components.AxialHexCoordinates;
-import com.holtebu.brettspill.api.components.Hex;
-import com.holtebu.brettspill.api.components.HexCoordinates;
-import com.holtebu.brettspill.api.lobby.Spiller;
- 
+import com.holtebu.brettspill.api.components.boardcomponents.AxialHexCoordinates;
+import com.holtebu.brettspill.api.components.boardcomponents.Hex;
+import com.holtebu.brettspill.api.components.boardcomponents.HexCoordinates;
+
 /**
  * Root resource (exposed at "myresource" path)
  */

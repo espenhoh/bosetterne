@@ -1,6 +1,10 @@
 package com.holtebu.brettspill.api.components;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.holtebu.brettspill.api.components.boardcomponents.CubeHexCoordinates;
+import com.holtebu.brettspill.api.components.boardcomponents.Hex;
+import com.holtebu.brettspill.api.components.boardcomponents.HexBoardPiece;
+import com.holtebu.brettspill.api.components.boardcomponents.HexCoordinates;
 import io.dropwizard.jackson.Jackson;
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.After;

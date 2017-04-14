@@ -3,110 +3,72 @@
  */
 /*global define*/
 
+var $ = require("jquery");
+
 export default class LoginToken {
     constructor() {
-        
-    }
-}
 
-/*
-    List<AnchorElement> _menyLinker;
-    String _access_token;
-    Oauth2Cred _autorisering;
+        var a = $("#loggut");
+        if(a.length){
+            console.log(a);
 
-    Login_token() {
-        if(window.sessionStorage["bosetterne_token"] != null) {
-            Map token = JSON.decode(window.sessionStorage["bosetterne_token"]);
-            _access_token = token['access_token'];
-            _autorisering = new Oauth2Cred(_access_token);
+            var token = window.sessionStorage.getItem('bosetterne_token');
+            if(token) {
+                token = JSON.parse(token);
+                this._access_token = token.access_token;
+                this._autorisering = new Oauth2Cred(this._access_token);
+            } else {
+                this._access_token = '';
+            }
+            
+            
+            this.menyLenker();
+            a.click(function(){
+                window.sessionStorage.removeItem("bosetterne_token");
+            });
+        } else {
+            window.sessionStorage.removeItem("bosetterne_token");
+            console.log("token fjernet");
         }
     }
-
-    String get access_token => _access_token == null ? "" :_access_token;
-
-/** Plukker opp alle menylenkene og Legger ved access token hvis den eksisterer.
- * Hvis access_ token ikke eksisterer, legges den ikke ved.
- *
-
- void menyLenker() {
-    if(_access_token != null) {
-        _menyLinker = querySelectorAll('a.meny');
-        _menyLinker.forEach((a) => _setToken(a));
-    } else {
-        print("Ikke innlogget");
-    }
-}
-
-/*
-
-
-import 'dart:html';
-import 'dart:convert';
-
-
-void main(){
-    AnchorElement a = querySelector("#loggut");
-    if(a == null){
-        window.sessionStorage.remove("bosetterne_token");
-        print("token fjernet");
-    } else {
-        new Login_token().menyLenker();
-        a.onClick.listen((e) => window.sessionStorage.remove("bosetterne_token"));
-    }
-}
-
-class Login_token {
-    List<AnchorElement> _menyLinker;
-    String _access_token;
-    Oauth2Cred _autorisering;
-
-    Login_token() {
-        if(window.sessionStorage["bosetterne_token"] != null) {
-            Map token = JSON.decode(window.sessionStorage["bosetterne_token"]);
-            _access_token = token['access_token'];
-            _autorisering = new Oauth2Cred(_access_token);
-        }
-    }
-
-    String get access_token => _access_token == null ? "" :_access_token;
 
     /** Plukker opp alle menylenkene og Legger ved access token hvis den eksisterer.
      * Hvis access_ token ikke eksisterer, legges den ikke ved.
-     *
+     */
+    menyLenker() {
+        if(this._access_token) {
+            this._menyLinker = $('a.meny');
+            this._menyLinker.each(function (index, value){
+                this._setToken($(this));
+            });
+        } else {
+            console.log("Ikke innlogget");
+        }
+    };
 
-    void menyLenker() {
-    if(_access_token != null) {
-        _menyLinker = querySelectorAll('a.meny');
-        _menyLinker.forEach((a) => _setToken(a));
-    } else {
-        print("Ikke innlogget");
-    }
-}
+    _setToken(anchorElement) {
+        var link = anchorElement.getAttribute('href');
+        var queryPos = link.indexOf('?');
+        if (queryPos > -1) {
+            link = link.substring(0, queryPos);
+        }
+        var tokenQuery = link+"?innlogget_token="+this._access_token;
 
-    void _setToken(AnchorElement anchorElement) {
+        anchorElement.attr('href',tokenQuery);
+    };
 
-    String link = anchorElement.getAttribute('href');
-    int queryPos = link.indexOf('?');
-    if (queryPos > -1) {
-    link = link.substring(0, queryPos);
-}
-
-StringBuffer tokenQuery = new StringBuffer();
-tokenQuery.write(link);
-tokenQuery.write("?innlogget_token=");
-tokenQuery.write(_access_token);
-
-anchorElement.setAttribute('href',tokenQuery.toString());
-}
+    get access_token() {
+        return this._access_token;
+    };
 }
 
 class Oauth2Cred {
-    String token;
 
-    Oauth2Cred(this.token);
+    constructor(token) {
+        this.token = token;
+    }
 
-    String toString() {
-    return 'Bearer ' + window.btoa(token);
+    toString() {
+        return 'Bearer ' + window.btoa(this.token);
+    }
 }
-}
-*/

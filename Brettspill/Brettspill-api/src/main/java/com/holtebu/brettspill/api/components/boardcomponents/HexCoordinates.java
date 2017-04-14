@@ -1,4 +1,4 @@
-package com.holtebu.brettspill.api.components;
+package com.holtebu.brettspill.api.components.boardcomponents;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonSubTypes.Type;

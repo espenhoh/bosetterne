@@ -1,4 +1,4 @@
-package com.holtebu.brettspill.api.components;
+package com.holtebu.brettspill.api.components.boardcomponents;
 
 /**
  * Created by Espen on 30.03.2016.

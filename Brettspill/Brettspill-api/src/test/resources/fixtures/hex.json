@@ -1,0 +1,9 @@
+{
+  "type": "hex",
+  "coordinates": {
+    "type": "CubeHex",
+    "x": 1,
+    "y": 0,
+    "z": -1
+  }
+}

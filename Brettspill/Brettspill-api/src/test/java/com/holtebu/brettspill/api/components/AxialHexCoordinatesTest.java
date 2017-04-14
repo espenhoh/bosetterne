@@ -1,29 +1,21 @@
 package com.holtebu.brettspill.api.components;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.holtebu.brettspill.api.components.boardcomponents.AxialHexCoordinates;
+import com.holtebu.brettspill.api.components.boardcomponents.CubeHexCoordinates;
+import com.holtebu.brettspill.api.components.boardcomponents.HexCoordinates;
 import io.dropwizard.jackson.Jackson;
-import static io.dropwizard.testing.FixtureHelpers.*;
 
 import nl.jqno.equalsverifier.EqualsVerifier;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.mockito.Matchers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
 
-import static org.mockito.Mockito.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.nullValue;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dropwizard.jackson.Jackson;
-import org.junit.Test;
 import static io.dropwizard.testing.FixtureHelpers.fixture;
 //import static org.assertj.core.api.Assertions.assertThat;
 

@@ -10,12 +10,16 @@
         <h1>Test</h1>
         <div id="game"></div>
         <svg id="s" version="1.1"
-             width="600" height="600"
+             width="600" height="400"
              xmlns="http://www.w3.org/2000/svg">
         </svg>
 
         <script>
-            function hexPoints(x, y, radius) {
+            var x, y, row, col, pointX, pointY, theta;
+            var svg = document.getElementById('s');
+            var radius = 30;
+
+            var hexPoints = function(x, y, radius) {
                 var points = [];
                 for (var theta = 0; theta < Math.PI * 2; theta += Math.PI / 3) {
                     var pointX, pointY;
@@ -24,32 +28,27 @@
                     points.push(pointX + ',' + pointY);
                 }
                 return points.join(' ');
-            }
-            var x, y, row, col, pointX, pointY, theta;
-            var svg = document.getElementById('s');
-            var radius = 30;
-            for (col = 0; col < 7; col += 1) {
-                for (row = 0; row < 7; row += 1) {
-                    var offset = (Math.sqrt(3) * radius) / 2;
-                    x = 40 + offset * col * 2;
-                    y = 40 + offset * row * Math.sqrt(3);
-                    if (row % 2 !== 0) x += offset;
-                    var polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-                    polygon.style.fill = 'white';
-                    polygon.style.stroke = 'black';
-                    polygon.style.strokeWidth = '4px';
-                    polygon.setAttribute('points', hexPoints(x, y, radius));
-                    polygon.addEventListener('click', function (event) {
-                        event.target.style.boxShadow = '0 0 5px blue inset';
-                    }, false);
-                    svg.appendChild(polygon);
-                }
-            }
+            };
+
+            var drawHex = function() {
+                var offset = (Math.sqrt(3) * radius) / 2;
+                var polygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+                x = svg.offsetWidth/2.;
+                y = svg.offsetHeight/2.;
+                polygon.style.fill = 'white';
+                polygon.style.stroke = 'black';
+                polygon.style.strokeWidth = '4px';
+                polygon.setAttribute('points', hexPoints(x, y, radius));
+                polygon.addEventListener('click', function (event) {
+                    event.target.style.boxShadow = '0 0 5px blue inset';
+                }, false);
+                svg.appendChild(polygon);
+            };
+
+            drawHex();
         </script>
 
 
         <script type="text/javascript" src="https://rawgithub.com/craftyjs/Crafty/release/dist/crafty-min.js"></script>
-
-        </script>
     </body>
 </html>
