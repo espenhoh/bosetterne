@@ -66,8 +66,8 @@ public class LobbyResource {
 	}
 
 	@Path("bosetterne/spill")
-	public Class<BosetterneResource> bosetterneResource(){
-		return BosetterneResource.class;
+	public Class<GameLobbyResource> bosetterneResource(){
+		return GameLobbyResource.class;
 	}
 
 	@Path("historikk")

@@ -34,7 +34,7 @@ public class MustacheHackRenderer implements ViewRenderer {
         try {
             //final Mustache template = factories.get(view.getClass()).compile(view.getTemplateName());
             final Mustache template = new PerClassMustacheFactory(view.getClass()).compile(view.getTemplateName());
-            final Charset charset = view.getCharset().or(Charsets.UTF_8);
+            final Charset charset = view.getCharset().orElse(Charsets.UTF_8);
             try (OutputStreamWriter writer = new OutputStreamWriter(output, charset)) {
                 template.execute(writer, view);
             }

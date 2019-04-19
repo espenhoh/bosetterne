@@ -6,7 +6,15 @@ module.exports = function(grunt) {
     "use strict";
     require("load-grunt-tasks")(grunt); // npm install --save-dev load-grunt-tasks
     //target"target/classes/js/dist/hjem.js": ["js/hjem.js"]
-    var target, hjem, hjemMin, pingpong, pingpongMin, config;
+    var target, hjem, hjemMin, pingpong, pingpongMin, config, addFile;
+
+
+    // hjem = target + "hjem.js";
+    // hjemMin = target + "hjem.min.js";
+    // pingpong = target + "pingpong.js"
+    // pingpongMin = target + "pingpong.min.js";
+
+
 
     config = {
         pkg: grunt.file.readJSON('package.json'),
@@ -45,18 +53,27 @@ module.exports = function(grunt) {
         }
     };
 
-
     target = "./../../../../../target/classes/WebContent/app/js/dist/";
-    hjem = target + "hjem.js";
-    hjemMin = target + "hjem.min.js";
-    pingpong = target + "pingpong.js"
-    pingpongMin = target + "pingpong.min.js";
 
-    config.browserify.dist.files[hjem] = ["js/hjem.js"];
-    config.browserify.dist.files[pingpong] = ["js/pingpong.js"];
+
+
+    addFile = function (name) {
+        var fullName = target + name + ".js";
+        var source = "./js/" + name + ".js";
+        config.browserify.dist.files[fullName] = source;
+        //var fullNameMin = target + name + ".min.js";
+        //config.uglify.dist.files[fullNameMin] = source;
+    };
+
+    addFile("hjem");
+    addFile("pingpong");
+    addFile("*");
+
+    // config.browserify.dist.files[hjem] = ["js/hjem.js"];
+    // config.browserify.dist.files[pingpong] = ["js/pingpong.js"];
 
     //config.uglify.dist.files[hjemMin] = hjem;
-    config.uglify.dist.files[pingpongMin] = pingpong;
+    //config.uglify.dist.files[pingpongMin] = pingpong;
 
     grunt.initConfig(config);
 

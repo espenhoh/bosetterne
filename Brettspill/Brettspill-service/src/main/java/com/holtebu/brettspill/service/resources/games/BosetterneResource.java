@@ -1,4 +1,4 @@
-package com.holtebu.brettspill.service.resources;
+package com.holtebu.brettspill.service.resources.games;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 
 import com.holtebu.brettspill.api.Bosetterne;
 import com.holtebu.brettspill.api.components.boardcomponents.AxialHexCoordinates;
+import com.holtebu.brettspill.api.components.boardcomponents.Board;
 import com.holtebu.brettspill.api.components.boardcomponents.Hex;
 import com.holtebu.brettspill.api.components.boardcomponents.HexCoordinates;
 
@@ -41,7 +42,14 @@ public class BosetterneResource {
         HexCoordinates coordinates = new AxialHexCoordinates(1,2);
         return new Hex(coordinates);
     }
- 
+
+    @GET
+    @Path("/board")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Board getBosetterneBoard(){
+        return null;
+    }
+
     /**
      * Method handling HTTP GET requests. The returned object will be sent
      * to the client as "text/plain" media type.

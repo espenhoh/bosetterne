@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.api.lobby.SpillerBuilder;
 import com.holtebu.brettspill.service.core.Legitimasjon;

@@ -17,9 +17,6 @@ import io.dropwizard.auth.basic.BasicCredentials;
 import java.util.*;
 import java.util.concurrent.ConcurrentSkipListSet;
 
-import javassist.expr.NewArray;
-
-import org.junit.After;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -41,8 +38,8 @@ import com.holtebu.brettspill.service.views.BosetterneView;
 
 import javax.ws.rs.core.SecurityContext;
 
-public class BosetterneResourceTest {
-	private BosetterneResource res;
+public class GameLobbyResourceTest {
+	private GameLobbyResource res;
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager;
 	private static ResourceBundle bundle;
 	private static BosetterneConfiguration conf;
@@ -70,7 +67,7 @@ public class BosetterneResourceTest {
 		tokens = new HashMap<String, Spiller>();
 		polettLager = new PolettlagerIMinne(tokens, new HashMap<String, Legitimasjon>(), auth2Cred);
 		polettLager = spy(polettLager);
-		res = new BosetterneResource(lobbyService, polettLager, conf);
+		res = new GameLobbyResource(lobbyService, polettLager, conf);
 		
 		testSpiller = SpillerBuilder.lagTestspiller();
 	}

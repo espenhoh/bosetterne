@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.jvnet.hk2.annotations.Contract;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 /**
  * Token store

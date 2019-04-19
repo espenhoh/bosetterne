@@ -1,4 +1,4 @@
-package com.holtebu.brettspill.api.components;
+package com.holtebu.brettspill.api.components.boardcomponents;
 
 
 import com.holtebu.brettspill.api.components.boardcomponents.AxialHexCoordinates;

@@ -39,7 +39,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 import static com.holtebu.brettspill.api.lobby.SpillerBuilder.lagTestspiller;
 
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 public class PolettlagerIMinneTest {
 	

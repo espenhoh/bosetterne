@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,7 +16,7 @@ import com.holtebu.brettspill.service.core.AccessToken;
 import org.jvnet.hk2.annotations.Contract;
 import org.jvnet.hk2.annotations.Service;
 
-import com.google.common.base.Optional;
+
 import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.core.Legitimasjon;
 
@@ -63,7 +64,7 @@ public class PolettlagerIMinne implements
 	@Override
 	public Optional<Spiller> getSpillerByAccessToken(String accessToken) {
 		Spiller clientDetails = accessTokens.get(accessToken);
-		return Optional.fromNullable(clientDetails);
+		return Optional.ofNullable(clientDetails);
 	}
 
 	@Override
@@ -88,7 +89,7 @@ public class PolettlagerIMinne implements
 		if (leg != null) {
 			spiller = leg.getSpiller();
 		}
-		return Optional.fromNullable(spiller);
+		return Optional.ofNullable(spiller);
 	}
 
 	boolean verifyClientSecret(Legitimasjon leg) {

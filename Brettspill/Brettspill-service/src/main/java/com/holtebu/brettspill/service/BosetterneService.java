@@ -6,7 +6,7 @@ import com.holtebu.brettspill.service.health.TemplateHealthCheck;
 import com.holtebu.brettspill.service.inject.BosetterneServiceBinder;
 import com.holtebu.brettspill.service.inject.ResourceBundleResolver;
 import com.holtebu.brettspill.service.inject.StartupBinder;
-import com.holtebu.brettspill.service.resources.BosetterneResource;
+import com.holtebu.brettspill.service.resources.games.BosetterneResource;
 import com.holtebu.brettspill.service.resources.HelloWorldResource;
 import com.holtebu.brettspill.service.resources.OAuthAccessTokenResource;
 import com.holtebu.brettspill.service.resources.lobby.LobbyResource;
@@ -17,13 +17,10 @@ import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.auth.AuthDynamicFeature;
 import io.dropwizard.auth.AuthValueFactoryProvider;
-import io.dropwizard.auth.oauth.OAuthCredentialAuthFilter;
-import io.dropwizard.jdbi.DBIFactory;
 import io.dropwizard.jdbi.bundles.DBIExceptionsBundle;
 import io.dropwizard.jersey.setup.JerseyEnvironment;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import io.dropwizard.views.ViewBundle;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
@@ -90,7 +87,7 @@ public class BosetterneService extends Application<BosetterneConfiguration> {
     public void run(BosetterneConfiguration configuration, Environment environment) {
     	logger.info("0/5 Henter opp Jersey");
     	JerseyEnvironment jersey = environment.jersey();
-    	
+
     	//Dependency injectors
     	logger.info("1/5 Setter opp hk2 injector");
     	binder.setUpEnv(configuration, environment);

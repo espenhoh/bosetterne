@@ -25,8 +25,8 @@ import com.google.common.base.Optional;
 import com.holtebu.brettspill.api.lobby.Spiller;
 import com.holtebu.brettspill.service.views.BosetterneView;
 
-public class BosetterneResource {
-	private final static Logger logger = LoggerFactory.getLogger(BosetterneResource.class);
+public class GameLobbyResource {
+	private final static Logger logger = LoggerFactory.getLogger(GameLobbyResource.class);
 
 	private Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager;
 	private MustacheTemplates mustacheTemplates;
@@ -34,7 +34,7 @@ public class BosetterneResource {
 	
 	
 	@Inject
-	public BosetterneResource(
+	public GameLobbyResource(
 			LobbyService<Optional<Spiller>, BasicCredentials> lobbyService,
 			Polettlager<AccessToken, Spiller, Legitimasjon, String> polettLager,
 			BosetterneConfiguration conf) {

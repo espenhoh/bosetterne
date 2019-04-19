@@ -26,6 +26,10 @@ public class MustacheTemplates {
     @JsonProperty
     private String historikkTemplate;
 
+    @NotEmpty
+    @JsonProperty
+    private String registrerTemplate;
+
 	public String getHjemTemplate() {
 		return fullPath(hjemTemplate);
 	}
@@ -37,10 +41,14 @@ public class MustacheTemplates {
 	public String getBosetterneTemplate() {
 		return fullPath(bosetterneTemplate);
 	}
-	
-	public String getHistorikkTemplate() {
-		return fullPath(historikkTemplate);
-	}
+
+    public String getHistorikkTemplate() {
+        return fullPath(historikkTemplate);
+    }
+
+    public String getRegistrerTemplateTemplate() {
+        return fullPath(registrerTemplate);
+    }
 	
 	private String fullPath(String template) {
 		return baseMappe + template;
